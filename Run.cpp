@@ -8,20 +8,18 @@ void Run ()
     stack_t stk = {};
     StackCtor (&stk, 5);
     int next = 1;
-    FILE* file = fopen ("Programm_asm.txt", "r");
+    FILE* file_code = fopen ("Programm_code.txt", "r");
     while (next)
         {
-        char cmd[20] = "";
-        //printf ("Enter command: ");
-        fscanf (file,"%s", cmd);
-        if (strcmp (cmd, "Push") == 0)
+        int cmd = -1;
+        fscanf (file_code,"%d", cmd);
+        if (cmd == 1)
             {
             int arg = 0;
-            //printf ("Enter push element: ");
-            fscanf (file,"%d", &arg);
+            fscanf (file_code,"%d", &arg);
             StackPush (&stk, arg);
             }
-        else if (strcmp (cmd, "Add") == 0)
+        else if (cmd == 2)
             {
             int a = 0;
             StackPop (&stk, &a);
@@ -30,7 +28,7 @@ void Run ()
 
             StackPush (&stk, a + b);
             }
-        else if (strcmp (cmd, "Sub") == 0)
+        else if (cmd == 3)
             {
             int a = 0;
             StackPop (&stk, &a);
@@ -39,14 +37,7 @@ void Run ()
 
             StackPush (&stk, b - a);
             }
-        else if (strcmp (cmd, "Out") == 0)
-            {
-            int a = 0;
-            StackPop (&stk, &a);
-
-            printf ("return value = <%d>\n", a);
-            }
-        else if (strcmp (cmd, "Div") == 0)
+        else if (cmd == 4)
             {
             int a = 0;
             StackPop (&stk, &a);
@@ -54,13 +45,20 @@ void Run ()
             StackPop (&stk, &b);
             StackPush (&stk, b/a);
             }
-        else if (strcmp (cmd, "Hlt") == 0)
+        else if (cmd == 5)
+            {
+            int a = 0;
+            StackPop (&stk, &a);
+
+            printf ("return value = <%d>\n", a);
+            }
+        else if (cmd == -1)
             {
             next = 0;
             break;
             }
         else
-            printf ("SINTXERROR <%s>\n", cmd);
+            printf ("SINTXERROR <%d>\n", cmd);
         }
     }
 
