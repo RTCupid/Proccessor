@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <Stdbool.h>
 #include <string.h>
-#include "assembler.h"
+#include "Assembler.h"
 
 void Run ()
     {
     stack_t stk = {};
     StackCtor (&stk, 5);
     int next = 1;
+    FILE* file = fopen ("Programm_asm.txt", "r");
     while (next)
         {
         char cmd[20] = "";
-        printf ("Enter command: ");
-        scanf ("%s", cmd);
+        //printf ("Enter command: ");
+        fscanf (file,"%s", cmd);
         if (strcmp (cmd, "Push") == 0)
             {
             int arg = 0;
-            printf ("Enter push element: ");
-            scanf ("%d", &arg);
+            //printf ("Enter push element: ");
+            fscanf (file,"%d", &arg);
             StackPush (&stk, arg);
             }
         else if (strcmp (cmd, "Add") == 0)
