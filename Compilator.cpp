@@ -3,6 +3,10 @@
 #include <string.h>
 #include "Assembler.h"
 
+void Compilator (int* pr_code);
+
+void MakeProgrammCode (int* pr_code);
+
 void Compilator (int* pr_code)
 {
     int next = 1;
@@ -54,16 +58,21 @@ void Compilator (int* pr_code)
     fclose (file_asm);
     fclose (file_code);
 
+    MakeProgrammCode (pr_code);
+}
+
+void MakeProgrammCode (int* pr_code)
+{
     FILE* file_code = fopen ("Programm_code.txt", "r");
 
     int PC = 0;
     int i = 0;
-    fscanf (file_code, "%d", PC);
+    fscanf (file_code, "%d", &PC);
     while (PC != -1)
         {
         pr_code[i] = PC;
         i++;
-        fscanf (file_code, "%d", PC);
+        fscanf (file_code, "%d", &PC);
         }
     fclose (file_code);
 }

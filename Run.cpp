@@ -14,57 +14,75 @@ void Run (int* pr_code)
     while (next)
     {
         switch (pr_code[PC])
-            case  Push:{
+        {
+            case  Push: {
                 printf ("PC = %d ", PC);
-                int arg = 0;
-                fscanf (file_code,"%d", &arg);
-                printf ("%d\n", arg);
+                printf ("cmd = %d ", pr_code[PC]);
+                int arg = pr_code[PC+1];
+                printf ("arg = %d\n", arg);
                 StackPush (&stk, arg);
+
+                PC += 2;
                 break;
-            }
-            case Add:{
-                printf ("PC = %d\n", PC);
+            };
+            case Add: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
                 StackPop (&stk, &b);
                 StackPush (&stk, a + b);
+
+                PC += 1;
                 break;
-            }
-            case Sub:{
-                printf ("PC = %d\n", PC);int a = 0;
+            };
+            case Sub: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
+                int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
                 StackPop (&stk, &b);
 
                 StackPush (&stk, b - a);
+
+                PC += 1;
                 break;
             }
-            case Out:{
-                printf ("PC = %d\n", PC);
+            case Out: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
                 StackPop (&stk, &b);
                 StackPush (&stk, b/a);
+
+                PC += 1;
                 break;
             }
-            case Div:{
-                printf ("PC = %d\n", PC);
+            case Div: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
 
                 printf ("return value = <%d>\n", a);
+
+                PC += 1;
                 break;
             }
-            case Hlt:{
-                printf ("PC = %d\n", PC);
+            case Hlt: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
                 next = 0;
                 break;
             }
-            default:{
+            default: {
                 printf ("SINTXERROR <%d>\n", PC);
             }
+        }
     }
 }
 
