@@ -2,13 +2,12 @@
 #include <Stdbool.h>
 #include <string.h>
 #include "Assembler.h"
-#include "Proccessor.h"
 
-void Compilator (code_t* code);
+void Compilator (int* pr_code);
 
-void MakeProgrammCode (code_t* code);
+void MakeProgrammCode (int* pr_code);
 
-void Compilator (code_t* code)
+void Compilator (int* pr_code)
 {
     int next = 1;
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
@@ -59,10 +58,10 @@ void Compilator (code_t* code)
     fclose (file_asm);
     fclose (file_code);
 
-    MakeProgrammCode (code);
+    MakeProgrammCode (pr_code);
 }
 
-void MakeProgrammCode (code_t* code)
+void MakeProgrammCode (int* pr_code)
 {
     FILE* file_code = fopen ("Programm_code.txt", "r");
 
@@ -70,23 +69,10 @@ void MakeProgrammCode (code_t* code)
     int i = 0;
     fscanf (file_code, "%d", &PC);
     while (PC != -1)
-    {
-        if (code->size >= code->capacity-3)
         {
-            printf ("size = <%d> capacity = <%d>\n", code->size, code->capacity);
-            code->pr_code = (int*)realloc (code->pr_code, code->capacity * sizeof (int) * FACTOR);
-            code->capacity *= FACTOR;
-            printf ("size = <%d> capacity = <%d>\n", code->size, code->capacity);
-            if (code->pr_code == NULL)
-            {
-                printf ("Realloc error");
-                assert (0);
-            }
+        pr_code[i] = PC;
+        i++;
+        fscanf (file_code, "%d", &PC);
         }
-            code->pr_code[i] = PC;
-            code->size++;
-            i++;
-            fscanf (file_code, "%d", &PC);
-    }
     fclose (file_code);
 }

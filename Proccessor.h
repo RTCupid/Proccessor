@@ -10,12 +10,5 @@
         Hlt = -1
     };
 
-    typedef struct {
-        int* pr_code;
-        size_t capacity;
-        size_t size;
-    } code_t;
-
     const size_t start_capacity = 10;
-    const int FACTOR = 2;
 #endif
