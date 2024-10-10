@@ -2,6 +2,7 @@
 #include <Stdbool.h>
 #include <string.h>
 #include "Assembler.h"
+#include "Proccessor.h"
 
 void Run ()
 {
@@ -18,7 +19,7 @@ void Run ()
     {
         int PC = -1;
         fscanf (file_code, "%d", &PC);
-        if (PC == 1)
+        if (PC == Push)
         {
             printf ("PC = %d ", PC);
             int arg = 0;
@@ -26,7 +27,7 @@ void Run ()
             printf ("%d\n", arg);
             StackPush (&stk, arg);
         }
-        else if (PC == 2)
+        else if (PC == Add)
         {
             printf ("PC = %d\n", PC);
             int a = 0;
@@ -36,7 +37,7 @@ void Run ()
 
             StackPush (&stk, a + b);
         }
-        else if (PC == 3)
+        else if (PC == Sub)
         {
             printf ("PC = %d\n", PC);int a = 0;
             StackPop (&stk, &a);
@@ -45,7 +46,7 @@ void Run ()
 
             StackPush (&stk, b - a);
         }
-        else if (PC == 4)
+        else if (PC == Out)
         {
             printf ("PC = %d\n", PC);
             int a = 0;
@@ -54,7 +55,7 @@ void Run ()
             StackPop (&stk, &b);
             StackPush (&stk, b/a);
         }
-        else if (PC == 5)
+        else if (PC == Div)
         {
             printf ("PC = %d\n", PC);
             int a = 0;
@@ -62,7 +63,7 @@ void Run ()
 
             printf ("return value = <%d>\n", a);
         }
-        else if (PC == -1)
+        else if (PC == Hlt)
         {
             printf ("PC = %d\n", PC);
             next = 0;
