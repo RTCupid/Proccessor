@@ -4,7 +4,7 @@
 #include "Assembler.h"
 #include "Proccessor.h"
 
-void Run (int* pr_code)
+void Run (code_t* code)
 {
     stack_t stk = {};
     StackCtor (&stk, 5);
@@ -13,12 +13,12 @@ void Run (int* pr_code)
     int next = 1;
     while (next)
     {
-        switch (pr_code[PC])
+        switch (code->pr_code[PC])
         {
             case  Push: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d ", pr_code[PC]);
-                int arg = pr_code[PC+1];
+                printf ("cmd = %d ", code->pr_code[PC]);
+                int arg = code->pr_code[PC+1];
                 printf ("arg = %d\n", arg);
                 StackPush (&stk, arg);
 
@@ -27,7 +27,7 @@ void Run (int* pr_code)
             };
             case Add: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("cmd = %d\n", code->pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
@@ -39,7 +39,7 @@ void Run (int* pr_code)
             };
             case Sub: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("cmd = %d\n", code->pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
@@ -52,7 +52,7 @@ void Run (int* pr_code)
             }
             case Out: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("cmd = %d\n", code->pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
@@ -64,7 +64,7 @@ void Run (int* pr_code)
             }
             case Div: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("cmd = %d\n", code->pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
 
@@ -75,12 +75,12 @@ void Run (int* pr_code)
             }
             case Hlt: {
                 printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("cmd = %d\n", code->pr_code[PC]);
                 next = 0;
                 break;
             }
             default: {
-                printf ("SINTXERROR <%d>\n", PC);
+                printf ("SINTXERROR <%d>\n", code->pr_code[PC]);
             }
         }
     }
