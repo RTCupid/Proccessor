@@ -51,4 +51,6 @@ void Compilator ()
             break;
         }
     }
+    fclose (file_asm);
+    fclose (file_code);
 }
