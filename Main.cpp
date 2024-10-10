@@ -5,9 +5,10 @@ int main ()
     {
     printf ("# My proccessor\n");
     printf ("# (c) RTCupid, 2024\n\n");
-    Compilator ();
+    int* pr_code = (int*)calloc (10, sizeof (int));
+    Compilator (pr_code);
     printf ("Start run()\n");
-    Run();
+    Run(pr_code);
     printf ("# End of programm");
     return 0;
     }

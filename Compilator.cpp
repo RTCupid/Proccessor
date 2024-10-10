@@ -3,7 +3,7 @@
 #include <string.h>
 #include "Assembler.h"
 
-void Compilator ()
+void Compilator (int* pr_code)
 {
     int next = 1;
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
@@ -52,5 +52,18 @@ void Compilator ()
         }
     }
     fclose (file_asm);
+    fclose (file_code);
+
+    FILE* file_code = fopen ("Programm_code.txt", "r");
+
+    int PC = 0;
+    int i = 0;
+    fscanf (file_code, "%d", PC);
+    while (PC != -1)
+        {
+        pr_code[i] = PC;
+        i++;
+        fscanf (file_code, "%d", PC);
+        }
     fclose (file_code);
 }
