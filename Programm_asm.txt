@@ -1,9 +1,5 @@
 Push 30
 Push 70
-Add
-Push 80
-Push 60
-Sub
-Div
+Mul
 Out
 Hlt

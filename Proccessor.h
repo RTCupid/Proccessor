@@ -5,8 +5,9 @@
         Push = 1,
         Add = 2,
         Sub = 3,
-        Out = 4,
-        Div = 5,
+        Div = 4,
+        Mul = 5,
+        Out = 6,
         Hlt = -1
     };
 

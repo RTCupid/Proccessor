@@ -42,10 +42,15 @@ void Compilator (int* pr_code)
             fprintf (file_code, "4\n");
             printf ("4 \n");
         }
-        else if (strcmp (cmd, "Out") == 0)
+        else if (strcmp (cmd, "Mul") == 0)
         {
             fprintf (file_code, "5\n");
             printf ("5 \n");
+        }
+        else if (strcmp (cmd, "Out") == 0)
+        {
+            fprintf (file_code, "6\n");
+            printf ("6 \n");
         }
         else if (strcmp (cmd, "Hlt") == 0)
         {
@@ -68,10 +73,12 @@ void MakeProgrammCode (int* pr_code)
     int PC = 0;
     int i = 0;
     fscanf (file_code, "%d", &PC);
-    while (PC != -1)
+    while (1)
         {
         pr_code[i] = PC;
         i++;
+        if (PC == -1)
+            break;
         fscanf (file_code, "%d", &PC);
         }
     fclose (file_code);

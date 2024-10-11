@@ -50,19 +50,31 @@ void Run (int* pr_code)
                 PC += 1;
                 break;
             }
-            case Out: {
+            case Div: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
                 StackPop (&stk, &a);
                 int b = 0;
                 StackPop (&stk, &b);
-                StackPush (&stk, b/a);
+                StackPush (&stk, b / a);
 
                 PC += 1;
                 break;
             }
-            case Div: {
+            case Mul: {
+                printf ("PC = %d ", PC);
+                printf ("cmd = %d\n", pr_code[PC]);
+                int a = 0;
+                StackPop (&stk, &a);
+                int b = 0;
+                StackPop (&stk, &b);
+                StackPush (&stk, b * a);
+
+                PC += 1;
+                break;
+            }
+            case Out: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -80,7 +92,8 @@ void Run (int* pr_code)
                 break;
             }
             default: {
-                printf ("SINTXERROR <%d>\n", PC);
+                printf ("SINTXERROR: PC = <%d>, cmd = %d\n", PC, pr_code[PC]);
+                next = 0;
             }
         }
     }
