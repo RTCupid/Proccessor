@@ -2,10 +2,24 @@
 #include <Stdbool.h>
 #include <string.h>
 #include "Assembler.h"
+#include "Proccessor.h"
 
 void Compilator (int* pr_code);
 
 void MakeProgrammCode (int* pr_code);
+
+int main ()
+{
+    printf ("# My proccessor\n");
+    printf ("# (c) RTCupid, 2024\n\n");
+
+    int* pr_code = (int*)calloc (start_capacity, sizeof (int));
+    Compilator (pr_code);
+    free (pr_code);
+
+    printf ("# End of programm\n\n");
+    return 0;
+}
 
 void Compilator (int* pr_code)
 {
@@ -61,25 +75,5 @@ void Compilator (int* pr_code)
         }
     }
     fclose (file_asm);
-    fclose (file_code);
-
-    MakeProgrammCode (pr_code);
-}
-
-void MakeProgrammCode (int* pr_code)
-{
-    FILE* file_code = fopen ("Programm_code.txt", "r");
-
-    int PC = 0;
-    int i = 0;
-    fscanf (file_code, "%d", &PC);
-    while (1)
-        {
-        pr_code[i] = PC;
-        i++;
-        if (PC == -1)
-            break;
-        fscanf (file_code, "%d", &PC);
-        }
     fclose (file_code);
 }

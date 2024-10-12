@@ -4,10 +4,39 @@
 #include "Assembler.h"
 #include "Proccessor.h"
 
-void Run (int* pr_code)
+void Run ();
+
+void MakeProgrammCode (int* pr_code);
+
+static int* Reg = NULL;
+
+int main ()
+{
+    printf ("# My proccessor\n");
+    printf ("# (c) RTCupid, 2024\n\n");
+    printf ("Start run()\n");
+
+    Reg = (int*)calloc (4, sizeof (int));
+    if (Reg == NULL)
+        {
+        printf ("ERROR: calloc return NULL");
+        return 0;
+        }
+
+    Run ();
+
+    printf ("# End of programm\n\n");
+    return 0;
+}
+
+void Run ()
 {
     stack_t stk = {};
     StackCtor (&stk, 5);
+
+    int* pr_code = (int*)calloc (start_capacity, sizeof (int));
+
+    MakeProgrammCode (pr_code);
 
     int PC = 0;
     int next = 1;
@@ -97,4 +126,22 @@ void Run (int* pr_code)
             }
         }
     }
+}
+
+void MakeProgrammCode (int* pr_code)
+{
+    FILE* file_code = fopen ("Programm_code.txt", "r");
+
+    int PC = 0;
+    int i = 0;
+    fscanf (file_code, "%d", &PC);
+    while (1)
+        {
+        pr_code[i] = PC;
+        i++;
+        if (PC == -1)
+            break;
+        fscanf (file_code, "%d", &PC);
+        }
+    fclose (file_code);
 }
