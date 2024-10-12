@@ -44,7 +44,7 @@ void Run ()
     {
         switch (pr_code[PC])
         {
-            case  Push: {
+            case  CMD_PUSH: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d ", pr_code[PC]);
                 int arg = pr_code[PC+1];
@@ -54,7 +54,7 @@ void Run ()
                 PC += 2;
                 break;
             };
-            case Add: {
+            case CMD_ADD: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -66,7 +66,7 @@ void Run ()
                 PC += 1;
                 break;
             };
-            case Sub: {
+            case CMD_SUB: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -79,7 +79,7 @@ void Run ()
                 PC += 1;
                 break;
             }
-            case Div: {
+            case CMD_DIV: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -91,7 +91,7 @@ void Run ()
                 PC += 1;
                 break;
             }
-            case Mul: {
+            case CMD_MUL: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -103,7 +103,7 @@ void Run ()
                 PC += 1;
                 break;
             }
-            case Out: {
+            case CMD_OUT: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 int a = 0;
@@ -114,7 +114,7 @@ void Run ()
                 PC += 1;
                 break;
             }
-            case Hlt: {
+            case CMD_HLT: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d\n", pr_code[PC]);
                 next = 0;

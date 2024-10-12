@@ -2,13 +2,13 @@
     #define PROCCESSOR
     #include <sys/types.h>
     enum cmd_t {
-        Push = 1,                                          // change to CMD.PUSH etc
-        Add = 2,
-        Sub = 3,
-        Div = 4,
-        Mul = 5,
-        Out = 6,
-        Hlt = -1
+        CMD_PUSH = 1,                                          // change to CMD_PUSH etc
+        CMD_ADD = 2,
+        CMD_SUB = 3,
+        CMD_DIV = 4,
+        CMD_MUL = 5,
+        CMD_OUT = 6,
+        CMD_HLT = -1
     };
 
     enum REG_t {
