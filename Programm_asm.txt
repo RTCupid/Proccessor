@@ -1,7 +1,10 @@
 Push 30
-Push 70
 Pop
+
 Push_Reg
+Push_Reg
+Push 800
+Mul
 Mul
 Out
 Hlt

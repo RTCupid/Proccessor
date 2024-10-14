@@ -47,14 +47,14 @@ void Run ()
             case  CMD_PUSH: {
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d ", pr_code[PC]);
-                int arg = pr_code[PC+1];
+                int arg = pr_code[PC + 1];
                 printf ("arg = %d\n", arg);
                 StackPush (&stk, arg);
 
                 PC += 2;
                 break;
             };
-            case CMD_PUSH_REG: {
+            case CMD_PUSH_REG: {                                     //from Reg to stack
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d ", pr_code[PC]);
                 printf ("Reg[DX] = %d\n", Reg[DX]);
@@ -123,7 +123,7 @@ void Run ()
                 PC += 1;
                 break;
             }
-            case CMD_POP: {
+            case CMD_POP_REG: {                                      // from stack to Reg DX
                 printf ("PC = %d ", PC);
                 printf ("cmd = %d ", pr_code[PC]);
 

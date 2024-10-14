@@ -34,8 +34,8 @@ void Compilator (int* pr_code)
         printf ("cmd = <%s> ", cmd);
         if (stricmp (cmd, "Push") == 0)
         {
-            fprintf (file_code, "1 ");
-            printf ("1 ");
+            fprintf (file_code, "17 ");
+            printf ("17 ");
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
@@ -46,7 +46,7 @@ void Compilator (int* pr_code)
         else if (stricmp (cmd, "Push_Reg") == 0)
         {
             fprintf (file_code, "33 ");
-            printf ("33\n ");
+            printf ("33\n");
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
