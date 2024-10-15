@@ -6,8 +6,6 @@
 
 void Compilator (int* pr_code);
 
-void MakeProgrammCode (int* pr_code);
-
 int main ()
 {
     printf ("# My proccessor\n");
@@ -50,26 +48,6 @@ void Compilator (int* pr_code)
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
-
-            switch (a)
-                {
-                case 1: {
-                    fprintf (file_code, "Reg[AX]\n", a);
-                    printf ("a = %d\n", a);
-                };
-                case 2: {
-                    fprintf (file_code, "Reg[BX]\n", a);
-                    printf ("a = %d\n", a);
-                };
-                case 3: {
-                    fprintf (file_code, "Reg[CX]\n", a);
-                    printf ("a = %d\n", a);
-                };
-                case 4: {
-                    fprintf (file_code, "Reg[DX]\n", a);
-                    printf ("a = %d\n", a);
-                };
-                }
         }
         else if (stricmp (cmd, "Add") == 0)
         {
@@ -100,6 +78,17 @@ void Compilator (int* pr_code)
         {
             fprintf (file_code, "7\n");
             printf ("7 \n");
+        }
+        if (stricmp (cmd, "Jmp") == 0)
+        {
+            fprintf (file_code, "8 ");
+            printf ("8 ");
+
+            int a = 0;
+            fscanf (file_asm, "%d", &a);
+
+            fprintf (file_code, "%d\n", a);
+            printf ("a = %d\n", a);
         }
         else if (stricmp (cmd, "Hlt") == 0)
         {

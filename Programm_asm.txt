@@ -1,10 +1,8 @@
-Push 30
+Push_Reg
+Push 1
+Add
 Pop
-
 Push_Reg
-Push_Reg
-Push 800
-Mul
-Mul
 Out
+Jmp 0
 Hlt

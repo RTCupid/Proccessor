@@ -10,6 +10,7 @@
         CMD_MUL = 5,
         CMD_OUT = 6,
         CMD_POP_REG = 7,
+        CMD_JMP = 8,
         CMD_HLT = -1
     };
 

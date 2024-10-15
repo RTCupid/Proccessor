@@ -8,7 +8,10 @@ void Run ();
 
 void MakeProgrammCode (int* pr_code);
 
-static int* Reg = NULL;
+void PrDump ();
+
+static int* REG = NULL;
+static stack_t STK = {};
 
 int main ()
 {
@@ -16,12 +19,14 @@ int main ()
     printf ("# (c) RTCupid, 2024\n\n");
     printf ("Start run()\n");
 
-    Reg = (int*)calloc (4, sizeof (int));
-    if (Reg == NULL)
+    REG = (int*)calloc (4, sizeof (int));
+    if (REG == NULL)
         {
-        printf ("ERROR: calloc return NULL");
+        printf ("ERROR: calloc to Reg return NULL");
         return 0;
         }
+
+    StackCtor (&STK, 5);
 
     Run ();
 
@@ -31,119 +36,124 @@ int main ()
 
 void Run ()
 {
-    stack_t stk = {};
-    StackCtor (&stk, 5);
-
     int* pr_code = (int*)calloc (start_capacity, sizeof (int));
 
     MakeProgrammCode (pr_code);
 
-    int PC = 0;
+    int ip = 0;
     int next = 1;
     while (next)
     {
-        switch (pr_code[PC])
+        switch (pr_code[ip])
         {
             case  CMD_PUSH: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d ", pr_code[PC]);
-                int arg = pr_code[PC + 1];
+                printf ("PC = %d ", ip);
+                printf ("cmd = %d ", pr_code[ip]);
+                int arg = pr_code[ip + 1];
                 printf ("arg = %d\n", arg);
-                StackPush (&stk, arg);
+                StackPush (&STK, arg);
 
-                PC += 2;
+                ip += 2;
                 break;
             };
             case CMD_PUSH_REG: {                                     //from Reg to stack
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d ", pr_code[PC]);
-                printf ("Reg[DX] = %d\n", Reg[DX]);
-                StackPush (&stk, Reg[DX]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d ", pr_code[ip]);
+                printf ("Reg[DX] = %d\n", REG[DX]);
+                StackPush (&STK, REG[DX]);
 
-                PC += 1;
+                ip += 1;
                 break;
             };
             case CMD_ADD: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 int a = 0;
-                StackPop (&stk, &a);
+                StackPop (&STK, &a);
                 int b = 0;
-                StackPop (&stk, &b);
-                StackPush (&stk, a + b);
+                StackPop (&STK, &b);
+                StackPush (&STK, a + b);
 
-                PC += 1;
+                ip += 1;
                 break;
             };
             case CMD_SUB: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 int a = 0;
-                StackPop (&stk, &a);
+                StackPop (&STK, &a);
                 int b = 0;
-                StackPop (&stk, &b);
+                StackPop (&STK, &b);
 
-                StackPush (&stk, b - a);
+                StackPush (&STK, b - a);
 
-                PC += 1;
+                ip += 1;
                 break;
             }
             case CMD_DIV: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 int a = 0;
-                StackPop (&stk, &a);
+                StackPop (&STK, &a);
                 int b = 0;
-                StackPop (&stk, &b);
-                StackPush (&stk, b / a);
+                StackPop (&STK, &b);
+                StackPush (&STK, b / a);
 
-                PC += 1;
+                ip += 1;
                 break;
             }
             case CMD_MUL: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 int a = 0;
-                StackPop (&stk, &a);
+                StackPop (&STK, &a);
                 int b = 0;
-                StackPop (&stk, &b);
-                StackPush (&stk, b * a);
+                StackPop (&STK, &b);
+                StackPush (&STK, b * a);
 
-                PC += 1;
+                ip += 1;
                 break;
             }
             case CMD_OUT: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 int a = 0;
-                StackPop (&stk, &a);
+                StackPop (&STK, &a);
 
                 printf ("return value = <%d>\n", a);
 
-                PC += 1;
+                ip += 1;
                 break;
             }
             case CMD_POP_REG: {                                      // from stack to Reg DX
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d ", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d ", pr_code[ip]);
 
                 int a = 0;
-                StackPop (&stk, &a);
-                Reg[DX] = a;
+                StackPop (&STK, &a);
+                REG[DX] = a;
 
-                printf ("Reg[DX] = %d\n", Reg[DX]);
+                printf ("Reg[DX] = %d\n", REG[DX]);
 
-                PC += 1;
+                ip += 1;
+                break;
+            }
+            case CMD_JMP: {
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
+
+                int arg = pr_code[ip + 1];
+                ip = arg;
                 break;
             }
             case CMD_HLT: {
-                printf ("PC = %d ", PC);
-                printf ("cmd = %d\n", pr_code[PC]);
+                printf ("ip = %d ", ip);
+                printf ("cmd = %d\n", pr_code[ip]);
                 next = 0;
                 break;
             }
             default: {
-                printf ("SINTXERROR: PC = <%d>, cmd = %d\n", PC, pr_code[PC]);
+                printf ("SINTXERROR: ip = <%d>, cmd = %d\n", ip, pr_code[ip]);
                 next = 0;
             }
         }
@@ -154,16 +164,22 @@ void MakeProgrammCode (int* pr_code)
 {
     FILE* file_code = fopen ("Programm_code.txt", "r");
 
-    int PC = 0;
+    int ip = 0;
     int i = 0;
-    fscanf (file_code, "%d", &PC);
+    fscanf (file_code, "%d", &ip);
     while (1)
         {
-        pr_code[i] = PC;
+        pr_code[i] = ip;
         i++;
-        if (PC == -1)
+        if (ip == -1)
             break;
-        fscanf (file_code, "%d", &PC);
+        fscanf (file_code, "%d", &ip);
         }
     fclose (file_code);
 }
+
+void PrDump ()
+{
+printf ("");
+}
+
