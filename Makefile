@@ -4,10 +4,10 @@ run: compilator.exe run.exe
 	compilator.exe
 	run.exe
 
-compilator.exe: compilator.cpp Proccessor.h Assembler.h
-	$(CC) compilator.cpp -o compilator
+compilator.exe: Compilator.cpp Proccessor.h Assembler.h
+	$(CC) Compilator.cpp -o compilator
 
-run.exe: run.cpp Proccessor.h Assembler.h
-	$(CC) run.cpp -o run
+run.exe: Run.cpp Proccessor.h Assembler.h
+	$(CC) Run.cpp -o run
 
 

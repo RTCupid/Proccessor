@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <Stdbool.h>
+#include <stdbool.h>
 #include <string.h>
 #include "Assembler.h"
 #include "Proccessor.h"
