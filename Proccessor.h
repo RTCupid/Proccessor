@@ -11,6 +11,7 @@
         CMD_OUT = 6,
         CMD_POP_REG = 7,
         CMD_JMP = 8,
+        CMD_JA = 9,
         CMD_HLT = -1
     };
 
@@ -21,5 +22,11 @@
         DX
     };
 
-    const size_t start_capacity = 10;
+    typedef struct {
+        int* code;
+        int  size;
+        int  ip;
+    } proc_t;
+
+    const size_t start_capacity = 20;
 #endif

@@ -88,6 +88,17 @@ void Compilator ()
             fprintf (file_code, "%d\n", a);
             printf ("a = %d\n", a);
         }
+        if (strcmp (cmd, "Jmp") == 0)
+        {
+            fprintf (file_code, "9 ");
+            printf ("9 ");
+
+            int a = 0;
+            fscanf (file_asm, "%d", &a);
+
+            fprintf (file_code, "%d\n", a);
+            printf ("a = %d\n", a);
+        }
         else if (strcmp (cmd, "Hlt") == 0)
         {
             fprintf (file_code, "-1\n");
