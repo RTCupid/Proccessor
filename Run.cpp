@@ -31,6 +31,7 @@ int main ()
     Run ();
 
     printf ("# End of programm\n\n");
+
     return 0;
 }
 
@@ -44,6 +45,7 @@ void Run ()
     int next = 1;
     while (next)
     {
+        #pragma GCC diagnostic ignored "-Wunused-result"
         switch (pr_code[ip])
         {
             case  CMD_PUSH: {
@@ -153,10 +155,11 @@ void Run ()
                 break;
             }
             default: {
-                printf ("SINTXERROR: ip = <%d>, cmd = %d\n", ip, pr_code[ip]);
+                printf ("SINTXERROR: ip = <%d>, cmd = %d \n", ip, pr_code[ip]);
                 next = 0;
             }
         }
+        #pragma GCC diagnostic warning "-Wunused-result"
     }
 }
 
@@ -180,6 +183,6 @@ void MakeProgrammCode (int* pr_code)
 
 void PrDump ()
 {
-printf ("");
+printf ("ku");
 }
 

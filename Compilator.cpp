@@ -4,22 +4,20 @@
 #include "Assembler.h"
 #include "Proccessor.h"
 
-void Compilator (int* pr_code);
+void Compilator ();
 
 int main ()
 {
-    printf ("# My proccessor\n");
+    printf ("# My processor\n");
     printf ("# (c) RTCupid, 2024\n\n");
 
-    int* pr_code = (int*)calloc (start_capacity, sizeof (int));
-    Compilator (pr_code);
-    free (pr_code);
+    Compilator ();
 
     printf ("# End of programm\n\n");
     return 0;
 }
 
-void Compilator (int* pr_code)
+void Compilator ()
 {
     int next = 1;
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
@@ -43,7 +41,7 @@ void Compilator (int* pr_code)
         }
         else if (strcmp (cmd, "Push_Reg") == 0)
         {
-            fprintf (file_code, "33 ");
+            fprintf (file_code, "33\n");
             printf ("33\n");
 
             int a = 0;
