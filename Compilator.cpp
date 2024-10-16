@@ -30,7 +30,7 @@ void Compilator (int* pr_code)
         char cmd[20] = "";
         fscanf (file_asm,"%s", cmd);
         printf ("cmd = <%s> ", cmd);
-        if (stricmp (cmd, "Push") == 0)
+        if (strcmp (cmd, "Push") == 0)
         {
             fprintf (file_code, "17 ");
             printf ("17 ");
@@ -41,7 +41,7 @@ void Compilator (int* pr_code)
             fprintf (file_code, "%d\n", a);
             printf ("a = %d\n", a);
         }
-        else if (stricmp (cmd, "Push_Reg") == 0)
+        else if (strcmp (cmd, "Push_Reg") == 0)
         {
             fprintf (file_code, "33 ");
             printf ("33\n");
@@ -49,37 +49,37 @@ void Compilator (int* pr_code)
             int a = 0;
             fscanf (file_asm, "%d", &a);
         }
-        else if (stricmp (cmd, "Add") == 0)
+        else if (strcmp (cmd, "Add") == 0)
         {
             fprintf (file_code, "2\n");
             printf ("2 \n");
         }
-        else if (stricmp (cmd, "Sub") == 0)
+        else if (strcmp (cmd, "Sub") == 0)
         {
             fprintf (file_code, "3\n");
             printf ("3 \n");
         }
-        else if (stricmp (cmd, "Div") == 0)
+        else if (strcmp (cmd, "Div") == 0)
         {
             fprintf (file_code, "4\n");
             printf ("4 \n");
         }
-        else if (stricmp (cmd, "Mul") == 0)
+        else if (strcmp (cmd, "Mul") == 0)
         {
             fprintf (file_code, "5\n");
             printf ("5 \n");
         }
-        else if (stricmp (cmd, "Out") == 0)
+        else if (strcmp (cmd, "Out") == 0)
         {
             fprintf (file_code, "6\n");
             printf ("6 \n");
         }
-        else if (stricmp (cmd, "Pop") == 0)
+        else if (strcmp (cmd, "Pop") == 0)
         {
             fprintf (file_code, "7\n");
             printf ("7 \n");
         }
-        if (stricmp (cmd, "Jmp") == 0)
+        if (strcmp (cmd, "Jmp") == 0)
         {
             fprintf (file_code, "8 ");
             printf ("8 ");
@@ -90,7 +90,7 @@ void Compilator (int* pr_code)
             fprintf (file_code, "%d\n", a);
             printf ("a = %d\n", a);
         }
-        else if (stricmp (cmd, "Hlt") == 0)
+        else if (strcmp (cmd, "Hlt") == 0)
         {
             fprintf (file_code, "-1\n");
             printf ("-1 \n");
