@@ -2,9 +2,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include "Assembler.h"
-#include "Proccessor.h"
 
 void Compilator ();
+void MakeCodeFile ();
+
+static int* code;
+//static label_t labels[];
 
 int main ()
 {
@@ -20,93 +23,101 @@ int main ()
 void Compilator ()
 {
     int next = 1;
+    int ip = 0;
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
-    FILE* file_code = fopen ("Programm_code.txt", "w");
 
-    while (next)
-    {
+    code = (int*)calloc (start_capacity, sizeof (int));
+
+    while (next) {
         char cmd[20] = "";
         fscanf (file_asm,"%s", cmd);
-        printf ("cmd = <%s> ", cmd);
+        printf ("cmd = <%s>\n", cmd);
+
         if (strcmp (cmd, "Push") == 0)
         {
-            fprintf (file_code, "17 ");
-            printf ("17 ");
+            code[ip] = 17;
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
 
-            fprintf (file_code, "%d\n", a);
-            printf ("a = %d\n", a);
+            code [ip+1] = a;
+            ip += 2;
         }
         else if (strcmp (cmd, "Push_Reg") == 0)
         {
-            fprintf (file_code, "33\n");
-            printf ("33\n");
+            code[ip] = 33;
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
+            ip += 1;
         }
         else if (strcmp (cmd, "Add") == 0)
         {
-            fprintf (file_code, "2\n");
-            printf ("2 \n");
+            code[ip] = 2;
+            ip += 1;
         }
         else if (strcmp (cmd, "Sub") == 0)
         {
-            fprintf (file_code, "3\n");
-            printf ("3 \n");
+            code[ip] = 3;
+            ip += 1;
         }
         else if (strcmp (cmd, "Div") == 0)
         {
-            fprintf (file_code, "4\n");
-            printf ("4 \n");
+            code[ip] = 4;
+            ip += 1;
         }
         else if (strcmp (cmd, "Mul") == 0)
         {
-            fprintf (file_code, "5\n");
-            printf ("5 \n");
+            code[ip] = 5;
+            ip += 1;
         }
         else if (strcmp (cmd, "Out") == 0)
         {
-            fprintf (file_code, "6\n");
-            printf ("6 \n");
+            code[ip] = 6;
+            ip += 1;
         }
         else if (strcmp (cmd, "Pop") == 0)
         {
-            fprintf (file_code, "7\n");
-            printf ("7 \n");
+            code[ip] = 7;
+            ip += 1;
         }
-        if (strcmp (cmd, "Jmp") == 0)
+        else if (strcmp (cmd, "Jmp") == 0)
         {
-            fprintf (file_code, "8 ");
-            printf ("8 ");
+            code[ip] = 8;
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
 
-            fprintf (file_code, "%d\n", a);
-            printf ("a = %d\n", a);
-        }
-        if (strcmp (cmd, "Jmp") == 0)
-        {
-            fprintf (file_code, "9 ");
-            printf ("9 ");
-
-            int a = 0;
-            fscanf (file_asm, "%d", &a);
-
-            fprintf (file_code, "%d\n", a);
-            printf ("a = %d\n", a);
+            code[ip + 1] = a;
+            ip += 2;
         }
         else if (strcmp (cmd, "Hlt") == 0)
         {
-            fprintf (file_code, "-1\n");
-            printf ("-1 \n");
+            code[ip] = -1;
+            ip += 1;
             next = 0;
             break;
         }
     }
+
+    MakeCodeFile ();
+
     fclose (file_asm);
+}
+
+void MakeCodeFile ()
+{
+    FILE* file_code = fopen ("Programm_code.txt", "w");
+
+    int ip = 0;
+    while (1) {
+        fprintf (file_code, "%d\n", code[ip]);
+        printf ("%d\n", code[ip]);
+        if (code[ip] == -1)
+            break;
+
+
+        ip++;
+    }
     fclose (file_code);
 }

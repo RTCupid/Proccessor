@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "Assembler.h"
 #include "Proccessor.h"
 
 void Run ();
@@ -21,7 +20,7 @@ int main ()
     printf ("# (c) RTCupid, 2024\n\n");
     printf ("Start run()\n");
 
-    REG = (int*)calloc (4, sizeof (int));
+    REG = (int*)calloc (nregisters, sizeof (int));
     if (REG == NULL)
         {
         printf ("ERROR: calloc to Reg return NULL");
