@@ -5,8 +5,10 @@
 
 void Compilator ();
 void MakeCodeFile ();
+int IsLabel (char* cmd);
 
 static int* code;
+static label_t* labels;
 //static label_t labels[];
 
 int main ()
@@ -27,13 +29,21 @@ void Compilator ()
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
 
     code = (int*)calloc (start_capacity, sizeof (int));
+    labels = (label_t*)calloc (start_capacity, sizeof (int));
+    int index = 1;
 
     while (next) {
         char cmd[20] = "";
         fscanf (file_asm,"%s", cmd);
         printf ("cmd = <%s>\n", cmd);
 
-        if (strcmp (cmd, "Push") == 0)
+        if (IsLabel (cmd)) {
+            labels[index].name = cmd;
+            labels[index].addr = ip;
+            index++;
+        }
+
+        else if (strcmp (cmd, "Push") == 0)
         {
             code[ip] = 17;
 
@@ -85,10 +95,21 @@ void Compilator ()
         {
             code[ip] = 8;
 
-            int a = 0;
-            fscanf (file_asm, "%d", &a);
+            void* a = calloc (start_capacity, sizeof (char));
+            if (a == NULL) {
+                printf ("calloc return NULL");
+                assert (0);
+            }
+            if (fscanf (file_asm, "%d", (int*)a))
+                code[ip + 1] = *((int*)a);
+            else {
+                fscanf (file_asm, "%s", (char*)a);
+                printf ("a = <%s>\n", (char*)a);
+                for (size_t i = 0; i < start_capacity; i++)
+                    if (strcmp (labels[i].name, (char*)a) == 0)
+                        code[ip + 1] = labels[i].addr;
+            }
 
-            code[ip + 1] = a;
             ip += 2;
         }
         else if (strcmp (cmd, "Hlt") == 0)
@@ -121,3 +142,23 @@ void MakeCodeFile ()
     }
     fclose (file_code);
 }
+
+int IsLabel (char* cmd)
+{
+    int islabel = 0;
+    for (int i = 0; cmd[i] != '\0'; i++)
+        if (cmd[i] == ':') {
+            islabel = 1;
+            printf ("<%s> is label\n", cmd);
+        }
+    return islabel;
+}
+
+void DumpLabels ()
+    printf ("\n DumpLabels: \n");
+    printf ("----------------------------------------------------------------------");
+
+
+
+
+    printf ("----------------------------------------------------------------------");
