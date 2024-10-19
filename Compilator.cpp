@@ -6,10 +6,11 @@
 void Compilator ();
 void MakeCodeFile ();
 int IsLabel (char* cmd);
+void DumpLabels ();
 
 static int* code;
 static label_t* labels;
-//static label_t labels[];
+static size_t index_lab = 0;
 
 int main ()
 {
@@ -28,9 +29,8 @@ void Compilator ()
     int ip = 0;
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
 
-    code = (int*)calloc (start_capacity, sizeof (int));
-    labels = (label_t*)calloc (start_capacity, sizeof (int));
-    int index = 1;
+    code = (int*)calloc (capacity_code, sizeof (int));
+    labels = (label_t*)calloc (capacity_labels, sizeof (int));
 
     while (next) {
         char cmd[20] = "";
@@ -38,9 +38,9 @@ void Compilator ()
         printf ("cmd = <%s>\n", cmd);
 
         if (IsLabel (cmd)) {
-            labels[index].name = cmd;
-            labels[index].addr = ip;
-            index++;
+            labels[index_lab].name = cmd;
+            labels[index_lab].addr = ip;
+            index_lab++;
         }
 
         else if (strcmp (cmd, "Push") == 0)
@@ -95,7 +95,7 @@ void Compilator ()
         {
             code[ip] = 8;
 
-            void* a = calloc (start_capacity, sizeof (char));
+            void* a = calloc (max_len_cmd, sizeof (char));
             if (a == NULL) {
                 printf ("calloc return NULL");
                 assert (0);
@@ -104,12 +104,47 @@ void Compilator ()
                 code[ip + 1] = *((int*)a);
             else {
                 fscanf (file_asm, "%s", (char*)a);
-                printf ("a = <%s>\n", (char*)a);
-                for (size_t i = 0; i < start_capacity; i++)
-                    if (strcmp (labels[i].name, (char*)a) == 0)
-                        code[ip + 1] = labels[i].addr;
-            }
 
+                printf ("a = <%s>\n", (char*)a);
+
+                for (size_t i = 0; i < index_lab; i++) {
+                    printf ("labels[%lu].name = <%s>\n", i, labels[i].name);
+                    printf ("labels[%lu].addr = <%d>\n", i, labels[i].addr);
+
+                    if (strcmp (labels[i].name, (char*)a) == 0) {
+                        code[ip + 1] = labels[i].addr;
+                    }
+                }
+            }
+            free (a);
+            ip += 2;
+        }
+        else if (strcmp (cmd, "Ja") == 0)
+        {
+            code[ip] = 9;
+
+            void* a = calloc (max_len_cmd, sizeof (char));
+            if (a == NULL) {
+                printf ("calloc return NULL");
+                assert (0);
+            }
+            if (fscanf (file_asm, "%d", (int*)a))
+                code[ip + 1] = *((int*)a);
+            else {
+                fscanf (file_asm, "%s", (char*)a);
+
+                printf ("a = <%s>\n", (char*)a);
+
+                for (size_t i = 0; i < index_lab; i++) {
+                    printf ("labels[%lu].name = <%s>\n", i, labels[i].name);
+                    printf ("labels[%lu].addr = <%d>\n", i, labels[i].addr);
+
+                    if (strcmp (labels[i].name, (char*)a) == 0) {
+                        code[ip + 1] = labels[i].addr;
+                    }
+                }
+            }
+            free (a);
             ip += 2;
         }
         else if (strcmp (cmd, "Hlt") == 0)
@@ -150,15 +185,21 @@ int IsLabel (char* cmd)
         if (cmd[i] == ':') {
             islabel = 1;
             printf ("<%s> is label\n", cmd);
+            printf ("islabel = %d\n", islabel);
         }
     return islabel;
 }
 
 void DumpLabels ()
+{
     printf ("\n DumpLabels: \n");
     printf ("----------------------------------------------------------------------");
-
+    for (size_t i = 0; i < index_lab; i++) {
+        printf ("labels[%lu].name = <%s>\n", i, labels[i].name);
+        printf ("labels[%lu].addr = <%d>\n", i, labels[i].addr);
+    }
 
 
 
     printf ("----------------------------------------------------------------------");
+}
