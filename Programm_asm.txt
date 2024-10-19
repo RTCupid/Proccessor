@@ -1,5 +1,6 @@
 Push 5
 Pop
+Jmp END:
 START:
 Push_Reg
 Push 7
