@@ -11,9 +11,15 @@
         int addr;
     } label_t;
 
+    typedef struct {
+        char* name;
+        int addr;
+    } fixup_t;
+
     const size_t capacity_code = 20;
     const size_t capacity_labels = 10;
+    const size_t capacity_fixup = 10;
 
-    const size_t max_len_cmd = 10;
+    const size_t max_len_cmd = 20;
 #endif
 
