@@ -4,16 +4,18 @@
 #include "Assembler.h"
 
 void Compilator ();
-void MakeCodeFile ();
-int IsLabel (char* cmd);
-void DumpLabels ();
-void DumpFixup ();
 
-static int* code;
-static label_t* LABELS;
-static size_t index_lab = 0;
-static fixup_t* FIXUP;
-static size_t index_fix = 0;
+void MakeCodeFile (int* code);
+
+int IsLabel (char* cmd);
+
+void DumpLabels (label_t* LABELS, size_t index_lab);
+
+void DumpFixup (fixup_t* FIXUP, size_t index_fix);
+
+bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS);
+
+void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS, size_t* index_lab);
 
 int main ()
 {
@@ -26,53 +28,45 @@ int main ()
     return 0;
 }
 
+// function for file_asm -> code -> file_code..................................
+
 void Compilator ()
 {
     int next = 1;
     int ip = 0;
+
     FILE* file_asm  = fopen ("Programm_asm.txt", "r");
 
-    code = (int*)calloc (capacity_code, sizeof (int));
-    LABELS = (label_t*)calloc (capacity_labels, sizeof (int));
-    FIXUP = (fixup_t*)calloc (capacity_fixup, sizeof (int));
+    int* code   = (int*)    calloc (capacity_code,   sizeof (code[0]));
+    label_t* LABELS = (label_t*)calloc (capacity_labels, sizeof (LABELS[0]));
+    fixup_t* FIXUP  = (fixup_t*)calloc (capacity_fixup,  sizeof (FIXUP[0]));
 
-    while (next) {
-        char cmd[20] = "";
-        fscanf (file_asm,"%s", cmd);
-        printf ("cmd = <%s>\n", cmd);
+    size_t index_lab = 0;
+    size_t index_fix = 0;
 
-        if (!IsLabel (cmd)) {
-            printf ("                                                  <%s> is not label\n", cmd);
+    while (next)
+    {
+        char cmd[120] = "";
+        fscanf (file_asm, "%s", cmd);
+        printf (">>> cmd = <%s>\n", cmd);
+
+        //if (!IsLabel (cmd)) {
+        //    printf ("                                                  <%s> is not label\n", cmd);
+        //}
+        if (IsLabel (cmd))
+        {
+            printf ("    <%s> is label\n", cmd);
+
+            size_t nelem = 0;
+
+            DumpLabels (LABELS, index_lab);
+
+            bool in_labels = FindInLabels (&nelem, cmd, index_lab, LABELS);
+            printf ("FindInLabels (%s) returned %d\n", cmd, in_labels);
+
+            AddLabel (in_labels, nelem, cmd, ip, LABELS, &index_lab);
         }
 
-        if (IsLabel (cmd)) {
-            printf ("<%s> is label\n", cmd);
-            bool in_labels = false;
-            size_t i = 0;
-            for (; i < index_lab; i++) {
-                printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
-                printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
-
-                if (strcmp (LABELS[i].name, cmd) == 0) {
-                    in_labels = true;
-                }
-            }
-            if (in_labels) {
-                if (LABELS[i].addr == -1) {
-                    LABELS[i].addr = ip;
-                }
-                else
-                    printf ("ERROR: label already exsist\n");
-            }
-            else {
-                LABELS[index_lab].name = cmd;
-                LABELS[index_lab].addr = ip;
-                printf ("LABELS[%lu].name = <%s>\n", index_lab, LABELS[index_lab].name);
-                printf ("LABELS[%lu].addr = <%d>\n", index_lab, LABELS[index_lab].addr);
-                index_lab++;
-            }
-            ip += 1;
-        }
         else if (strcmp (cmd, "Push") == 0)
         {
             code[ip] = 17;
@@ -125,40 +119,41 @@ void Compilator ()
         {
             code[ip] = 8;
 
+            DumpLabels (LABELS, index_lab);
+
             void* arg = calloc (max_len_cmd, sizeof (char));
             if (arg == NULL) {
                 printf ("calloc return NULL");
                 assert (0);
             }
             if (fscanf (file_asm, "%d", (int*)arg))
+            {
                 code[ip + 1] = *((int*)arg);
-            else {
+            }
+            else
+            {
                 fscanf (file_asm, "%s", (char*)arg);
 
                 printf ("arg = <%s>\n", (char*)arg);
 
-                if (IsLabel ((char*)arg)) {
-                    bool in_labels = false;
-
-                    for (size_t i = 0; i < index_lab; i++) {
-                        printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
-                        printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
-
-                        if (strcmp (LABELS[i].name, (char*)arg) == 0) {
-                            code[ip + 1] = LABELS[i].addr;
-
-                            in_labels = true;
-                        }
+                if (IsLabel ((char*)arg))
+                {
+                    size_t nelem = 0;
+                    bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
+                    if (in_labels)
+                    {
+                        code[ip + 1] = LABELS[nelem].addr;
                     }
-                    if (!in_labels) {
+                    else
+                    {
                         code[ip + 1] = -1;
 
                         FIXUP[index_fix].addr = ip + 1;
-                        FIXUP[index_fix].name = (char*)arg;
+                        strcpy (FIXUP[index_fix].name, (char*)arg);
 
                         index_fix++;
 
-                        LABELS[index_lab].name = (char*)arg;
+                        strcpy (LABELS[index_lab].name, (char*)arg);
                         LABELS[index_lab].addr = -1;
                     }
                 }
@@ -172,7 +167,7 @@ void Compilator ()
         {
             code[ip] = 9;
 
-            DumpLabels ();
+            DumpLabels (LABELS, index_lab);
 
             void* arg = calloc (max_len_cmd, sizeof (char));
             if (arg == NULL) {
@@ -186,28 +181,25 @@ void Compilator ()
 
                 printf ("arg = <%s>\n", (char*)arg);
 
-                if (IsLabel ((char*)arg)) {
-                    bool in_labels = false;
+                if (IsLabel ((char*)arg))
+                {
+                    size_t nelem = 0;
+                    bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
 
-                    for (size_t i = 0; i < index_lab; i++) {
-                        printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
-                        printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
-
-                        if (strcmp (LABELS[i].name, (char*)arg) == 0) {
-                            code[ip + 1] = LABELS[i].addr;
-
-                            in_labels = true;
-                        }
+                    if (in_labels)
+                    {
+                    code[ip + 1] = LABELS[nelem].addr;
                     }
-                    if (!in_labels) {
+                    else
+                    {
                         code[ip + 1] = -1;
 
                         FIXUP[index_fix].addr = ip + 1;
-                        FIXUP[index_fix].name = (char*)arg;
+                        strcpy (FIXUP[index_fix].name, (char*)arg);
 
                         index_fix++;
 
-                        LABELS[index_lab].name = (char*)arg;
+                        strcpy (LABELS[index_lab].name, (char*)arg);
                         LABELS[index_lab].addr = -1;
                     }
                 }
@@ -224,29 +216,37 @@ void Compilator ()
             next = 0;
             break;
         }
-        DumpLabels ();
+        DumpLabels (LABELS, index_lab);
     }
 
     printf ("Start FIXUP\n");
 
     for (size_t iFix = 0; iFix < index_fix; iFix++)
-        for (size_t i = 0; i < index_lab; i++) {
-            assert (i < index_lab);
-            printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
-            printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
+    {
+        size_t nelem = 0;
 
-            if (strcmp (LABELS[i].name, FIXUP[iFix].name) == 0) {
-                code[FIXUP[iFix].addr] = LABELS[i].addr;
-            }
+        bool in_labels = FindInLabels (&nelem, FIXUP[iFix].name, index_lab, LABELS);
+
+        if (in_labels)
+            code[FIXUP[iFix].addr] = LABELS[nelem].addr;
+
+        if (!in_labels)
+        {
+            printf ("label not exsist");
+            assert (0);
         }
+    }
 
 
-    MakeCodeFile ();
+    MakeCodeFile (code);
 
+    free (code);
+    free (LABELS);
+    free (FIXUP);
     fclose (file_asm);
 }
 
-void MakeCodeFile ()
+void MakeCodeFile (int* code)
 {
     FILE* file_code = fopen ("Programm_code.txt", "w");
 
@@ -275,10 +275,13 @@ int IsLabel (char* cmd)
     return islabel;
 }
 
-void DumpLabels ()
+void DumpLabels (label_t* LABELS, size_t index_lab)
 {
-    printf ("\n DumpLabels: \n");
+    printf ("\nDumpLabels:\n");
     printf ("----------------------------------------------------------------------\n");
+
+    printf ("index_lab = <%lu>\n", index_lab);
+
     for (size_t i = 0; i < index_lab; i++) {
         printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
         printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
@@ -289,9 +292,9 @@ void DumpLabels ()
     printf ("----------------------------------------------------------------------\n");
 }
 
-void DumpFixup ()
+void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 {
-    printf ("\n DumpLabels: \n");
+    printf ("\n DumpFixup: \n");
     printf ("----------------------------------------------------------------------\n");
     for (size_t i = 0; i < index_fix; i++) {
         printf ("FIXUP[%lu].name = <%s>\n", i, FIXUP[i].name);
@@ -302,3 +305,58 @@ void DumpFixup ()
 
     printf ("----------------------------------------------------------------------\n");
 }
+
+bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
+{
+    bool in_labels = false;
+    for (; *nelem < index_lab; *nelem = *nelem + 1)
+    {
+        printf ("LABELS[%lu].name = <%s>\n", *nelem, LABELS[*nelem].name);
+        printf ("LABELS[%lu].addr = <%d>\n", *nelem, LABELS[*nelem].addr);
+
+        if (strcmp (LABELS[*nelem].name, name) == 0)
+        {
+            in_labels = true;
+        }
+    }
+    return in_labels;
+}
+
+void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS, size_t* index_lab)
+{
+    if (in_labels)
+    {
+        if (LABELS[nelem].addr == -1)
+        {
+            LABELS[nelem].addr = ip;
+        }
+        else
+        {
+            printf ("ERROR: label already exsist\n");
+        }
+    }
+    else if (!in_labels)
+    {
+        strcpy (LABELS[*index_lab].name, cmd);
+        LABELS[*index_lab].addr = ip;
+        (*index_lab)++;
+
+        printf ("\nLABEL ADDED:\n");
+        DumpLabels (LABELS, *index_lab);
+    }
+}
+
+
+/*
+NEXT:
+Push_Reg
+Push 80
+Add
+Pop
+Push_Reg
+Out
+Push_Reg
+Push 5000
+Ja NEXT:
+Hlt
+*/

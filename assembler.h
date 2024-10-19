@@ -7,13 +7,13 @@
     #include "Stack/Stack_Error_Checking.cpp"
 
     typedef struct {
-        char* name;
+        char name[20];
         int addr;
     } label_t;
 
     typedef struct {
-        char* name;
         int addr;
+        char name[20];
     } fixup_t;
 
     const size_t capacity_code = 20;

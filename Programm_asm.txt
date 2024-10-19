@@ -1,11 +1,7 @@
+Push 5
+START:
+Push 7
 NEXT:
-Push_Reg
-Push 80
 Add
-Pop
-Push_Reg
-Out
-Push_Reg
-Push 5000
-Ja NEXT:
+END:
 Hlt
