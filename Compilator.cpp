@@ -69,7 +69,7 @@ void Compilator ()
 
         else if (strcmp (cmd, "Push") == 0)
         {
-            code[ip] = 17;
+            code[ip] = CMD_PUSH;
             printf ("code[%d] = <%d>\n", ip, code[ip]);
             int a = 0;
             fscanf (file_asm, "%d", &a);
@@ -79,7 +79,7 @@ void Compilator ()
         }
         else if (strcmp (cmd, "Push_Reg") == 0)
         {
-            code[ip] = 33;
+            code[ip] = CMD_PUSH_REG;
 
             int a = 0;
             fscanf (file_asm, "%d", &a);
@@ -87,37 +87,37 @@ void Compilator ()
         }
         else if (strcmp (cmd, "Add") == 0)
         {
-            code[ip] = 2;
+            code[ip] = CMD_ADD;
             ip += 1;
         }
         else if (strcmp (cmd, "Sub") == 0)
         {
-            code[ip] = 3;
+            code[ip] = CMD_SUB;
             ip += 1;
         }
         else if (strcmp (cmd, "Div") == 0)
         {
-            code[ip] = 4;
+            code[ip] = CMD_DIV;
             ip += 1;
         }
         else if (strcmp (cmd, "Mul") == 0)
         {
-            code[ip] = 5;
+            code[ip] = CMD_MUL;
             ip += 1;
         }
         else if (strcmp (cmd, "Out") == 0)
         {
-            code[ip] = 6;
+            code[ip] = CMD_OUT;
             ip += 1;
         }
         else if (strcmp (cmd, "Pop") == 0)
         {
-            code[ip] = 7;
+            code[ip] = CMD_POP_REG;
             ip += 1;
         }
         else if (strcmp (cmd, "Jmp") == 0)
         {
-            code[ip] = 8;
+            code[ip] = CMD_JMP;
 
             DumpLabels (LABELS, index_lab);
 
@@ -165,7 +165,7 @@ void Compilator ()
         }
         else if (strcmp (cmd, "Ja") == 0)
         {
-            code[ip] = 9;
+            code[ip] = CMD_JA;
 
             DumpLabels (LABELS, index_lab);
 
@@ -211,7 +211,7 @@ void Compilator ()
         }
         else if (strcmp (cmd, "Hlt") == 0)
         {
-            code[ip] = -1;
+            code[ip] = CMD_HLT;
             ip += 1;
             next = 0;
             break;
