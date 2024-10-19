@@ -17,6 +17,8 @@ bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
 
 void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS, size_t* index_lab);
 
+void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP);
+
 int main ()
 {
     printf ("# My processor\n");
@@ -189,6 +191,8 @@ void Compilator ()
                     if (in_labels)
                     {
                     code[ip + 1] = LABELS[nelem].addr;
+                    printf ("LABELS[%lu].addr = <%d>\n", nelem, LABELS[nelem].addr);
+                    printf ("code[%d] = <%d>\n", ip + 1, code[ip + 1]);
                     }
                     else
                     {
@@ -221,22 +225,7 @@ void Compilator ()
 
     printf ("Start FIXUP\n");
 
-    for (size_t iFix = 0; iFix < index_fix; iFix++)
-    {
-        size_t nelem = 0;
-
-        bool in_labels = FindInLabels (&nelem, FIXUP[iFix].name, index_lab, LABELS);
-
-        if (in_labels)
-            code[FIXUP[iFix].addr] = LABELS[nelem].addr;
-
-        if (!in_labels)
-        {
-            printf ("label not exsist");
-            assert (0);
-        }
-    }
-
+    RunFixup (index_fix, index_lab, code, LABELS, FIXUP);
 
     MakeCodeFile (code);
 
@@ -253,7 +242,7 @@ void MakeCodeFile (int* code)
     int ip = 0;
     while (1) {
         fprintf (file_code, "%d\n", code[ip]);
-        printf ("%d\n", code[ip]);
+        printf ("code[%d] = %d\n", ip, code[ip]);
         if (code[ip] == -1)
             break;
 
@@ -289,7 +278,7 @@ void DumpLabels (label_t* LABELS, size_t index_lab)
 
 
 
-    printf ("----------------------------------------------------------------------\n");
+    printf ("----------------------------------------------------------------------\n\n");
 }
 
 void DumpFixup (fixup_t* FIXUP, size_t index_fix)
@@ -303,7 +292,7 @@ void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 
 
 
-    printf ("----------------------------------------------------------------------\n");
+    printf ("----------------------------------------------------------------------\n\n");
 }
 
 bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
@@ -317,6 +306,7 @@ bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
         if (strcmp (LABELS[*nelem].name, name) == 0)
         {
             in_labels = true;
+            break;
         }
     }
     return in_labels;
@@ -343,6 +333,25 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
 
         printf ("\nLABEL ADDED:\n");
         DumpLabels (LABELS, *index_lab);
+    }
+}
+
+void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP)
+{
+    for (size_t iFix = 0; iFix < index_fix; iFix++)
+    {
+        size_t nelem = 0;
+
+        bool in_labels = FindInLabels (&nelem, FIXUP[iFix].name, index_lab, LABELS);
+
+        if (in_labels)
+            code[FIXUP[iFix].addr] = LABELS[nelem].addr;
+
+        if (!in_labels)
+        {
+            printf ("label not exsist");
+            assert (0);
+        }
     }
 }
 

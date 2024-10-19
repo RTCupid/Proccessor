@@ -1,7 +1,13 @@
 Push 5
+Pop
 START:
+Push_Reg
 Push 7
-NEXT:
 Add
+Pop
+Push_Reg
+Push 100
+NEXT:
+Ja START:
 END:
 Hlt
