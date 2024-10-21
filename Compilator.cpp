@@ -355,7 +355,6 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
     }
 }
 
-
 /*
 NEXT:
 Push_Reg
