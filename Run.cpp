@@ -4,7 +4,7 @@
 #include <string.h>
 #include "Proccessor.h"
 
-void Run (stack_t* STK, proc_t* PRC, int* REG);
+void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM);
 
 void MakeProgrammCode (proc_t* PRC);
 
@@ -25,12 +25,21 @@ int main ()
         printf ("ERROR: calloc to Reg return NULL");
         return 0;
         }
-    REG[DX] = 52;
+
+    int* RAM = (int*)calloc (nRAM, sizeof (int));
+    if (RAM == NULL)
+        {
+        printf ("ERROR: calloc to RAM return NULL");
+        return 0;
+        }
+
+    REG[DX] = 0;
     StackCtor (&STK, 8);
 
-    Run (&STK, &PRC, REG);
+    Run (&STK, &PRC, REG, RAM);
 
     free (REG);
+    free (RAM);
     StackDtor (&STK);
     printf ("# End of programm\n\n");
 
@@ -39,7 +48,7 @@ int main ()
 
 // Run processor...............................................................
 
-void Run (stack_t* STK, proc_t* PRC, int* REG)
+void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 {
     PRC->code = (int*)calloc (start_capacity, sizeof (int));
 
@@ -67,12 +76,24 @@ void Run (stack_t* STK, proc_t* PRC, int* REG)
             case CMD_PUSH_REG: {                                     //from Reg to stack
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
+
                 printf ("Reg[DX] = %d\n", REG[DX]);
                 StackPush (STK, REG[DX]);
 
                 PRC->ip += 1;
                 break;
             };
+            case CMD_PUSH_RAM: {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d ", PRC->code[PRC->ip]);
+
+                int addr = PRC->code[PRC->ip + 1];
+                printf ("RAM[%d] = %d", addr, RAM[addr]);
+                StackPush (STK, RAM[PRC->code[PRC->ip + 1]]);
+
+                PRC->ip += 2;
+                break;
+            }
             case CMD_ADD: {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
@@ -133,10 +154,10 @@ void Run (stack_t* STK, proc_t* PRC, int* REG)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
-                int a = 0;
-                StackPop (STK, &a);
+                int value = 0;
+                StackPop (STK, &value);
 
-                printf ("return value = <%d>\n", a);
+                printf ("return value = <%d>\n", value);
 
                 PRC->ip += 1;
                 break;
@@ -145,15 +166,32 @@ void Run (stack_t* STK, proc_t* PRC, int* REG)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
-                int a = 0;
-                StackPop (STK, &a);
-                REG[DX] = a;
+                int value = 0;
+                StackPop (STK, &value);
+                REG[DX] = value;
 
                 printf ("Reg[DX] = %d\n", REG[DX]);
 
                 PRC->ip += 1;
                 break;
             }
+            case CMD_POP_RAM: {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d ", PRC->code[PRC->ip]);
+
+                int value = 0;
+                StackPop (STK, &value);
+
+                int addr = PRC->code[PRC->ip + 1];
+
+                RAM[addr] = value;
+
+                printf ("RAM[%d] = %d\n", addr, value);
+
+                PRC->ip += 2;
+                break;
+            }
+
             case CMD_JMP: {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);

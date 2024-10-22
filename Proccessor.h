@@ -7,6 +7,7 @@
     enum cmd_t {
         CMD_PUSH = 17,                                          // change to CMD_PUSH etc
         CMD_PUSH_REG = 33,
+        CMD_PUSH_RAM = 49,
         CMD_ADD = 2,
         CMD_SUB = 3,
         CMD_DIV = 4,
@@ -15,6 +16,7 @@
         CMD_POP_REG = 7,
         CMD_JMP = 8,
         CMD_JA = 9,
+        CMD_POP_RAM = 10,
         CMD_HLT = -1
     };
 
@@ -32,5 +34,6 @@
     } proc_t;
 
     const size_t nregisters = 4;
+    const size_t nRAM = 100;
     const size_t start_capacity = 20;
 #endif

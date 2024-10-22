@@ -76,16 +76,25 @@ void Compilator ()
             int a = 0;
             fscanf (file_asm, "%d", &a);
 
-            code [ip+1] = a;
+            code [ip + 1] = a;
             ip += 2;
         }
         else if (strcmp (cmd, "Push_Reg") == 0)
         {
             code[ip] = CMD_PUSH_REG;
 
-            int a = 0;
-            fscanf (file_asm, "%d", &a);
             ip += 1;
+        }
+        else if (strcmp (cmd, "Push_RAM") == 0)
+        {
+            code[ip] = CMD_PUSH_RAM;
+
+            int addr = 0;
+            fscanf (file_asm, "%d", &addr);
+
+            code[ip + 1] = addr;
+
+            ip += 2;
         }
         else if (strcmp (cmd, "Add") == 0)
         {
@@ -112,10 +121,21 @@ void Compilator ()
             code[ip] = CMD_OUT;
             ip += 1;
         }
-        else if (strcmp (cmd, "Pop") == 0)
+        else if (strcmp (cmd, "Pop_Reg") == 0)
         {
             code[ip] = CMD_POP_REG;
             ip += 1;
+        }
+        else if (strcmp (cmd, "Pop_RAM") == 0)
+        {
+            code[ip] = CMD_POP_RAM;
+
+            int addr = 0;
+            fscanf (file_asm, "%d", &addr);
+
+            code[ip + 1] = addr;
+
+            ip += 2;
         }
         else if (strcmp (cmd, "Jmp") == 0)
         {
