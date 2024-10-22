@@ -69,12 +69,13 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
     {
         switch (PRC->code[PRC->ip])
         {
-            case  CMD_PUSH: {
+            case  CMD_PUSH:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
 
-                int arg = GetArg (PRC, REG, RAM);
+                int arg = GetArg (*PRC, REG, RAM);
 
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
@@ -82,7 +83,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 2;
                 break;
             };
-            case CMD_ADD: {
+            case CMD_ADD:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -96,7 +98,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             };
-            case CMD_SUB: {
+            case CMD_SUB:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -110,7 +113,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_DIV: {
+            case CMD_DIV:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -124,7 +128,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_MUL: {
+            case CMD_MUL:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -138,7 +143,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_OUT: {
+            case CMD_OUT:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -150,7 +156,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_POP_REG: {                                      // from stack to Reg DX
+            case CMD_POP_REG:
+            {                                      // from stack to Reg DX
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
@@ -163,7 +170,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_POP_RAM: {
+            case CMD_POP_RAM:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
@@ -180,7 +188,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 break;
             }
 
-            case CMD_JMP: {
+            case CMD_JMP:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -188,7 +197,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip = arg;
                 break;
             }
-            case CMD_JA: {
+            case CMD_JA:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
@@ -206,14 +216,16 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 break;
 
             }
-            case CMD_HLT: {
+            case CMD_HLT:
+            {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 next = 0;
                 break;
             }
-            default: {
+            default:
+            {
                 printf ("SINTXERROR: ip = <%d>, cmd = %d \n", PRC->ip, PRC->code[PRC->ip]);
                 next = 0;
             }

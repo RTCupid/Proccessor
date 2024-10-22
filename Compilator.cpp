@@ -19,6 +19,8 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
 
 void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP);
 
+int DetArgType (FILE* file_asm);
+
 int main ()
 {
     printf ("# My processor\n");
@@ -73,27 +75,10 @@ void Compilator ()
         {
             code[ip] = CMD_PUSH;
             printf ("code[%d] = <%d>\n", ip, code[ip]);
-            int a = 0;
-            fscanf (file_asm, "%d", &a);
 
-            code [ip + 1] = a;
-            ip += 2;
-        }
-        else if (strcmp (cmd, "Push_Reg") == 0)
-        {
-            code[ip] = CMD_PUSH_REG;
+            int arg = DetArgType (file_asm);
 
-            ip += 1;
-        }
-        else if (strcmp (cmd, "Push_RAM") == 0)
-        {
-            code[ip] = CMD_PUSH_RAM;
-
-            int addr = 0;
-            fscanf (file_asm, "%d", &addr);
-
-            code[ip + 1] = addr;
-
+            code [ip + 1] = arg;
             ip += 2;
         }
         else if (strcmp (cmd, "Add") == 0)
@@ -255,6 +240,8 @@ void Compilator ()
     fclose (file_asm);
 }
 
+//.............................................................................
+
 void MakeCodeFile (int* code)
 {
     FILE* file_code = fopen ("Programm_code.txt", "w");
@@ -272,6 +259,8 @@ void MakeCodeFile (int* code)
     fclose (file_code);
 }
 
+//.............................................................................
+
 int IsLabel (char* cmd)
 {
     int islabel = 0;
@@ -283,6 +272,8 @@ int IsLabel (char* cmd)
     printf ("islabel = %d\n", islabel);
     return islabel;
 }
+
+//.............................................................................
 
 void DumpLabels (label_t* LABELS, size_t index_lab)
 {
@@ -301,6 +292,8 @@ void DumpLabels (label_t* LABELS, size_t index_lab)
     printf ("----------------------------------------------------------------------\n\n");
 }
 
+//.............................................................................
+
 void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 {
     printf ("\n DumpFixup: \n");
@@ -314,6 +307,8 @@ void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 
     printf ("----------------------------------------------------------------------\n\n");
 }
+
+//.............................................................................
 
 bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
 {
@@ -331,6 +326,8 @@ bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
     }
     return in_labels;
 }
+
+//.............................................................................
 
 void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS, size_t* index_lab)
 {
@@ -356,6 +353,8 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
     }
 }
 
+//.............................................................................
+
 void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP)
 {
     for (size_t iFix = 0; iFix < index_fix; iFix++)
@@ -373,4 +372,36 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
             assert (0);
         }
     }
+}
+
+//.............................................................................
+
+int DetArgType (FILE* file_asm)
+{
+    int argType = 0;
+
+    char* reg = 0;
+    int   arg = 0;
+
+    if (fscanf (file_asm, "[%s %d]", reg, &arg))
+    {
+        argType = 7;
+    }
+    else if (fscanf (file_asm, "[%s]", reg))
+    {
+        argType = 6;
+    }
+    else if (fscanf (file_asm, "[%d]", &arg))
+    {
+        argType = 5;
+    }
+    else if (fscanf (file_asm, "%s", reg))
+    {
+        argType = 2;
+    }
+    else if (fscanf (file_asm, "%d", &arg))
+    {
+        argType = 1;
+    }
+    return argType;
 }
