@@ -12,7 +12,7 @@ void PrDump (stack_t STK, proc_t PRC, int* REG);
 
 void DumpRAM (int* RAM);
 
-int GetArg (proc_t PRC, int* REG, int* RAM);
+int GetArg (proc_t* PRC, int* REG, int* RAM);
 
 int main ()
 {
@@ -74,8 +74,7 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
-
-                int arg = GetArg (*PRC, REG, RAM);
+                int arg = GetArg (PRC, REG, RAM);
 
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
@@ -310,6 +309,7 @@ void PrDump (stack_t STK, proc_t PRC, int* REG)
 
 void DumpRAM (int* RAM)
 {
+    printf ("Dump RAM!\n");
     for (int i = 0; i < 10; i++)
     {
         assert (i < 10);
@@ -317,17 +317,37 @@ void DumpRAM (int* RAM)
         {
             assert (j < 10);
             if (RAM[i * 10 + j] == 0)
-                printf (".");
+                printf (". ");
             else
-                printf ("*");
+                printf ("* ");
         }
+        printf ("\n");
     }
+    printf ("\n");
 }
 
 //function to getting argument and return in...................................
 
-int GetArg (proc_t PRC, int* REG, int* RAM)
+int GetArg (proc_t* PRC, int* REG, int* RAM)
 {
+    int argType = PRC->code[PRC->ip + 1];
     int argValue = 0;
+
+    if (argType & 1)
+    {
+        argValue = PRC->code[PRC->ip + 2];
+        PRC->ip++;
+    }
+    if (argType & 2)
+    {
+        int regNum = PRC->code[PRC->ip + 3];
+        argValue += REG[regNum];
+        PRC->ip++;
+    }
+    if (argType & 4)
+    {
+        argValue = RAM[argValue];
+    }
+
     return argValue;
 }
