@@ -10,6 +10,8 @@ void MakeProgrammCode (proc_t* PRC);
 
 void PrDump (stack_t STK, proc_t PRC, int* REG);
 
+void DumpRAM (int* RAM);
+
 int main ()
 {
     printf ("# My proccessor\n");
@@ -37,6 +39,8 @@ int main ()
     StackCtor (&STK, 8);
 
     Run (&STK, &PRC, REG, RAM);
+
+    DumpRAM (RAM);
 
     free (REG);
     free (RAM);
@@ -89,7 +93,7 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 
                 int addr = PRC->code[PRC->ip + 1];
                 printf ("RAM[%d] = %d", addr, RAM[addr]);
-                StackPush (STK, RAM[PRC->code[PRC->ip + 1]]);
+                StackPush (STK, RAM[addr]);
 
                 PRC->ip += 2;
                 break;
@@ -256,6 +260,8 @@ void MakeProgrammCode (proc_t* PRC)
     fclose (file_code);
 }
 
+//Dump for processor...........................................................
+
 void PrDump (stack_t STK, proc_t PRC, int* REG)
 {
     printf ("\nDump Processor:\n");
@@ -301,9 +307,25 @@ void PrDump (stack_t STK, proc_t PRC, int* REG)
     printf ("Viktoria\n");
     printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d\n", REG[AX], REG[BX], REG[CX], REG[DX]);
 
-
-
     printf ("--------------------------------------------------------------------------------\n\n\n");
-
 }
+
+//.............................................................................
+
+void DumpRAM (int* RAM)
+{
+    for (int i = 0; i < 10; i++)
+    {
+        assert (i < 10);
+        for (int j = 0; j < 10; j++)
+        {
+            assert (j < 10);
+            if (RAM[i * 10 + j] == 0)
+                printf (".");
+            else
+                printf ("*");
+        }
+    }
+}
+
 

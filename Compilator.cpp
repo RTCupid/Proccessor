@@ -374,17 +374,3 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
         }
     }
 }
-
-/*
-NEXT:
-Push_Reg
-Push 80
-Add
-Pop
-Push_Reg
-Out
-Push_Reg
-Push 5000
-Ja NEXT:
-Hlt
-*/

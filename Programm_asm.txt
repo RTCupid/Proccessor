@@ -1,5 +1,13 @@
-Push 5
-Pop_RAM
-Push_RAM
-Out
+START:
+Push_Reg
+Push 1
+Add
+Pop_reg
+
+Push 1
+Push 0
+
+Push_Reg
+Push 100
+Ja START:
 Hlt
