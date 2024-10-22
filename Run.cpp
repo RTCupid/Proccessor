@@ -12,6 +12,8 @@ void PrDump (stack_t STK, proc_t PRC, int* REG);
 
 void DumpRAM (int* RAM);
 
+int GetArg (proc_t PRC, int* REG, int* RAM);
+
 int main ()
 {
     printf ("# My proccessor\n");
@@ -70,34 +72,16 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
             case  CMD_PUSH: {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
-                int arg = PRC->code[PRC->ip + 1];
+
+
+                int arg = GetArg (PRC, REG, RAM);
+
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
 
                 PRC->ip += 2;
                 break;
             };
-            case CMD_PUSH_REG: {                                     //from Reg to stack
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
-
-                printf ("Reg[DX] = %d\n", REG[DX]);
-                StackPush (STK, REG[DX]);
-
-                PRC->ip += 1;
-                break;
-            };
-            case CMD_PUSH_RAM: {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
-
-                int addr = PRC->code[PRC->ip + 1];
-                printf ("RAM[%d] = %d", addr, RAM[addr]);
-                StackPush (STK, RAM[addr]);
-
-                PRC->ip += 2;
-                break;
-            }
             case CMD_ADD: {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
@@ -328,4 +312,10 @@ void DumpRAM (int* RAM)
     }
 }
 
+//function to getting argument and return in...................................
 
+int GetArg (proc_t PRC, int* REG, int* RAM)
+{
+    int argValue = 0;
+    return argValue;
+}
