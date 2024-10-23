@@ -78,8 +78,6 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
-
-                PRC->ip += 2;
                 break;
             };
             case CMD_ADD:
@@ -330,22 +328,26 @@ void DumpRAM (int* RAM)
 
 int GetArg (proc_t* PRC, int* REG, int* RAM)
 {
-    int argType = PRC->code[PRC->ip + 1];
+    PRC->ip++;
+    int argType = PRC->code[PRC->ip]; PRC->ip++;
     int argValue = 0;
 
     if (argType & 1)
     {
-        argValue = PRC->code[PRC->ip + 2];
+        printf ("arg is number\n");
+        argValue = PRC->code[PRC->ip];
         PRC->ip++;
     }
     if (argType & 2)
     {
-        int regNum = PRC->code[PRC->ip + 3];
+        printf ("arg is register\n");
+        int regNum = PRC->code[PRC->ip];
         argValue += REG[regNum];
         PRC->ip++;
     }
     if (argType & 4)
     {
+        printf ("call RAM\n");
         argValue = RAM[argValue];
     }
 
