@@ -1,8 +1,8 @@
 Push 15
 Push 16
-Pop_reg
+Pop_Reg
 Pop_RAM 16
-Push [16]
+Push DX
 Push DX
 Add
 Out

@@ -19,7 +19,7 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
 
 void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP);
 
-void DetTypeArg (FILE* file_asm, int* code, int* ip);
+void CompileArg (FILE* file_asm, int* code, int* ip);
 
 int main ()
 {
@@ -76,41 +76,53 @@ void Compilator ()
             code[ip] = CMD_PUSH;
             printf ("code[%d] = <%d>\n", ip, code[ip]);
 
-            DetTypeArg (file_asm, code, &ip);
+            CompileArg (file_asm, code, &ip);
         }
         else if (strcmp (cmd, "Add") == 0)
         {
             code[ip] = CMD_ADD;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
         }
         else if (strcmp (cmd, "Sub") == 0)
         {
             code[ip] = CMD_SUB;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
         }
         else if (strcmp (cmd, "Div") == 0)
         {
             code[ip] = CMD_DIV;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
         }
         else if (strcmp (cmd, "Mul") == 0)
         {
             code[ip] = CMD_MUL;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
         }
         else if (strcmp (cmd, "Out") == 0)
         {
             code[ip] = CMD_OUT;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
             ip += 1;
         }
         else if (strcmp (cmd, "Pop_Reg") == 0)
         {
             code[ip] = CMD_POP_REG;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
         }
         else if (strcmp (cmd, "Pop_RAM") == 0)
         {
             code[ip] = CMD_POP_RAM;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
 
             int addr = 0;
             fscanf (file_asm, "%d", &addr);
@@ -122,6 +134,7 @@ void Compilator ()
         else if (strcmp (cmd, "Jmp") == 0)
         {
             code[ip] = CMD_JMP;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
 
             DumpLabels (LABELS, index_lab);
 
@@ -170,6 +183,7 @@ void Compilator ()
         else if (strcmp (cmd, "Ja") == 0)
         {
             code[ip] = CMD_JA;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
 
             DumpLabels (LABELS, index_lab);
 
@@ -218,6 +232,8 @@ void Compilator ()
         else if (strcmp (cmd, "Hlt") == 0)
         {
             code[ip] = CMD_HLT;
+            printf ("code[%d] = <%d>\n", ip, code[ip]);
+
             ip += 1;
             next = 0;
             break;
@@ -373,79 +389,28 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
 
 //.............................................................................
 
-void DetTypeArg (FILE* file_asm, int* code, int* ip)
+void CompileArg (FILE* file_asm, int* code, int* ip)
 {
     int argType = 0;
 
     char* reg = 0;
-    int   arg = 0;
+    int value = 0;
+    char* arg = [];
+    fscanf (file_asm, "%s", arg);
 
-    if (fscanf (file_asm, "[%s %d]", reg, &arg))
+    if (arg[0] == '[')
+        argType /*тыры пыры*/
+    else
     {
-        argType = 7;
-        code[*ip + 1] = argType;
-        code[*ip + 2] = arg;
+        if (sscanf (arg, "%s", &value))
 
-        if (strcmp (reg, "AX") == 0)
-            code[*ip + 3] = 0;
-        else if (strcmp (reg, "BX") == 0)
-            code[*ip + 3] = 1;
-        else if (strcmp (reg, "CX") == 0)
-            code[*ip + 3] = 2;
-        else if (strcmp (reg, "DX") == 0)
-            code[*ip + 3] = 3;
-        *ip += 4;
-    }
-    else if (fscanf (file_asm, "[%s]", reg))
+
+
+
+
+    else
     {
-        argType = 6;
-
-        code[*ip + 1] = argType;
-
-        if (strcmp (reg, "AX") == 0)
-            code[*ip + 2] = 0;
-        else if (strcmp (reg, "BX") == 0)
-            code[*ip + 2] = 1;
-        else if (strcmp (reg, "CX") == 0)
-            code[*ip + 2] = 2;
-        else if (strcmp (reg, "DX") == 0)
-            code[*ip + 2] = 3;
-
-        *ip += 3;
-    }
-    else if (fscanf (file_asm, "[%d]", &arg))
-    {
-        argType = 5;
-
-        code[*ip + 1] = argType;
-        code[*ip + 2] = arg;
-
-        *ip += 3;
-    }
-    else if (fscanf (file_asm, "%s", reg))
-    {
-        argType = 2;
-
-        code[*ip + 1] = argType;
-
-        if (strcmp (reg, "AX") == 0)
-            code[*ip + 2] = 0;
-        else if (strcmp (reg, "BX") == 0)
-            code[*ip + 2] = 1;
-        else if (strcmp (reg, "CX") == 0)
-            code[*ip + 2] = 2;
-        else if (strcmp (reg, "DX") == 0)
-            code[*ip + 2] = 3;
-
-        *ip += 3;
-    }
-    else if (fscanf (file_asm, "%d", &arg))
-    {
-        argType = 1;
-
-        code[*ip + 1] = argType;
-        code[*ip + 2] = arg;
-
-        *ip += 3;
+        printf ("ERROR: uncorrect arg\n");
+        assert (0);
     }
 }
