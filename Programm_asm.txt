@@ -1,9 +1,9 @@
-Push 80
+Push 25
 Push 11
 Pop DX
-Pop [16]
+Pop [DX+16]
 Push DX
-Push [DX+5]
+Push [DX+16]
 Add
 Out
 Hlt

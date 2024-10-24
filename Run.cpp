@@ -353,7 +353,16 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     if (argType & 2)
     {
         int regNum = PRC->code[PRC->ip];
-        argValue = &(REG[regNum]);
+        if (argValue != NULL)
+        {
+            int SumArg = *argValue;
+            SumArg += REG[regNum];
+            argValue = &SumArg;
+        }
+        else
+        {
+            argValue = &(REG[regNum]);
+        }
         PRC->ip++;
     }
     if (argType & 4)
