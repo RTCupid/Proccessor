@@ -13,10 +13,9 @@
         CMD_DIV = 4,
         CMD_MUL = 5,
         CMD_OUT = 6,
-        CMD_POP_REG = 7,
+        CMD_POP = 7,
         CMD_JMP = 8,
         CMD_JA = 9,
-        CMD_POP_RAM = 10,
         CMD_HLT = -1
     };
 
@@ -35,5 +34,5 @@
 
     const size_t nregisters = 4;
     const size_t nRAM = 100;
-    const size_t start_capacity = 20;
+    const size_t capacity_code = 100;
 #endif

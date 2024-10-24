@@ -15,10 +15,9 @@
         CMD_DIV = 4,
         CMD_MUL = 5,
         CMD_OUT = 6,
-        CMD_POP_REG = 7,
+        CMD_POP = 7,
         CMD_JMP = 8,
         CMD_JA = 9,
-        CMD_POP_RAM = 10,
         CMD_HLT = -1
     };
 
@@ -32,7 +31,7 @@
         char name[20];
     } fixup_t;
 
-    const size_t capacity_code = 20;
+    const size_t capacity_code = 200;
     const size_t capacity_labels = 10;
     const size_t capacity_fixup = 10;
 

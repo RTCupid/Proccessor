@@ -81,6 +81,13 @@ void Compilator ()
 
             CompileArg (file_asm, code, &ip);
         }
+        else if (strcmp (cmd, "Pop") == 0)
+        {
+            code[ip] = CMD_POP; ip++;
+            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+            CompileArg (file_asm, code, &ip);
+        }
         else if (strcmp (cmd, "Add") == 0)
         {
             code[ip] = CMD_ADD;
@@ -114,26 +121,6 @@ void Compilator ()
             code[ip] = CMD_OUT;
             printf ("code[%d] = <%d>\n\n", ip, code[ip]);
             ip += 1;
-        }
-        else if (strcmp (cmd, "Pop_Reg") == 0)
-        {
-            code[ip] = CMD_POP_REG;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-        }
-        else if (strcmp (cmd, "Pop_RAM") == 0)
-        {
-            code[ip] = CMD_POP_RAM;
-            printf ("code[%d] = <%d>\n", ip, code[ip]);
-            ip++;
-
-            int addr = 0;
-            fscanf (file_asm, "%d", &addr);
-
-            code[ip] = addr;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-            ip++;
         }
         else if (strcmp (cmd, "Jmp") == 0)
         {
@@ -385,7 +372,7 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
 
         if (!in_labels)
         {
-            printf ("label not exsist");
+            printf ("label not exsist\n");
             assert (0);
         }
     }
@@ -418,11 +405,13 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         char* addrRam = strchr (arg, '['); if (addrRam != NULL) argType = argType | 4;
         printf ("addrRam = <%p>\n", addrRam);
 
+        if ((argType & 2) == 0)
+            argType = argType | 1;
+
         printf ("argType = <%d>\n", argType);
         switch (argType)
         {
-            case 0:
-                argType = 1;
+            case 1:
                 code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
                 break;
             case 2:

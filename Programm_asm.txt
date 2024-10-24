@@ -1,7 +1,7 @@
 Push 80
 Push 11
-Pop_Reg
-Pop_RAM 16
+Pop DX
+Pop [16]
 Push DX
 Push [DX+5]
 Add

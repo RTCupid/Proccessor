@@ -12,7 +12,9 @@ void PrDump (stack_t STK, proc_t PRC, int* REG);
 
 void DumpRAM (int* RAM);
 
-int GetArg (proc_t* PRC, int* REG, int* RAM);
+int GetArgPush (proc_t* PRC, int* REG, int* RAM);
+
+int* GetArgPop (proc_t* PRC, int* REG, int* RAM);
 
 int main ()
 {
@@ -56,7 +58,7 @@ int main ()
 
 void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 {
-    PRC->code = (int*)calloc (start_capacity, sizeof (int));
+    PRC->code = (int*)calloc (capacity_code, sizeof (int));
 
     PRC->size = 0;
     MakeProgrammCode (PRC);
@@ -74,12 +76,24 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
-                int arg = GetArg (PRC, REG, RAM);
+                int arg = GetArgPush (PRC, REG, RAM);
 
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
                 break;
-            };
+            }
+            case CMD_POP:
+            {                                      // from stack to Reg DX
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d ", PRC->code[PRC->ip]);
+
+                int value = 0;
+                StackPop (STK, &value);
+
+                int* addr = GetArgPop (PRC, REG, RAM);
+                *addr = value;
+                break;
+            }
             case CMD_ADD:
             {
                 printf ("ip = %d ", PRC->ip);
@@ -87,14 +101,16 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 
                 int a = 0;
                 StackPop (STK, &a);
+                printf (">>> a = <%d>\n", a);
                 int b = 0;
                 StackPop (STK, &b);
+                printf (">>> b = <%d>\n\n", b);
 
                 StackPush (STK, a + b);
 
                 PRC->ip += 1;
                 break;
-            };
+            }
             case CMD_SUB:
             {
                 printf ("ip = %d ", PRC->ip);
@@ -153,38 +169,6 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 PRC->ip += 1;
                 break;
             }
-            case CMD_POP_REG:
-            {                                      // from stack to Reg DX
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
-
-                int value = 0;
-                StackPop (STK, &value);
-                REG[DX] = value;
-
-                printf ("Reg[DX] = %d\n", REG[DX]);
-
-                PRC->ip += 1;
-                break;
-            }
-            case CMD_POP_RAM:
-            {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
-
-                int value = 0;
-                StackPop (STK, &value);
-
-                int addr = PRC->code[PRC->ip + 1];
-
-                RAM[addr] = value;
-
-                printf ("RAM[%d] = %d\n", addr, value);
-
-                PRC->ip += 2;
-                break;
-            }
-
             case CMD_JMP:
             {
                 printf ("ip = %d ", PRC->ip);
@@ -326,7 +310,7 @@ void DumpRAM (int* RAM)
 
 //function to getting argument and return in...................................
 
-int GetArg (proc_t* PRC, int* REG, int* RAM)
+int GetArgPush (proc_t* PRC, int* REG, int* RAM)
 {
     PRC->ip++;
     int argType = PRC->code[PRC->ip]; PRC->ip++;
@@ -349,6 +333,32 @@ int GetArg (proc_t* PRC, int* REG, int* RAM)
     {
         printf ("call RAM\n");
         argValue = RAM[argValue];
+    }
+
+    return argValue;
+}
+
+int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
+{
+    PRC->ip++;
+    int argType = PRC->code[PRC->ip]; PRC->ip++;
+    int* argValue = NULL;
+
+    if (argType & 1)
+    {
+        argValue = &PRC->code[PRC->ip];
+        PRC->ip++;
+    }
+
+    if (argType & 2)
+    {
+        int regNum = PRC->code[PRC->ip];
+        argValue = &(REG[regNum]);
+        PRC->ip++;
+    }
+    if (argType & 4)
+    {
+        argValue = &(RAM[*argValue]);
     }
 
     return argValue;
