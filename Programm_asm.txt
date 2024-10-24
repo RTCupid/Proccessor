@@ -1,9 +1,10 @@
-Push 25
-Push 11
-Pop DX
-Pop [DX+16]
-Push DX
-Push [DX+16]
-Add
-Out
-Hlt
+push 25
+push 11
+pop DX
+pop [DX+16]
+push DX
+push [DX+16]
+add
+out
+hlt
+

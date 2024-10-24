@@ -3,18 +3,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include "Proccessor.h"
+#include "Enum.h"
 
-void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM);
-
-void MakeProgrammCode (proc_t* PRC);
-
-void PrDump (stack_t STK, proc_t PRC, int* REG);
-
-void DumpRAM (int* RAM);
-
-int GetArgPush (proc_t* PRC, int* REG, int* RAM);
-
-int* GetArgPop (proc_t* PRC, int* REG, int* RAM);
+//TODO: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main ()
 {
@@ -69,7 +60,8 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
     PrDump (*STK, *PRC, REG);
     while (next)
     {
-        switch (PRC->code[PRC->ip])
+        //TODO: sqrt cos sin
+        switch (PRC->code[PRC->ip]) //TODO: Codogen
         {
             case  CMD_PUSH:
             {
@@ -172,7 +164,9 @@ void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
             case CMD_JMP:
             {
                 printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+/*100*/             printf ("cmd = %d\n", PRC->code[PRC->ip]);
+//14.80*1.20 -> 1480 * 120 ->
+//1 -> 100 ->
 
                 int arg = PRC->code[PRC->ip + 1];
                 PRC->ip = arg;
@@ -289,7 +283,7 @@ void PrDump (stack_t STK, proc_t PRC, int* REG)
 
 //.............................................................................
 
-void DumpRAM (int* RAM)
+void DumpRAM (int* RAM) //TODO: [100] -> magic number
 {
     printf ("Dump RAM!\n");
     for (int i = 0; i < 10; i++)
@@ -316,7 +310,9 @@ int GetArgPush (proc_t* PRC, int* REG, int* RAM)
     int argType = PRC->code[PRC->ip]; PRC->ip++;
     int argValue = 0;
 
-    if (argType & 1)
+    //TODO: & ^ -> MASK_MEM MASK_LABEL
+
+    if (argType & 1) //TODO: magic number
     {
         printf ("arg is number\n");
         argValue = PRC->code[PRC->ip];
@@ -343,10 +339,12 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     PRC->ip++;
     int argType = PRC->code[PRC->ip]; PRC->ip++;
     int* argValue = NULL;
+    int SumArg = 0;
 
-    if (argType & 1)
+    if (argType & 1) //TODO: too
     {
         argValue = &PRC->code[PRC->ip];
+
         PRC->ip++;
     }
 
@@ -355,8 +353,9 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
         int regNum = PRC->code[PRC->ip];
         if (argValue != NULL)
         {
-            int SumArg = *argValue;
+            SumArg = *argValue;
             SumArg += REG[regNum];
+
             argValue = &SumArg;
         }
         else
@@ -372,3 +371,41 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
 
     return argValue;
 }
+
+/*
+N_DIGIT = 2 -> 10^2
+100
+148
+PUSH 13.2819
+1328
+1.48 * 1.00
+PUSH 1 -> 1 100 -> 1 1.00 -> pop 1 + 2.48
+                -> 1 100  -> pop 1*148/100
+PUSH 14.8 -> 1 1480 -> 1 14.8 ->
+(double)1480
+(int)14//.8
+ja
+
+MYLABEL:
+
+push
+pop
+out
+
+ret
+
+
+
+main:
+    in
+    in
+    in
+    pop rax
+    pop rbx
+    pop rcx
+    ...
+hlt
+*/
+/*
+CALL MYLABEL -> 18, 4
+*/
