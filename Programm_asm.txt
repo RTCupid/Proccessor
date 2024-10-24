@@ -3,7 +3,7 @@ Push 11
 Pop_Reg
 Pop_RAM 16
 Push DX
-Push [DX + 5]
+Push [DX+5]
 Add
 Out
 Hlt

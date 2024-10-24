@@ -407,13 +407,16 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         code[*ip] = *((int*)arg); printf ("code[%d] = %d\n\n", *ip, code[*ip]); (*ip)++;
     }
     else if (fscanf (file_asm, "%s", arg)){
-        //printf("\n<%s>\n\n", arg);
+        printf("\n<%s>\n", arg);
 
         char* addrReg = strchr (arg, 'X'); if (addrReg != NULL) argType = argType | 2;
+        printf ("addrReg = <%p>\n", addrReg);
 
         char* addrAdd = strchr (arg, '+'); if (addrAdd != NULL) argType = argType | 3;
+        printf ("addrAdd = <%p>\n", addrAdd);
 
         char* addrRam = strchr (arg, '['); if (addrRam != NULL) argType = argType | 4;
+        printf ("addrRam = <%p>\n", addrRam);
 
         printf ("argType = <%d>\n", argType);
         switch (argType)
