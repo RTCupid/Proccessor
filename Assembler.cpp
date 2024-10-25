@@ -120,11 +120,9 @@ void Assembler (asm_t* ASM)
 
                 DumpLabels (ASM->LABELS, ASM->index_lab);
 
-                void* arg = calloc (max_len_cmd, sizeof (char));
-                if (arg == NULL) {
-                    printf ("calloc return NULL");
-                    assert (0);
-                }
+                //void* arg = calloc (max_len_cmd, sizeof (char));
+                char arg[max_len_cmd] = {};
+
                 if (fscanf (ASM->file_asm, "%d", (int*)arg))
                 {
                     (ASM->code)[ASM->ip + 1] = *((int*)arg);
@@ -159,7 +157,7 @@ void Assembler (asm_t* ASM)
                     else
                         printf ("arg Jmp is not label\n");
                 }
-                free (arg);
+                //free (arg);
                 ASM->ip += 2;
                 break;
             }
@@ -247,7 +245,7 @@ void AsmCtor(asm_t* ASM)
 
     ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future! ??????
 
-    ASM->code       = (int*)     calloc (capacity_code,   sizeof (ASM->code[0]));
+    ASM->code       = (int*) calloc (capacity_code,   sizeof (ASM->code[0]));
     ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
     ASM->FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (ASM->FIXUP[0]));
 
@@ -300,7 +298,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
 
     if (fscanf (file_asm, "%d", (int*)arg))
     {
-        argType = argType | 1;
+        argType |=  1;
         code[*ip] = argType;
         printf ("code[%d] = %d\n", *ip, code[*ip]);
         (*ip)++;

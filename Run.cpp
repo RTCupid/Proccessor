@@ -6,7 +6,7 @@
 #include "Proccessor.h"
 #include "Enum.h"
 
-//TODO: Cpu_t, CpuCtor, CpuDtor Run -> SPU
+                                                                               //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main ()
 {
@@ -180,6 +180,7 @@ void SPU (stack_t* STK, proc_t* PRC)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
+                break;
             }
             case CMD_HLT:
             {
