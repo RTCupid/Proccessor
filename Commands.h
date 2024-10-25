@@ -1,4 +1,4 @@
-define   name  id,  arg
+//define name  id,  arg
 
 DEF_CMD_(PUSH,  1, true)
 
