@@ -57,6 +57,8 @@
 
     void AsmCtor(asm_t* ASM);
 
+    void AsmDtor (asm_t* ASM);
+
     void Assembler (asm_t* ASM);
 
     void MakeCodeFile (int* code);

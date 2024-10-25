@@ -16,7 +16,9 @@ int main (/*int argc, char** argv*/) //TODO: K & R - аргументы кома
     asm_t ASM = {};
     AsmCtor(&ASM);
 
-    Assembler (&ASM);                                                                    //TD: Compilator -> Asm
+    Assembler (&ASM);
+
+    AsmDtor (&ASM);                                                                    //TD: Compilator -> Asm
 
     printf ("# End of programm\n\n");
     return 0;
@@ -62,7 +64,7 @@ void Assembler (asm_t* ASM)
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
-            case POP_ID: //TODO: remove strings from code and make some array of structures with info about every command
+            case POP_ID:
             {
                 (ASM->code)[ASM->ip] = CMD_POP;
                 ASM->ip++;
@@ -234,12 +236,9 @@ void Assembler (asm_t* ASM)
     RunFixup (ASM->index_fix, ASM->index_lab, ASM->code, ASM->LABELS, ASM->FIXUP);
 
     MakeCodeFile (ASM->code);
-
-    free (ASM->code);
-    free (ASM->LABELS);
-    free (ASM->FIXUP);
-    fclose (ASM->file_asm);
 }
+
+// Constructor of ASM structure................................................
 
 void AsmCtor(asm_t* ASM)
 {
@@ -254,6 +253,16 @@ void AsmCtor(asm_t* ASM)
 
     ASM->index_lab = 0;
     ASM->index_fix = 0;
+}
+
+// Destructor of ASM structures................................................
+
+void AsmDtor (asm_t* ASM)
+{
+    free (ASM->code);
+    free (ASM->LABELS);
+    free (ASM->FIXUP);
+    fclose (ASM->file_asm);
 }
 
 //.............................................................................
@@ -459,7 +468,7 @@ void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
 {
     bool in_labels = false;
-    while (*nelem < index_lab) //TODO: while
+    while (*nelem < index_lab)                                                 //TD: while
     {
         printf ("LABELS[%lu].name = <%s>\n", *nelem, LABELS[*nelem].name);
         printf ("LABELS[%lu].addr = <%d>\n", *nelem, LABELS[*nelem].addr);
@@ -537,7 +546,7 @@ int IdCommand (char* cmd)
     {
         return POP_ID;
     }
-    if (strcmp (cmd, "add") == 0) //TODO: make function that compares strings and returns number - command id
+    if (strcmp (cmd, "add") == 0) //TD: make function that compares strings and returns number - command id
     {                             // switch case
         return ADD_ID;
     }
