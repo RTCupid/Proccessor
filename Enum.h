@@ -1,13 +1,14 @@
-#ifndef ENUM
-    #define ENUM
-    #define DEF_CMD_(name, id, ...)\
-            CMD_##name = id,
+#ifndef ENUM_H
+#define ENUM_H
+    #define DEF_CMD_(cmd, id, ...)\
+            CMD_##cmd = id,
 
     enum cmd_t
     {
         #include "Commands.h"
-    }
-#endif
+    };
+    #undef DEF_CMD_
+#endif /* ENUM_H */
 
 
 

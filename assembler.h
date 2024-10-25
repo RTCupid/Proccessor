@@ -20,7 +20,10 @@
         OUT_ID,
         JMP_ID,
         JA_ID,
-        HLT_ID,
+        COS_ID,
+        SIN_ID,
+        SQRT_ID,
+        HLT_ID = -1,
     };
     enum arg_t
     {
@@ -89,5 +92,7 @@
     bool ChangeType (char* elem, int num, int* argType);
 
     int IdCommand (char* cmd);
+
+    char* ToName (const char* name, char name_cmd[size_command]);
 #endif
 

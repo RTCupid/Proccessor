@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include "Assembler.h"
 #include "Enum.h"
 
@@ -538,11 +539,45 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
 
 int IdCommand (char* cmd)
 {
+    #define DEF_CMD_(name, id, ...)                         \
+            if (strcmp (cmd, ToName (#name, name_cmd)) == 0)\
+            {                                               \
+                return name##_ID;                           \
+            }
+    char name_cmd[size_command] = {};
+    printf ("name_cmd = %p\n",    name_cmd);
+    printf ("name_cmd[0] = <%c>\n", name_cmd[0]);
+
     if (IsLabel (cmd))
     {
         return LABEL_ID;
     }
-    if (strcmp (cmd, "push") == 0)                                    //TD: choose one register CAPITAL or small
+    #include "Commands.h"
+    /*else*/
+    printf ("unknown command\n");
+    return -1;
+    #undef DEF_CMD_
+}
+
+char* ToName (const char* name, char name_cmd[size_command])
+{
+    for (size_t i = 0; i < size_command; i++)
+    {
+        assert (i < size_command);
+        name_cmd[i] = '\0';
+    }
+    name_cmd = {};
+    size_t index = 0;
+    while (name[index] != '\0')
+    {
+        name_cmd[index] = (char)tolower ((name[index]));
+        index++;
+    }
+    printf ("in ToName (...) name_cmd = <%s>\n", name_cmd);
+    return name_cmd;
+}
+
+/*if (strcmp (cmd, "push") == 0)                                    //TD: choose one register CAPITAL or small
     {
         return PUSH_ID;
     }
@@ -581,6 +616,4 @@ int IdCommand (char* cmd)
     if (strcmp (cmd, "hlt") == 0)
     {
         return HLT_ID;
-    }
-    return -1;
-}
+    }*/
