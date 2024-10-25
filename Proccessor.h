@@ -24,7 +24,7 @@
     const size_t nRAM = 100;
     const size_t capacity_code = 200;
 
-    void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM);
+    void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM);
 
     void MakeProgrammCode (proc_t* PRC);
 

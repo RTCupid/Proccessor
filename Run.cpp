@@ -33,7 +33,7 @@ int main ()
     REG[DX] = 0;
     StackCtor (&STK, 8);
 
-    Run (&STK, &PRC, REG, RAM);
+    SPU (&STK, &PRC, REG, RAM);
 
     DumpRAM (RAM);
 
@@ -47,7 +47,7 @@ int main ()
 
 // Run processor...............................................................
 
-void Run (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
+void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
 {
     PRC->code = (int*)calloc (capacity_code, sizeof (int));
 
