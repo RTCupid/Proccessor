@@ -14,12 +14,12 @@ F = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ \
 	nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,$\
 	signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
-run: Compilator.exe Run.exe
-	./Compilator.exe
+run: Asm.exe Run.exe
+	./Asm.exe
 	./Run.exe
 
-Compilator.exe: Compilator.cpp Assembler.h
-	$(CC) Compilator.cpp -o Compilator.exe $(F)
+Asm.exe: Assembler.cpp Assembler.h
+	$(CC) Assembler.cpp -o Asm.exe $(F)
 
 Run.exe: Run.cpp Proccessor.h
 	$(CC) Run.cpp -o Run.exe $(F)
