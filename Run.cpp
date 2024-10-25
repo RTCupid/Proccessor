@@ -309,10 +309,9 @@ int GetArgPush (proc_t* PRC, int* REG, int* RAM)
     PRC->ip++;
     int argType = PRC->code[PRC->ip]; PRC->ip++;
     int argValue = 0;
+                                                                               //TD: & ^ -> MASK_MEM MASK_LABEL
 
-    //TODO: & ^ -> MASK_MEM MASK_LABEL
-
-    if (argType & MASK_NUM) //TODO: magic number
+    if (argType & MASK_NUM)                                                    //TD: magic number
     {
         printf ("arg is number\n");
         argValue = PRC->code[PRC->ip];
@@ -341,7 +340,7 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     int* argValue = NULL;
     int SumArg = 0;
 
-    if (argType & MASK_NUM) //TODO: too
+    if (argType & MASK_NUM)                                                    //TD: too
     {
         argValue = &PRC->code[PRC->ip];
 
