@@ -13,6 +13,9 @@
         CMD_POP = 7,
         CMD_JMP = 8,
         CMD_JA = 9,
+        CMD_COS = 10,
+        CMD_SIN = 11,
+        CMD_SQRT = 12,
         CMD_HLT = -1,
     };
 #endif

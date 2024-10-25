@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 #include "Proccessor.h"
 #include "Enum.h"
 
@@ -172,6 +173,12 @@ void SPU (stack_t* STK, proc_t* PRC)
                 else
                     PRC->ip += 2;
                 break;
+
+            }
+            case CMD_COS:
+            {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
             }
             case CMD_HLT:
