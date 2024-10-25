@@ -23,11 +23,11 @@ int main ()
 
     DumpRAM (PRC.RAM);
 
-    free (PRC.REG);
-    free (PRC.RAM);
-    StackDtor (&STK);
-    printf ("# End of programm\n\n");
+    PrcDtor (&PRC);
 
+    StackDtor (&STK);
+
+    printf ("# End of programm\n\n");
     return 0;
 }
 
@@ -190,7 +190,6 @@ void SPU (stack_t* STK, proc_t* PRC)
         }
         PrDump (*STK, *PRC);
     }
-    free (PRC->code);
 }
 
 // Constructor of PRC structure................................................
@@ -214,6 +213,20 @@ void PrcCtor (proc_t* PRC)
     PRC->code = (int*)calloc (capacity_code, sizeof (int));
     PRC->size = 0;
 
+}
+
+// Destructor of PRC structure.................................................
+
+void PrcDtor (proc_t* PRC)
+{
+    free (PRC->REG);
+    PRC->REG = NULL;
+
+    free (PRC->RAM);
+    PRC->RAM = NULL;
+
+    free (PRC->code);
+    PRC->code = NULL;
 }
 
 // Making array of code........................................................

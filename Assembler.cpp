@@ -260,8 +260,14 @@ void AsmCtor(asm_t* ASM)
 void AsmDtor (asm_t* ASM)
 {
     free (ASM->code);
+    ASM->code = NULL;
+
     free (ASM->LABELS);
+    ASM->LABELS = NULL;
+
     free (ASM->FIXUP);
+    ASM->FIXUP = NULL;
+
     fclose (ASM->file_asm);
 }
 

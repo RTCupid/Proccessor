@@ -37,6 +37,8 @@
 
     void PrcCtor (proc_t* PRC);
 
+    void PrcDtor (proc_t* PRC);
+
     void SPU (stack_t* STK, proc_t* PRC);
 
     void MakeProgrammCode (proc_t* PRC);
