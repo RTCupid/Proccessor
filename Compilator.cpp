@@ -43,177 +43,199 @@ void Asm ()
         fscanf (file_asm, "%s", cmd);
         printf (">>> cmd = <%s>\n", cmd);
 
+        int id = IdCommand (cmd);
+        printf ("\n\n>>>>>> <%d>\n\n", id);
+
         //if (!IsLabel (cmd)) {
         //    printf ("                                                        <%s> is not label\n", cmd);
         //}
-        if (IsLabel (cmd))
+
+        switch (id)
         {
-            printf ("    <%s> is label\n", cmd);
-
-            size_t nelem = 0;
-
-            DumpLabels (LABELS, index_lab);
-
-            bool in_labels = FindInLabels (&nelem, cmd, index_lab, LABELS);
-            printf ("FindInLabels (%s) returned %d\n", cmd, in_labels);
-
-            AddLabel (in_labels, nelem, cmd, ip, LABELS, &index_lab);
-        }
-        else if (strcmp (cmd, "push") == 0)                                    //TD: choose one register CAPITAL or small
-        {
-            code[ip] = CMD_PUSH;
-            ip++;
-            printf ("code[%d] = <%d>\n", ip - 1, code[ip - 1]);
-            CompileArg (file_asm, code, &ip);
-        }
-        else if (strcmp (cmd, "pop") == 0) //TODO: remove strings from code and make some array of structures with info about every command
-        {
-            code[ip] = CMD_POP; ip++;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            CompileArg (file_asm, code, &ip);
-        }
-        else if (strcmp (cmd, "add") == 0) //TODO: make function that compares strings and returns number - command id
-                                           // switch case
-        {
-            code[ip] = CMD_ADD;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-        }
-        else if (strcmp (cmd, "sub") == 0)
-        {
-            code[ip] = CMD_SUB;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-        }
-        else if (strcmp (cmd, "div") == 0)
-        {
-            code[ip] = CMD_DIV;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-        }
-        else if (strcmp (cmd, "mul") == 0)
-        {
-            code[ip] = CMD_MUL;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-        }
-        else if (strcmp (cmd, "out") == 0)
-        {
-            code[ip] = CMD_OUT;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-            ip += 1;
-        }
-        else if (strcmp (cmd, "jmp") == 0)
-        {
-            code[ip] = CMD_JMP;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            DumpLabels (LABELS, index_lab);
-
-            void* arg = calloc (max_len_cmd, sizeof (char));
-            if (arg == NULL) {
-                printf ("calloc return NULL");
-                assert (0);
-            }
-            if (fscanf (file_asm, "%d", (int*)arg))
+            case LABEL_ID:
             {
-                code[ip + 1] = *((int*)arg);
+                printf ("    <%s> is label\n", cmd);
+
+                size_t nelem = 0;
+
+                DumpLabels (LABELS, index_lab);
+
+                bool in_labels = FindInLabels (&nelem, cmd, index_lab, LABELS);
+                printf ("FindInLabels (%s) returned %d\n", cmd, in_labels);
+
+                AddLabel (in_labels, nelem, cmd, ip, LABELS, &index_lab);
+                break;
             }
-            else
+            case PUSH_ID:                                    //TD: choose one register CAPITAL or small
             {
-                fscanf (file_asm, "%s", (char*)arg);
+                code[ip] = CMD_PUSH;
+                ip++;
+                printf ("code[%d] = <%d>\n", ip - 1, code[ip - 1]);
+                CompileArg (file_asm, code, &ip);
+                break;
+            }
+            case POP_ID: //TODO: remove strings from code and make some array of structures with info about every command
+            {
+                code[ip] = CMD_POP; ip++;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
 
-                printf ("arg = <%s>\n", (char*)arg);
+                CompileArg (file_asm, code, &ip);
+                break;
+            }
+            case ADD_ID:                                        //TD: make function that compares strings and returns number - command id
+            {                                                   //TD: switch case
+                code[ip] = CMD_ADD;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
 
-                if (IsLabel ((char*)arg))
+                ip += 1;
+                break;
+            }
+            case SUB_ID:
+            {
+                code[ip] = CMD_SUB;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+                ip += 1;
+                break;
+            }
+            case DIV_ID:
+            {
+                code[ip] = CMD_DIV;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+                ip += 1;
+                break;
+            }
+            case MUL_ID:
+            {
+                code[ip] = CMD_MUL;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+                ip += 1;
+                break;
+            }
+            case OUT_ID:
+            {
+                code[ip] = CMD_OUT;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+                ip += 1;
+                break;
+            }
+            case JMP_ID:
+            {
+                code[ip] = CMD_JMP;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+
+                DumpLabels (LABELS, index_lab);
+
+                void* arg = calloc (max_len_cmd, sizeof (char));
+                if (arg == NULL) {
+                    printf ("calloc return NULL");
+                    assert (0);
+                }
+                if (fscanf (file_asm, "%d", (int*)arg))
                 {
-                    size_t nelem = 0;
-                    bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
-                    if (in_labels)
+                    code[ip + 1] = *((int*)arg);
+                }
+                else
+                {
+                    fscanf (file_asm, "%s", (char*)arg);
+
+                    printf ("arg = <%s>\n", (char*)arg);
+
+                    if (IsLabel ((char*)arg))
                     {
+                        size_t nelem = 0;
+                        bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
+                        if (in_labels)
+                        {
+                            code[ip + 1] = LABELS[nelem].addr;
+                        }
+                        else
+                        {
+                            code[ip + 1] = -1;
+
+                            FIXUP[index_fix].addr = ip + 1;
+                            strcpy (FIXUP[index_fix].name, (char*)arg);
+
+                            index_fix++;
+
+                            strcpy (LABELS[index_lab].name, (char*)arg);
+                            LABELS[index_lab].addr = -1;
+                        }
+                    }
+                    else
+                        printf ("arg Jmp is not label\n");
+                }
+                free (arg);
+                ip += 2;
+                break;
+            }
+            case JA_ID:
+            {
+                code[ip] = CMD_JA;
+                printf ("code[%d] = <%d>\n", ip, code[ip]);
+
+                DumpLabels (LABELS, index_lab);
+
+                void* arg = calloc (max_len_cmd, sizeof (char));
+                if (arg == NULL) {
+                    printf ("calloc return NULL");
+                    assert (0);
+                }
+                if (fscanf (file_asm, "%d", (int*)arg))
+                    code[ip + 1] = *((int*)arg);
+                else {
+                    fscanf (file_asm, "%s", (char*)arg);
+
+                    printf ("arg = <%s>\n", (char*)arg);
+
+                    if (IsLabel ((char*)arg))
+                    {
+                        size_t nelem = 0;
+                        bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
+
+                        if (in_labels)
+                        {
                         code[ip + 1] = LABELS[nelem].addr;
+                        printf ("LABELS[%lu].addr = <%d>\n", nelem, LABELS[nelem].addr);
+                        printf ("code[%d] = <%d>\n", ip + 1, code[ip + 1]);
+                        }
+                        else
+                        {
+                            code[ip + 1] = -1;
+
+                            FIXUP[index_fix].addr = ip + 1;
+                            strcpy (FIXUP[index_fix].name, (char*)arg);
+
+                            index_fix++;
+
+                            strcpy (LABELS[index_lab].name, (char*)arg);
+                            LABELS[index_lab].addr = -1;
+                        }
                     }
                     else
-                    {
-                        code[ip + 1] = -1;
-
-                        FIXUP[index_fix].addr = ip + 1;
-                        strcpy (FIXUP[index_fix].name, (char*)arg);
-
-                        index_fix++;
-
-                        strcpy (LABELS[index_lab].name, (char*)arg);
-                        LABELS[index_lab].addr = -1;
-                    }
+                        printf ("arg Ja is not label\n");
                 }
-                else
-                    printf ("arg Jmp is not label\n");
+                free (arg);
+                ip += 2;
+                break;
             }
-            free (arg);
-            ip += 2;
-        }
-        else if (strcmp (cmd, "ja") == 0)
-        {
-            code[ip] = CMD_JA;
-            printf ("code[%d] = <%d>\n", ip, code[ip]);
+            case HLT_ID:
+            {
+                code[ip] = CMD_HLT;
+                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
 
-            DumpLabels (LABELS, index_lab);
-
-            void* arg = calloc (max_len_cmd, sizeof (char));
-            if (arg == NULL) {
-                printf ("calloc return NULL");
-                assert (0);
+                ip += 1;
+                next = 0;
+                break;
             }
-            if (fscanf (file_asm, "%d", (int*)arg))
-                code[ip + 1] = *((int*)arg);
-            else {
-                fscanf (file_asm, "%s", (char*)arg);
-
-                printf ("arg = <%s>\n", (char*)arg);
-
-                if (IsLabel ((char*)arg))
-                {
-                    size_t nelem = 0;
-                    bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
-
-                    if (in_labels)
-                    {
-                    code[ip + 1] = LABELS[nelem].addr;
-                    printf ("LABELS[%lu].addr = <%d>\n", nelem, LABELS[nelem].addr);
-                    printf ("code[%d] = <%d>\n", ip + 1, code[ip + 1]);
-                    }
-                    else
-                    {
-                        code[ip + 1] = -1;
-
-                        FIXUP[index_fix].addr = ip + 1;
-                        strcpy (FIXUP[index_fix].name, (char*)arg);
-
-                        index_fix++;
-
-                        strcpy (LABELS[index_lab].name, (char*)arg);
-                        LABELS[index_lab].addr = -1;
-                    }
-                }
-                else
-                    printf ("arg Ja is not label\n");
+            default:
+            {
+                printf ("unknown ID\n");
+                assert(0);
             }
-            free (arg);
-            ip += 2;
-        }
-        else if (strcmp (cmd, "hlt") == 0)
-        {
-            code[ip] = CMD_HLT;
-            printf ("code[%d] = <%d>\n\n", ip, code[ip]);
-
-            ip += 1;
-            next = 0;
-            break;
         }
         //DumpLabels (LABELS, index_lab);
     }
@@ -253,7 +275,7 @@ void MakeCodeFile (int* code)
 void CompileArg (FILE* file_asm, int* code, int* ip)
 {
     int argType = 0;
-    char* arg = (char*)calloc (100, sizeof (char)); //TODO: Magic number
+    char* arg = (char*)calloc (size_command, sizeof (char)); //TD: Magic number
     int numReg = 0;
     int numNum = 0;
 
@@ -440,10 +462,61 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
         if (in_labels)
             code[FIXUP[iFix].addr] = LABELS[nelem].addr;
 
-        if (!in_labels) //TODO: == ELSE above
+        else                                                               //TD: == ELSE above
         {
             printf ("label not exsist\n");
             assert (0);
         }
     }
+}
+
+//compare cmd with string and return id command................................
+
+int IdCommand (char* cmd)
+{
+    if (IsLabel (cmd))
+    {
+        return LABEL_ID;
+    }
+    if (strcmp (cmd, "push") == 0)                                    //TD: choose one register CAPITAL or small
+    {
+        return PUSH_ID;
+    }
+    if (strcmp (cmd, "pop") == 0) //TODO: remove strings from code and make some array of structures with info about every command
+    {
+        return POP_ID;
+    }
+    if (strcmp (cmd, "add") == 0) //TODO: make function that compares strings and returns number - command id
+    {                             // switch case
+        return ADD_ID;
+    }
+    if (strcmp (cmd, "sub") == 0)
+    {
+        return SUB_ID;
+    }
+    if (strcmp (cmd, "div") == 0)
+    {
+        return DIV_ID;
+    }
+    if (strcmp (cmd, "mul") == 0)
+    {
+        return MUL_ID;
+    }
+    if (strcmp (cmd, "out") == 0)
+    {
+        return OUT_ID;
+    }
+    if (strcmp (cmd, "jmp") == 0)
+    {
+        return JMP_ID;
+    }
+    if (strcmp (cmd, "ja") == 0)
+    {
+        return JA_ID;
+    }
+    if (strcmp (cmd, "hlt") == 0)
+    {
+        return HLT_ID;
+    }
+    return -1;
 }

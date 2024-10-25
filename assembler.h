@@ -8,6 +8,22 @@
 
     //TODO: ARCHITECTURE OF PROGRAMM LIKE PREVIOUS PROJECTS asm_t { }
 
+    enum cmd_id_t
+    {
+        LABEL_ID = 0,
+        PUSH_ID,
+        POP_ID,
+        ADD_ID,
+        SUB_ID,
+        DIV_ID,
+        MUL_ID,
+        OUT_ID,
+        JMP_ID,
+        JA_ID,
+        HLT_ID,
+    };
+
+
     typedef struct {
         char name[20];
         int addr;//-1 -> 10
@@ -45,5 +61,6 @@
 
     bool ChangeType (char* elem, int num, int* argType);
 
+    int IdCommand (char* cmd);
 #endif
 
