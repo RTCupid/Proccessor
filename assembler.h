@@ -55,6 +55,8 @@
         char cmd[size_command];
     } asm_t;
 
+    void AsmCtor(asm_t* ASM);
+
     void Assembler (asm_t* ASM);
 
     void MakeCodeFile (int* code);

@@ -5,7 +5,7 @@
 #include "Assembler.h"
 #include "Enum.h"
 
-//TODO: many .cpp and .h in future
+//TODO: many .cpp and many .h in future
 // Don't forget about architecture of project
 
 int main (/*int argc, char** argv*/) //TODO: K & R - аргументы командной строки и typedef
@@ -14,7 +14,7 @@ int main (/*int argc, char** argv*/) //TODO: K & R - аргументы кома
     printf ("# (c) RTCupid, 2024\n\n");
 
     asm_t ASM = {};
-    //AsmCtor()
+    AsmCtor(&ASM);
 
     Assembler (&ASM);                                                                    //TD: Compilator -> Asm
 
@@ -26,18 +26,6 @@ int main (/*int argc, char** argv*/) //TODO: K & R - аргументы кома
 
 void Assembler (asm_t* ASM)
 {
-    ASM->next = 1;
-    ASM->ip = 0;
-
-    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future!
-
-    ASM->code       = (int*)     calloc (capacity_code,   sizeof (ASM->code[0]));
-    ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
-    ASM->FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (ASM->FIXUP[0]));
-
-    ASM->index_lab = 0;
-    ASM->index_fix = 0;
-
     while (ASM->next)
     {                                          //TD: remove magic number
         fscanf (ASM->file_asm, "%s", ASM->cmd);
@@ -76,7 +64,8 @@ void Assembler (asm_t* ASM)
             }
             case POP_ID: //TODO: remove strings from code and make some array of structures with info about every command
             {
-                (ASM->code)[ASM->ip] = CMD_POP; ASM->ip++;
+                (ASM->code)[ASM->ip] = CMD_POP;
+                ASM->ip++;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
@@ -252,6 +241,21 @@ void Assembler (asm_t* ASM)
     fclose (ASM->file_asm);
 }
 
+void AsmCtor(asm_t* ASM)
+{
+    ASM->next = 1;
+    ASM->ip = 0;
+
+    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future!
+
+    ASM->code       = (int*)     calloc (capacity_code,   sizeof (ASM->code[0]));
+    ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
+    ASM->FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (ASM->FIXUP[0]));
+
+    ASM->index_lab = 0;
+    ASM->index_fix = 0;
+}
+
 //.............................................................................
 
 void MakeCodeFile (int* code)
@@ -282,19 +286,30 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
     if (fscanf (file_asm, "%d", (int*)arg))
     {
         argType = argType | 1;
-        code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
-        code[*ip] = *((int*)arg); printf ("code[%d] = %d\n\n", *ip, code[*ip]); (*ip)++;
+        code[*ip] = argType;
+        printf ("code[%d] = %d\n", *ip, code[*ip]);
+        (*ip)++;
+
+        code[*ip] = *((int*)arg);
+        printf ("code[%d] = %d\n\n", *ip, code[*ip]);
+        (*ip)++;
     }
     else if (fscanf (file_asm, "%s", arg)){
         printf("\n<%s>\n", arg);
 
-        char* addrReg = strchr (arg, 'X'); if (addrReg != NULL) argType = argType | 2;
+        char* addrReg = strchr (arg, 'X');
+        if (addrReg != NULL)
+            argType = argType | 2;
         printf ("addrReg = <%p>\n", addrReg);
 
-        char* addrAdd = strchr (arg, '+'); if (addrAdd != NULL) argType = argType | 3;
+        char* addrAdd = strchr (arg, '+');
+        if (addrAdd != NULL)
+            argType = argType | 3;
         printf ("addrAdd = <%p>\n", addrAdd);
 
-        char* addrRam = strchr (arg, '['); if (addrRam != NULL) argType = argType | 4;
+        char* addrRam = strchr (arg, '[');
+        if (addrRam != NULL)
+            argType = argType | 4;
         printf ("addrRam = <%p>\n", addrRam);
 
         if ((argType & 2) == 0)
@@ -304,36 +319,69 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         switch (argType)
         {
             case 1: //TODO: Make enum or smth but not MAGIC numbers
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             case 2:
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
-                code[*ip] = numReg; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = numReg;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             case 3:
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 numNum = (int)atol (addrAdd + 1 * sizeof (char));
-                code[*ip] = numNum; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
-                code[*ip] = numReg; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = numNum;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
+                code[*ip] = numReg;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             case 5:
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
                 numNum = (int)atol (addrRam + 1 * sizeof (char));
-                code[*ip] = numNum; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = numNum;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             case 6:
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
-                code[*ip] = numReg; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = numReg;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             case 7:
-                code[*ip] = argType; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = argType;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 numNum = (int)atol (addrAdd + 1 * sizeof (char));
-                code[*ip] = numNum; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
-                code[*ip] = numReg; printf ("code[%d] = %d\n", *ip, code[*ip]); (*ip)++;
+                code[*ip] = numNum;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
+
+                code[*ip] = numReg;
+                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                (*ip)++;
                 break;
             default:
                 printf ("ERROR: Compile arguments!\n");
@@ -378,7 +426,8 @@ void DumpLabels (label_t* LABELS, size_t index_lab)
 
     printf ("index_lab = <%lu>\n", index_lab);
 
-    for (size_t i = 0; i < index_lab; i++) {
+    for (size_t i = 0; i < index_lab; i++)
+    {
         printf ("LABELS[%lu].name = <%s>\n", i, LABELS[i].name);
         printf ("LABELS[%lu].addr = <%d>\n", i, LABELS[i].addr);
     }
@@ -394,7 +443,8 @@ void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 {
     printf ("\n DumpFixup: \n");
     printf ("----------------------------------------------------------------------\n");
-    for (size_t i = 0; i < index_fix; i++) {
+    for (size_t i = 0; i < index_fix; i++)
+    {
         printf ("FIXUP[%lu].name = <%s>\n", i, FIXUP[i].name);
         printf ("FIXUP[%lu].addr = <%d>\n", i, FIXUP[i].addr);
     }
