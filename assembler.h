@@ -23,17 +23,6 @@
         HLT_ID,
     };
 
-
-    typedef struct {
-        char name[20];
-        int addr;//-1 -> 10
-    } label_t;
-
-    typedef struct {
-        int addr;
-        char name[20];
-    } fixup_t;
-
     const size_t size_command = 120;
     const size_t capacity_code = 200;
     const size_t capacity_labels = 10;
@@ -41,7 +30,32 @@
 
     const size_t max_len_cmd = 20;
 
-    void Asm ();
+    typedef struct
+    {
+        char name[20];
+        int addr;//-1 -> 10
+    } label_t;
+
+    typedef struct
+    {
+        int addr;
+        char name[20];
+    } fixup_t;
+
+    typedef struct
+    {
+        int next;
+        int ip;
+        FILE* file_asm;
+        int* code;
+        label_t* LABELS;
+        fixup_t* FIXUP;
+        size_t index_lab;
+        size_t index_fix;
+        char cmd[size_command];
+    } asm_t;
+
+    void Assembler (asm_t* ASM);
 
     void MakeCodeFile (int* code);
 

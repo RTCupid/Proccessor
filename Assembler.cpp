@@ -13,9 +13,10 @@ int main (/*int argc, char** argv*/) //TODO: K & R - аргументы кома
     printf ("# My processor\n");
     printf ("# (c) RTCupid, 2024\n\n");
 
+    asm_t ASM = {};
     //AsmCtor()
 
-    Asm ();                                                                    //TD: Compilator -> Asm
+    Assembler (&ASM);                                                                    //TD: Compilator -> Asm
 
     printf ("# End of programm\n\n");
     return 0;
@@ -23,27 +24,26 @@ int main (/*int argc, char** argv*/) //TODO: K & R - аргументы кома
 
 // function for file_asm -> code -> file_code..................................
 
-void Asm ()
+void Assembler (asm_t* ASM)
 {
-    int next = 1;
-    int ip = 0;
+    ASM->next = 1;
+    ASM->ip = 0;
 
-    FILE* file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future!
+    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future!
 
-    int* code       = (int*)     calloc (capacity_code,   sizeof (code[0]));
-    label_t* LABELS = (label_t*) calloc (capacity_labels, sizeof (LABELS[0]));
-    fixup_t* FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (FIXUP[0]));
+    ASM->code       = (int*)     calloc (capacity_code,   sizeof (ASM->code[0]));
+    ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
+    ASM->FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (ASM->FIXUP[0]));
 
-    size_t index_lab = 0;
-    size_t index_fix = 0;
+    ASM->index_lab = 0;
+    ASM->index_fix = 0;
 
-    while (next)
-    {
-        char cmd[size_command] = "";                                           //TD: remove magic number
-        fscanf (file_asm, "%s", cmd);
-        printf (">>> cmd = <%s>\n", cmd);
+    while (ASM->next)
+    {                                          //TD: remove magic number
+        fscanf (ASM->file_asm, "%s", ASM->cmd);
+        printf (">>> cmd = <%s>\n", ASM->cmd);
 
-        int id = IdCommand (cmd);
+        int id = IdCommand (ASM->cmd);
         printf ("\n\n>>>>>> <%d>\n\n", id);
 
         //if (!IsLabel (cmd)) {
@@ -54,181 +54,181 @@ void Asm ()
         {
             case LABEL_ID:
             {
-                printf ("    <%s> is label\n", cmd);
+                printf ("    <%s> is label\n", ASM->cmd);
 
                 size_t nelem = 0;
 
-                DumpLabels (LABELS, index_lab);
+                DumpLabels (ASM->LABELS, ASM->index_lab);
 
-                bool in_labels = FindInLabels (&nelem, cmd, index_lab, LABELS);
-                printf ("FindInLabels (%s) returned %d\n", cmd, in_labels);
+                bool in_labels = FindInLabels (&nelem, ASM->cmd, ASM->index_lab, ASM->LABELS);
+                printf ("FindInLabels (%s) returned %d\n", ASM->cmd, in_labels);
 
-                AddLabel (in_labels, nelem, cmd, ip, LABELS, &index_lab);
+                AddLabel (in_labels, nelem, ASM->cmd, ASM->ip, ASM->LABELS, &(ASM->index_lab));
                 break;
             }
             case PUSH_ID:                                    //TD: choose one register CAPITAL or small
             {
-                code[ip] = CMD_PUSH;
-                ip++;
-                printf ("code[%d] = <%d>\n", ip - 1, code[ip - 1]);
-                CompileArg (file_asm, code, &ip);
+                (ASM->code)[ASM->ip] = CMD_PUSH;
+                ASM->ip++;
+                printf ("code[%d] = <%d>\n", ASM->ip - 1, (ASM->code)[ASM->ip - 1]);
+                CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
             case POP_ID: //TODO: remove strings from code and make some array of structures with info about every command
             {
-                code[ip] = CMD_POP; ip++;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_POP; ASM->ip++;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                CompileArg (file_asm, code, &ip);
+                CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
             case ADD_ID:                                        //TD: make function that compares strings and returns number - command id
             {                                                   //TD: switch case
-                code[ip] = CMD_ADD;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_ADD;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
+                ASM->ip += 1;
                 break;
             }
             case SUB_ID:
             {
-                code[ip] = CMD_SUB;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_SUB;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
+                ASM->ip += 1;
                 break;
             }
             case DIV_ID:
             {
-                code[ip] = CMD_DIV;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_DIV;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
+                ASM->ip += 1;
                 break;
             }
             case MUL_ID:
             {
-                code[ip] = CMD_MUL;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_MUL;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
+                ASM->ip += 1;
                 break;
             }
             case OUT_ID:
             {
-                code[ip] = CMD_OUT;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_OUT;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
+                ASM->ip += 1;
                 break;
             }
             case JMP_ID:
             {
-                code[ip] = CMD_JMP;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_JMP;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                DumpLabels (LABELS, index_lab);
+                DumpLabels (ASM->LABELS, ASM->index_lab);
 
                 void* arg = calloc (max_len_cmd, sizeof (char));
                 if (arg == NULL) {
                     printf ("calloc return NULL");
                     assert (0);
                 }
-                if (fscanf (file_asm, "%d", (int*)arg))
+                if (fscanf (ASM->file_asm, "%d", (int*)arg))
                 {
-                    code[ip + 1] = *((int*)arg);
+                    (ASM->code)[ASM->ip + 1] = *((int*)arg);
                 }
                 else
                 {
-                    fscanf (file_asm, "%s", (char*)arg);
+                    fscanf (ASM->file_asm, "%s", (char*)arg);
 
                     printf ("arg = <%s>\n", (char*)arg);
 
                     if (IsLabel ((char*)arg))
                     {
                         size_t nelem = 0;
-                        bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
+                        bool in_labels = FindInLabels (&nelem, (char*)arg, ASM->index_lab, ASM->LABELS);
                         if (in_labels)
                         {
-                            code[ip + 1] = LABELS[nelem].addr;
+                            (ASM->code)[ASM->ip + 1] = (ASM->LABELS)[nelem].addr;
                         }
                         else
                         {
-                            code[ip + 1] = -1;
+                            (ASM->code)[ASM->ip + 1] = -1;
 
-                            FIXUP[index_fix].addr = ip + 1;
-                            strcpy (FIXUP[index_fix].name, (char*)arg);
+                            (ASM->FIXUP)[ASM->index_fix].addr = ASM->ip + 1;
+                            strcpy ((ASM->FIXUP)[ASM->index_fix].name, (char*)arg);
 
-                            index_fix++;
+                            ASM->index_fix++;
 
-                            strcpy (LABELS[index_lab].name, (char*)arg);
-                            LABELS[index_lab].addr = -1;
+                            strcpy ((ASM->LABELS)[ASM->index_lab].name, (char*)arg);
+                            (ASM->LABELS)[ASM->index_lab].addr = -1;
                         }
                     }
                     else
                         printf ("arg Jmp is not label\n");
                 }
                 free (arg);
-                ip += 2;
+                ASM->ip += 2;
                 break;
             }
             case JA_ID:
             {
-                code[ip] = CMD_JA;
-                printf ("code[%d] = <%d>\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_JA;
+                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                DumpLabels (LABELS, index_lab);
+                DumpLabels (ASM->LABELS, ASM->index_lab);
 
                 void* arg = calloc (max_len_cmd, sizeof (char));
                 if (arg == NULL) {
                     printf ("calloc return NULL");
                     assert (0);
                 }
-                if (fscanf (file_asm, "%d", (int*)arg))
-                    code[ip + 1] = *((int*)arg);
+                if (fscanf (ASM->file_asm, "%d", (int*)arg))
+                    (ASM->code)[ASM->ip + 1] = *((int*)arg);
                 else {
-                    fscanf (file_asm, "%s", (char*)arg);
+                    fscanf (ASM->file_asm, "%s", (char*)arg);
 
                     printf ("arg = <%s>\n", (char*)arg);
 
                     if (IsLabel ((char*)arg))
                     {
                         size_t nelem = 0;
-                        bool in_labels = FindInLabels (&nelem, (char*)arg, index_lab, LABELS);
+                        bool in_labels = FindInLabels (&nelem, (char*)arg, ASM->index_lab, ASM->LABELS);
 
                         if (in_labels)
                         {
-                        code[ip + 1] = LABELS[nelem].addr;
-                        printf ("LABELS[%lu].addr = <%d>\n", nelem, LABELS[nelem].addr);
-                        printf ("code[%d] = <%d>\n", ip + 1, code[ip + 1]);
+                        (ASM->code)[ASM->ip + 1] = (ASM->LABELS)[nelem].addr;
+                        printf ("LABELS[%lu].addr = <%d>\n", nelem, (ASM->LABELS)[nelem].addr);
+                        printf ("code[%d] = <%d>\n", ASM->ip + 1, (ASM->code)[ASM->ip + 1]);
                         }
                         else
                         {
-                            code[ip + 1] = -1;
+                            (ASM->code)[ASM->ip + 1] = -1;
 
-                            FIXUP[index_fix].addr = ip + 1;
-                            strcpy (FIXUP[index_fix].name, (char*)arg);
+                            (ASM->FIXUP)[(ASM->index_fix)].addr = ASM->ip + 1;
+                            strcpy ((ASM->FIXUP)[ASM->index_fix].name, (char*)arg);
 
-                            index_fix++;
+                            ASM->index_fix++;
 
-                            strcpy (LABELS[index_lab].name, (char*)arg);
-                            LABELS[index_lab].addr = -1;
+                            strcpy ((ASM->LABELS)[ASM->index_lab].name, (char*)arg);
+                            (ASM->LABELS)[ASM->index_lab].addr = -1;
                         }
                     }
                     else
                         printf ("arg Ja is not label\n");
                 }
                 free (arg);
-                ip += 2;
+                ASM->ip += 2;
                 break;
             }
             case HLT_ID:
             {
-                code[ip] = CMD_HLT;
-                printf ("code[%d] = <%d>\n\n", ip, code[ip]);
+                (ASM->code)[ASM->ip] = CMD_HLT;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
-                ip += 1;
-                next = 0;
+                ASM->ip += 1;
+                ASM->next = 0;
                 break;
             }
             default:
@@ -242,14 +242,14 @@ void Asm ()
 
     printf ("Start FIXUP\n");
 
-    RunFixup (index_fix, index_lab, code, LABELS, FIXUP);
+    RunFixup (ASM->index_fix, ASM->index_lab, ASM->code, ASM->LABELS, ASM->FIXUP);
 
-    MakeCodeFile (code);
+    MakeCodeFile (ASM->code);
 
-    free (code);
-    free (LABELS);
-    free (FIXUP);
-    fclose (file_asm);
+    free (ASM->code);
+    free (ASM->LABELS);
+    free (ASM->FIXUP);
+    fclose (ASM->file_asm);
 }
 
 //.............................................................................
