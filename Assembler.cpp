@@ -459,7 +459,7 @@ void DumpFixup (fixup_t* FIXUP, size_t index_fix)
 bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
 {
     bool in_labels = false;
-    for (; *nelem < index_lab; *nelem = *nelem + 1)//TODO: while
+    while (*nelem < index_lab) //TODO: while
     {
         printf ("LABELS[%lu].name = <%s>\n", *nelem, LABELS[*nelem].name);
         printf ("LABELS[%lu].addr = <%d>\n", *nelem, LABELS[*nelem].addr);
@@ -469,6 +469,7 @@ bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
             in_labels = true;
             break;
         }
+        *nelem = *nelem + 1;
     }
     return in_labels;
 }
