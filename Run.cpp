@@ -14,31 +14,17 @@ int main ()
     printf ("Start run()\n");
 
     stack_t STK = {};
-    proc_t PRC = {};
-
-    int* REG = (int*)calloc (nregisters, sizeof (int));
-    if (REG == NULL)
-        {
-        printf ("ERROR: calloc to Reg return NULL");
-        return 0;
-        }
-
-    int* RAM = (int*)calloc (nRAM, sizeof (int));
-    if (RAM == NULL)
-        {
-        printf ("ERROR: calloc to RAM return NULL");
-        return 0;
-        }
-
-    REG[DX] = 0;
     StackCtor (&STK, 8);
 
-    SPU (&STK, &PRC, REG, RAM);
+    proc_t PRC = {};
+    PrcCtor (&PRC);
 
-    DumpRAM (RAM);
+    SPU (&STK, &PRC);
 
-    free (REG);
-    free (RAM);
+    DumpRAM (PRC.RAM);
+
+    free (PRC.REG);
+    free (PRC.RAM);
     StackDtor (&STK);
     printf ("# End of programm\n\n");
 
@@ -47,17 +33,14 @@ int main ()
 
 // Run processor...............................................................
 
-void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
+void SPU (stack_t* STK, proc_t* PRC)
 {
-    PRC->code = (int*)calloc (capacity_code, sizeof (int));
-
-    PRC->size = 0;
     MakeProgrammCode (PRC);
     printf ("size_code = %d\n", PRC->size);
 
     int next = 1;
 
-    PrDump (*STK, *PRC, REG);
+    PrDump (*STK, *PRC);
     while (next)
     {
         //TODO: sqrt cos sin
@@ -68,7 +51,7 @@ void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
 
-                int arg = GetArgPush (PRC, REG, RAM);
+                int arg = GetArgPush (PRC, PRC->REG, PRC->RAM);
 
                 printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
@@ -82,7 +65,7 @@ void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 int value = 0;
                 StackPop (STK, &value);
 
-                int* addr = GetArgPop (PRC, REG, RAM);
+                int* addr = GetArgPop (PRC, PRC->REG, PRC->RAM);
                 *addr = value;
                 break;
             }
@@ -205,9 +188,32 @@ void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM)
                 next = 0;
             }
         }
-        PrDump (*STK, *PRC, REG);
+        PrDump (*STK, *PRC);
     }
     free (PRC->code);
+}
+
+// Constructor of PRC structure................................................
+
+void PrcCtor (proc_t* PRC)
+{
+    PRC->REG = (int*)calloc (nregisters, sizeof (int));
+    if (PRC->REG == NULL)
+        {
+        printf ("ERROR: calloc to Reg return NULL");
+        assert (0);
+        }
+
+    PRC->RAM = (int*)calloc (nRAM, sizeof (int));
+    if (PRC->RAM == NULL)
+        {
+        printf ("ERROR: calloc to RAM return NULL");
+        assert (0);
+        }
+
+    PRC->code = (int*)calloc (capacity_code, sizeof (int));
+    PRC->size = 0;
+
 }
 
 // Making array of code........................................................
@@ -233,7 +239,7 @@ void MakeProgrammCode (proc_t* PRC)
 
 //Dump for processor...........................................................
 
-void PrDump (stack_t STK, proc_t PRC, int* REG)
+void PrDump (stack_t STK, proc_t PRC)
 {
     printf ("\nDump Processor:\n");
     printf ("--------------------------------------------------------------------------------\n\n");
@@ -276,7 +282,7 @@ void PrDump (stack_t STK, proc_t PRC, int* REG)
     }
     printf ("\n");
     printf ("Viktoria\n");
-    printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d\n", REG[AX], REG[BX], REG[CX], REG[DX]);
+    printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d\n", (PRC.REG)[AX], (PRC.REG)[BX], (PRC.REG)[CX], (PRC.REG)[DX]);
 
     printf ("--------------------------------------------------------------------------------\n\n\n");
 }

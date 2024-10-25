@@ -24,6 +24,8 @@
 
     typedef struct
     {
+        int* REG;
+        int* RAM;
         int* code;
         int  size;
         int  ip;
@@ -33,11 +35,13 @@
     const size_t nRAM = 100;
     const size_t capacity_code = 200;
 
-    void SPU (stack_t* STK, proc_t* PRC, int* REG, int* RAM);
+    void PrcCtor (proc_t* PRC);
+
+    void SPU (stack_t* STK, proc_t* PRC);
 
     void MakeProgrammCode (proc_t* PRC);
 
-    void PrDump (stack_t STK, proc_t PRC, int* REG);
+    void PrDump (stack_t STK, proc_t PRC);
 
     void DumpRAM (int* RAM);
 
