@@ -245,7 +245,7 @@ void AsmCtor(asm_t* ASM)
     ASM->next = 1;
     ASM->ip = 0;
 
-    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future!
+    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future! ??????
 
     ASM->code       = (int*)     calloc (capacity_code,   sizeof (ASM->code[0]));
     ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
@@ -327,12 +327,12 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf ("argType = <%d>\n", argType);
         switch (argType)
         {
-            case 1: //TODO: Make enum or smth but not MAGIC numbers
+            case ARG_NUM: //TODO: Make enum or smth but not MAGIC numbers
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
-            case 2:
+            case ARG_REG:
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
@@ -342,7 +342,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
-            case 3:
+            case ARG_REG_NUM:
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
@@ -357,7 +357,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
-            case 5:
+            case ARG_RAM_NUM:
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
@@ -367,7 +367,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
-            case 6:
+            case ARG_RAM_REG:
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
@@ -377,7 +377,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
-            case 7:
+            case ARG_RAM_REG_NUM:
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;

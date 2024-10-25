@@ -22,6 +22,15 @@
         JA_ID,
         HLT_ID,
     };
+    enum arg_t
+    {
+        ARG_NUM = 1,
+        ARG_REG = 2,
+        ARG_REG_NUM = 3,
+        ARG_RAM_NUM = 5,
+        ARG_RAM_REG = 6,
+        ARG_RAM_REG_NUM = 7,
+    };
 
     const size_t size_command = 120;
     const size_t capacity_code = 200;
