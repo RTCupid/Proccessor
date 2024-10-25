@@ -312,20 +312,20 @@ int GetArgPush (proc_t* PRC, int* REG, int* RAM)
 
     //TODO: & ^ -> MASK_MEM MASK_LABEL
 
-    if (argType & 1) //TODO: magic number
+    if (argType & MASK_NUM) //TODO: magic number
     {
         printf ("arg is number\n");
         argValue = PRC->code[PRC->ip];
         PRC->ip++;
     }
-    if (argType & 2)
+    if (argType & MASK_REG)
     {
         printf ("arg is register\n");
         int regNum = PRC->code[PRC->ip];
         argValue += REG[regNum];
         PRC->ip++;
     }
-    if (argType & 4)
+    if (argType & MASK_RAM)
     {
         printf ("call RAM\n");
         argValue = RAM[argValue];
@@ -341,14 +341,14 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     int* argValue = NULL;
     int SumArg = 0;
 
-    if (argType & 1) //TODO: too
+    if (argType & MASK_NUM) //TODO: too
     {
         argValue = &PRC->code[PRC->ip];
 
         PRC->ip++;
     }
 
-    if (argType & 2)
+    if (argType & MASK_REG)
     {
         int regNum = PRC->code[PRC->ip];
         if (argValue != NULL)
@@ -364,7 +364,7 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
         }
         PRC->ip++;
     }
-    if (argType & 4)
+    if (argType & MASK_RAM)
     {
         argValue = &(RAM[*argValue]);
     }

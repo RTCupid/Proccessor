@@ -327,7 +327,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf ("argType = <%d>\n", argType);
         switch (argType)
         {
-            case ARG_NUM: //TODO: Make enum or smth but not MAGIC numbers
+            case ARG_NUM:                                                      //TD: Make enum or smth but not MAGIC numbers
                 code[*ip] = argType;
                 printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;

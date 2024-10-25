@@ -7,14 +7,23 @@
 
     //TODO: more structures and enums and arrays of structures
 
-    enum REG_t {
-        AX = 0,
-        BX = 1,
-        CX,
-        DX
+    enum mask_t
+    {
+        MASK_NUM = 1,
+        MASK_REG = 2,
+        MASK_RAM = 4,
     };
 
-    typedef struct {
+    enum REG_t
+    {
+        AX = 0,
+        BX = 1,
+        CX = 2,
+        DX = 3
+    };
+
+    typedef struct
+    {
         int* code;
         int  size;
         int  ip;
