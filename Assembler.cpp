@@ -561,7 +561,7 @@ int IdCommand (char* cmd)
 
 char* ToName (const char* name, char name_cmd[size_command])
 {
-    for (size_t i = 0; i < size_command; i++)
+    for (size_t i = 0; i < size_command; i++)                                  // clear array of name
     {
         assert (i < size_command);
         name_cmd[i] = '\0';
