@@ -566,7 +566,6 @@ char* ToName (const char* name, char name_cmd[size_command])
         assert (i < size_command);
         name_cmd[i] = '\0';
     }
-    name_cmd = {};
     size_t index = 0;
     while (name[index] != '\0')
     {

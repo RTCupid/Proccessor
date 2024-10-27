@@ -394,7 +394,7 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     {
         argValue = &(RAM[*argValue]);
     }
-
+    //printf (">>>> addr argValuePop = <%p>\n", argValue);
     return argValue;
 }
 
