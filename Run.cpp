@@ -6,6 +6,9 @@
 #include "Proccessor.h"
 #include "Enum.h"
 
+#include "Stack/Stack.cpp"
+#include "Stack/Stack_Error_Checking.cpp"
+
                                                                                //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main ()
@@ -47,7 +50,7 @@ void SPU (stack_t* STK, proc_t* PRC)
         //TODO: sqrt cos sin
         switch (PRC->code[PRC->ip]) //TODO: Codogen
         {
-            case  CMD_PUSH:
+            case CMD_PUSH:
             {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d ", PRC->code[PRC->ip]);
@@ -175,6 +178,28 @@ void SPU (stack_t* STK, proc_t* PRC)
                 break;
 
             }
+            case CMD_CALL:
+            {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                StackPush (PRC->AddrRet, PRC->ip + 1);
+
+                int arg = PRC->code[PRC->ip + 1];
+                PRC->ip = arg;
+                break;
+            }
+            case CMD_RET:
+            {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                int addr = 0;
+                StackPop (PRC->AddrRet, &addr);
+
+                PRC->ip = addr;
+                break;
+            }
             case CMD_COS:
             {
                 printf ("ip = %d ", PRC->ip);
@@ -204,6 +229,9 @@ void SPU (stack_t* STK, proc_t* PRC)
 
 void PrcCtor (proc_t* PRC)
 {
+    PRC->AddrRet = {};
+    StackCtor (PRC->AddrRet, 10);
+
     PRC->REG = (int*)calloc (nregisters, sizeof (int));
     if (PRC->REG == NULL)
         {
@@ -249,7 +277,7 @@ void MakeProgrammCode (proc_t* PRC)
     {
         PRC->code[PRC->ip] = cmd;
         PRC->ip++;
-        if (cmd == -1)
+        if (cmd == CMD_EOF)
             break;
         fscanf (file_code, "%d", &cmd);
     }

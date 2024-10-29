@@ -7,6 +7,7 @@
     {
         CMD_LABEL = 0,
         #include "Commands.h"
+        CMD_EOF = -2,
     };
     #undef DEF_CMD_
 #endif /* ENUM_H */

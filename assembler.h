@@ -1,10 +1,8 @@
-//#include "Stack\Stack.h"
-//#include "Stack\Config.h"
 #ifndef ASSEMBLER
     #define ASSEMBLER
 
-    #include "Stack/Stack.cpp"
-    #include "Stack/Stack_Error_Checking.cpp"
+    #include "Stack/Config.h"
+    #include "Stack/Stack.h"
 
     //TODO: ARCHITECTURE OF PROGRAMM LIKE PREVIOUS PROJECTS asm_t { }
 
@@ -42,50 +40,30 @@
 
     const size_t max_len_cmd = 20;
 
-    typedef struct
-    {
-        char name[20];
-        int addr;//-1 -> 10
-    } label_t;
+    struct label_t;
+    struct fixup_t;
 
     typedef struct
     {
-        int addr;
-        char name[20];
-    } fixup_t;
-
-    typedef struct
-    {
-        int next;
         int ip;
         FILE* file_asm;
         int* code;
         label_t* LABELS;
         fixup_t* FIXUP;
+        stack_t* AddrFunc;
         size_t index_lab;
         size_t index_fix;
+        size_t index_addr;
         char cmd[size_command];
     } asm_t;
 
-    void AsmCtor(asm_t* ASM);
+    void AsmCtor (asm_t* ASM);
 
     void AsmDtor (asm_t* ASM);
 
     void Assembler (asm_t* ASM);
 
     void MakeCodeFile (int* code);
-
-    int IsLabel (char* cmd);
-
-    void DumpLabels (label_t* LABELS, size_t index_lab);
-
-    void DumpFixup (fixup_t* FIXUP, size_t index_fix);
-
-    bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS);
-
-    void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS, size_t* index_lab);
-
-    void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, fixup_t* FIXUP);
 
     void CompileArg (FILE* file_asm, int* code, int* ip);
 
@@ -94,5 +72,7 @@
     int IdCommand (char* cmd);
 
     char* ToName (const char* name, char name_cmd[size_command]);
+
+    bool JmpFunc (asm_t* ASM);
 #endif
 

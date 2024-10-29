@@ -2,8 +2,8 @@
     #define PROCCESSOR
     #include <sys/types.h>
 
-    #include "Stack/Stack.cpp"
-    #include "Stack/Stack_Error_Checking.cpp"
+    #include "Stack/Config.h"
+    #include "Stack/Stack.h"
 
     //TODO: more structures and enums and arrays of structures
 
@@ -27,6 +27,7 @@
         int* REG;
         int* RAM;
         int* code;
+        stack_t* AddrRet;
         int  size;
         int  ip;
     } proc_t;
