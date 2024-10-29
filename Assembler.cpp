@@ -158,7 +158,6 @@ void Assembler (asm_t* ASM)
                     else
                         printf ("arg Jmp is not label\n");
                 }
-                //free (arg);
                 ASM->ip += 2;
                 break;
             }
@@ -169,11 +168,8 @@ void Assembler (asm_t* ASM)
 
                 DumpLabels (ASM->LABELS, ASM->index_lab);
 
-                void* arg = calloc (max_len_cmd, sizeof (char));
-                if (arg == NULL) {
-                    printf ("calloc return NULL");
-                    assert (0);
-                }
+                char arg[max_len_cmd] = {};
+
                 if (fscanf (ASM->file_asm, "%d", (int*)arg))
                     (ASM->code)[ASM->ip + 1] = *((int*)arg);
                 else {
@@ -208,7 +204,6 @@ void Assembler (asm_t* ASM)
                     else
                         printf ("arg Ja is not label\n");
                 }
-                free (arg);
                 ASM->ip += 2;
                 break;
             }
