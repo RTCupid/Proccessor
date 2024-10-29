@@ -43,7 +43,7 @@ void Assembler (asm_t* ASM)
 
         switch (id)
         {
-            case LABEL_ID:
+            case CMD_LABEL:
             {
                 printf ("    <%s> is label\n", ASM->cmd);
 
@@ -57,7 +57,7 @@ void Assembler (asm_t* ASM)
                 AddLabel (in_labels, nelem, ASM->cmd, ASM->ip, ASM->LABELS, &(ASM->index_lab));
                 break;
             }
-            case PUSH_ID:                                    //TD: choose one register CAPITAL or small
+            case CMD_PUSH:                                    //TD: choose one register CAPITAL or small
             {
                 (ASM->code)[ASM->ip] = CMD_PUSH;
                 ASM->ip++;
@@ -65,7 +65,7 @@ void Assembler (asm_t* ASM)
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
-            case POP_ID:
+            case CMD_POP:
             {
                 (ASM->code)[ASM->ip] = CMD_POP;
                 ASM->ip++;
@@ -74,7 +74,7 @@ void Assembler (asm_t* ASM)
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
-            case ADD_ID:                                        //TD: make function that compares strings and returns number - command id
+            case CMD_ADD:                                        //TD: make function that compares strings and returns number - command id
             {                                                   //TD: switch case
                 (ASM->code)[ASM->ip] = CMD_ADD;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -82,7 +82,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
-            case SUB_ID:
+            case CMD_SUB:
             {
                 (ASM->code)[ASM->ip] = CMD_SUB;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -90,7 +90,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
-            case DIV_ID:
+            case CMD_DIV:
             {
                 (ASM->code)[ASM->ip] = CMD_DIV;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -98,7 +98,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
-            case MUL_ID:
+            case CMD_MUL:
             {
                 (ASM->code)[ASM->ip] = CMD_MUL;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -106,7 +106,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
-            case OUT_ID:
+            case CMD_OUT:
             {
                 (ASM->code)[ASM->ip] = CMD_OUT;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -114,7 +114,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
-            case JMP_ID:
+            case CMD_JMP:
             {
                 (ASM->code)[ASM->ip] = CMD_JMP;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -162,7 +162,7 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 2;
                 break;
             }
-            case JA_ID:
+            case CMD_JA:
             {
                 (ASM->code)[ASM->ip] = CMD_JA;
                 printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -212,13 +212,25 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 2;
                 break;
             }
-            case HLT_ID:
+            case CMD_HLT:
             {
                 (ASM->code)[ASM->ip] = CMD_HLT;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 ASM->next = 0;
+                break;
+            }
+            case CMD_CALL:
+            {
+
+
+                break;
+            }
+            case CMD_RET:
+            {
+
+
                 break;
             }
             default:
@@ -542,15 +554,17 @@ int IdCommand (char* cmd)
     #define DEF_CMD_(name, id, ...)                         \
             if (strcmp (cmd, ToName (#name, name_cmd)) == 0)\
             {                                               \
-                return name##_ID;                           \
+                return CMD_##name;                           \
             }
+
     char name_cmd[size_command] = {};
+
     printf ("name_cmd = %p\n",    name_cmd);
     printf ("name_cmd[0] = <%c>\n", name_cmd[0]);
 
     if (IsLabel (cmd))
     {
-        return LABEL_ID;
+        return CMD_LABEL;
     }
     #include "Commands.h"
     /*else*/

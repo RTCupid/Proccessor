@@ -8,7 +8,7 @@
 
     //TODO: ARCHITECTURE OF PROGRAMM LIKE PREVIOUS PROJECTS asm_t { }
 
-    enum cmd_id_t
+/*enum cmd_id_t
     {
         LABEL_ID = 0,
         PUSH_ID,
@@ -24,7 +24,7 @@
         SIN_ID,
         SQRT_ID,
         HLT_ID = -1,
-    };
+    };*/
     enum arg_t
     {
         ARG_NUM = 1,

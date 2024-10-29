@@ -5,6 +5,7 @@
 
     enum cmd_t
     {
+        CMD_LABEL = 0,
         #include "Commands.h"
     };
     #undef DEF_CMD_
