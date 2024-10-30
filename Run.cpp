@@ -25,8 +25,6 @@ int main ()
 
     SPU (&STK, &PRC);
 
-    DumpRAM (PRC.RAM);
-
     PrcDtor (&PRC);
 
     StackDtor (&STK);
@@ -183,7 +181,7 @@ void SPU (stack_t* STK, proc_t* PRC)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
-                StackPush (PRC->AddrRet, PRC->ip + 1);
+                StackPush (&PRC->AddrRet, PRC->ip + 2);
 
                 int arg = PRC->code[PRC->ip + 1];
                 PRC->ip = arg;
@@ -195,7 +193,7 @@ void SPU (stack_t* STK, proc_t* PRC)
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int addr = 0;
-                StackPop (PRC->AddrRet, &addr);
+                StackPop (&PRC->AddrRet, &addr);
 
                 PRC->ip = addr;
                 break;
@@ -205,6 +203,15 @@ void SPU (stack_t* STK, proc_t* PRC)
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
+                break;
+            }
+            case CMD_DRAW:
+            {
+                printf ("ip = %d ", PRC->ip);
+                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                DumpRAM (PRC->RAM);
+                PRC->ip += 1;
                 break;
             }
             case CMD_HLT:
@@ -229,8 +236,13 @@ void SPU (stack_t* STK, proc_t* PRC)
 
 void PrcCtor (proc_t* PRC)
 {
-    PRC->AddrRet = {};
-    StackCtor (PRC->AddrRet, 10);
+    printf ("\nCtor Processor\n");
+
+    printf ("PRC->AddrRet = %p\n", &PRC->AddrRet);
+    err_t error = StackCtor (&PRC->AddrRet, 10);
+    PrintErrorStack (error, "StackCtor");
+
+    StackDump (&PRC->AddrRet);
 
     PRC->REG = (int*)calloc (nregisters, sizeof (int));
     if (PRC->REG == NULL)
@@ -255,6 +267,8 @@ void PrcCtor (proc_t* PRC)
 
 void PrcDtor (proc_t* PRC)
 {
+    StackDtor (&PRC->AddrRet);
+
     free (PRC->REG);
     PRC->REG = NULL;
 

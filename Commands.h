@@ -26,6 +26,8 @@ DEF_CMD_(SQRT, 12,  false)
 
 DEF_CMD_(CALL, 13,  true)
 
-DEF_CMD_(RET,  14, false)
+DEF_CMD_(RET,  14,  false)
+
+DEF_CMD_(DRAW, 15,  false)
 
 DEF_CMD_(HLT,  -1,  false)

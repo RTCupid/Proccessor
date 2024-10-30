@@ -2,16 +2,16 @@ push 25
 push 11
 pop DX
 pop [DX+16]
-jmp KSHCHTVR:
+call KSHCHTVR:
 push DX
 push [DX+16]
 add
 out
+draw
 hlt
 
 KSHCHTVR:
 push 52
 pop [DX+17]
-hlt
 ret
 

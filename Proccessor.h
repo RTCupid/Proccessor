@@ -27,7 +27,7 @@
         int* REG;
         int* RAM;
         int* code;
-        stack_t* AddrRet;
+        stack_t AddrRet;
         int  size;
         int  ip;
     } proc_t;
