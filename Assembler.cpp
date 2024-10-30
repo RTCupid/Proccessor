@@ -77,8 +77,8 @@ void Assembler (asm_t* ASM)
             case CMD_POP:
             {
                 (ASM->code)[ASM->ip] = CMD_POP;
-                ASM->ip++;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                ASM->ip++;
 
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
@@ -468,6 +468,7 @@ bool JmpFunc (asm_t* ASM)
             else
             {
                 (ASM->code)[ASM->ip] = -1;
+                ASM->ip++;
                 //StackPush (ASM->AddrFunc, -1);
 
                 (ASM->FIXUP)[(ASM->index_fix)].addr = ASM->ip;
@@ -477,7 +478,7 @@ bool JmpFunc (asm_t* ASM)
 
                 strcpy ((ASM->LABELS)[ASM->index_lab].name, (char*)arg);
                 (ASM->LABELS)[ASM->index_lab].addr = -1;
-                ASM->ip++;
+
             }
         }
         else

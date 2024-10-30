@@ -15,7 +15,7 @@ pop [CX]
 push CX
 push 1
 add
-pop AX
+pop CX
 
 push AX
 push 1

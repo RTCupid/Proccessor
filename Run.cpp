@@ -84,6 +84,7 @@ void SPU (stack_t* STK, proc_t* PRC)
                 printf (">>> b = <%d>\n\n", b);
 
                 StackPush (STK, a + b);
+                printf (">>> a + b = <%d>\n\n", a + b);
 
                 PRC->ip += 1;
                 break;
