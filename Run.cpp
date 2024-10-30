@@ -180,10 +180,13 @@ void SPU (stack_t* STK, proc_t* PRC)
             {
                 printf ("ip = %d ", PRC->ip);
                 printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                PRC->ip++;
 
-                StackPush (&PRC->AddrRet, PRC->ip + 2);
+                int arg = PRC->code[PRC->ip];
+                PRC->ip++;
 
-                int arg = PRC->code[PRC->ip + 1];
+                StackPush (&PRC->AddrRet, (PRC->ip));
+
                 PRC->ip = arg;
                 break;
             }
@@ -236,12 +239,13 @@ void SPU (stack_t* STK, proc_t* PRC)
 
 void PrcCtor (proc_t* PRC)
 {
-    printf ("\nCtor Processor\n");
+    printf ("\nCtor Processor:\n");
 
     printf ("PRC->AddrRet = %p\n", &PRC->AddrRet);
     err_t error = StackCtor (&PRC->AddrRet, 10);
     PrintErrorStack (error, "StackCtor");
 
+    //assert (0);
     StackDump (&PRC->AddrRet);
 
     PRC->REG = (int*)calloc (nregisters, sizeof (int));
@@ -352,15 +356,15 @@ void PrDump (stack_t STK, proc_t PRC)
 
 //.............................................................................
 
-void DumpRAM (int* RAM) //TODO: [100] -> magic number
+void DumpRAM (int* RAM)                                                        //TD: [100] -> magic number
 {
     printf ("Dump RAM!\n");
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < sqrt (nRAM); i++)
     {
-        assert (i < 10);
-        for (int j = 0; j < 10; j++)
+        assert (i < sqrt (nRAM));
+        for (int j = 0; j < sqrt (nRAM); j++)
         {
-            assert (j < 10);
+            assert (j < sqrt (nRAM));
             if (RAM[i * 10 + j] == 0)
                 printf (". ");
             else
