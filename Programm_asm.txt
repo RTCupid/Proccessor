@@ -1,41 +1,41 @@
 
-push 1
-pop AX
-push 1
-pop BX
+    push 1
+    pop AX
+    push 1
+    pop BX
 
 LOOPY:
 LOOPX:
 
-push AX
-push BX
-add
-pop [CX]
+    push AX
+    push BX
+    add
+    pop [CX]
 
-push CX
-push 1
-add
-pop CX
+    push CX
+    push 1
+    add
+    pop CX
 
-push AX
-push 1
-add
-pop AX
+    push AX
+    push 1
+    add
+    pop AX
 
-push AX
-push 10
-ja LOOPX:
+    push AX
+    push 10
+    ja LOOPX:
 
-push BX
-push 1
-add
-pop BX
+    push BX
+    push 1
+    add
+    pop BX
 
-push BX
-push 10
-ja LOOPY:
+    push BX
+    push 10
+    ja LOOPY:
 
-draw
-hlt
+    draw
+    hlt
 
 
