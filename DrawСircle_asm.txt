@@ -13,10 +13,18 @@ while:
     push CX
 ja end:
     push AX
+    push 50
+    sub
     push AX
+    push 50
+    sub
     mul
     push BX
+    push 50
+    sub
     push BX
+    push 50
+    sub
     mul
     add
 

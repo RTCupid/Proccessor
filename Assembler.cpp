@@ -215,7 +215,7 @@ void AsmCtor(asm_t* ASM)
     //ASM->AddrFunc = {};
     //StackCtor (ASM->AddrFunc, 20);
 
-    ASM->file_asm  = fopen ("Programm_asm.txt", "rb");                        //TODO: use argumnets of cmd in future! ??????
+    ASM->file_asm  = fopen ("DrawСircle_asm.txt", "rb");                        //TODO: use argumnets of cmd in future! ??????
 
     ASM->code       = (int*) calloc (capacity_code,   sizeof (ASM->code[0]));
     ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));

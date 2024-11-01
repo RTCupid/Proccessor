@@ -377,17 +377,17 @@ void DumpRAM (int* RAM)                                                        /
     printf ("Dump RAM!\n");
     //for (int i = 0; i < nRAM; i++)
     //    printf ("%d", RAM[
-    for (int i = 1; i <= sqrt (nRAM); i++)
+    for (int i = 1; i < sqrt (nRAM); i++)
     {
         printf ("i = %d:", i);
-        assert (i <= sqrt (nRAM));
-        for (int j = 1; j <= sqrt (nRAM); j++)
+        assert (i < sqrt (nRAM));
+        for (int j = 1; j < sqrt (nRAM); j++)
         {
-            assert (j <= sqrt (nRAM));
+            assert (j < sqrt (nRAM));
             if (RAM[i * (int)sqrt (nRAM) + j] == 0)
-                printf (". ");
+                printf (".  ");
             else
-                printf ("* ");
+                printf ("#  ");
         }
         printf ("\n");
     }
