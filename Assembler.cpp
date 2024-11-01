@@ -460,7 +460,6 @@ bool JmpFunc (asm_t* ASM)
             {
             (ASM->code)[ASM->ip] = (ASM->LABELS)[nelem].addr;
             ASM->ip++;
-            //StackPush (ASM->AddrFunc, (ASM->LABELS)[nelem].addr);
 
             printf ("LABELS[%lu].addr = <%d>\n", nelem, (ASM->LABELS)[nelem].addr);
             printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
@@ -468,13 +467,12 @@ bool JmpFunc (asm_t* ASM)
             else
             {
                 (ASM->code)[ASM->ip] = -1;
-                ASM->ip++;
-                //StackPush (ASM->AddrFunc, -1);
 
                 (ASM->FIXUP)[(ASM->index_fix)].addr = ASM->ip;
                 strcpy ((ASM->FIXUP)[ASM->index_fix].name, (char*)arg);
 
                 ASM->index_fix++;
+                ASM->ip++;
 
                 strcpy ((ASM->LABELS)[ASM->index_lab].name, (char*)arg);
                 (ASM->LABELS)[ASM->index_lab].addr = -1;

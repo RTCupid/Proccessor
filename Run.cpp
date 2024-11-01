@@ -9,6 +9,7 @@
 #include "Stack/Stack.cpp"
 #include "Stack/Stack_Error_Checking.cpp"
 
+#define DBG if(0)
                                                                                //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main ()
@@ -38,11 +39,11 @@ int main ()
 void SPU (stack_t* STK, proc_t* PRC)
 {
     MakeProgrammCode (PRC);
-    printf ("size_code = %d\n", PRC->size);
+    DBG printf ("size_code = %d\n", PRC->size);
 
     int next = 1;
 
-    PrDump (*STK, *PRC);
+    //PrDump (*STK, *PRC);
     while (next)
     {
         //TODO: sqrt cos sin
@@ -50,19 +51,19 @@ void SPU (stack_t* STK, proc_t* PRC)
         {
             case CMD_PUSH:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d ", PRC->code[PRC->ip]);
 
                 int arg = GetArgPush (PRC, PRC->REG, PRC->RAM);
 
-                printf ("arg = %d\n", arg);
+                DBG printf ("arg = %d\n", arg);
                 StackPush (STK, arg);
                 break;
             }
             case CMD_POP:
             {                                      // from stack to Reg DX
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d ", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d ", PRC->code[PRC->ip]);
 
                 int value = 0;
                 StackPop (STK, &value);
@@ -73,26 +74,26 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_ADD:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int a = 0;
                 StackPop (STK, &a);
-                printf (">>> a = <%d>\n", a);
+                DBG printf (">>> a = <%d>\n", a);
                 int b = 0;
                 StackPop (STK, &b);
-                printf (">>> b = <%d>\n\n", b);
+                DBG printf (">>> b = <%d>\n\n", b);
 
                 StackPush (STK, a + b);
-                printf (">>> a + b = <%d>\n\n", a + b);
+                DBG printf (">>> a + b = <%d>\n\n", a + b);
 
                 PRC->ip += 1;
                 break;
             }
             case CMD_SUB:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int a = 0;
                 StackPop (STK, &a);
@@ -106,8 +107,8 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_DIV:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int a = 0;
                 StackPop (STK, &a);
@@ -121,8 +122,8 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_MUL:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int a = 0;
                 StackPop (STK, &a);
@@ -136,21 +137,21 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_OUT:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int value = 0;
                 StackPop (STK, &value);
 
-                printf ("return value = <%d>\n", value);
+                DBG printf ("return value = <%d>\n", value);
 
                 PRC->ip += 1;
                 break;
             }
             case CMD_JMP:
             {
-                printf ("ip = %d ", PRC->ip);
-/*100*/             printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+/*100*/         DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 //14.80*1.20 -> 1480 * 120 ->
 //1 -> 100 ->
 
@@ -160,13 +161,17 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_JA:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("Pause...\n");
+                DBG printf ("Enter to continue\n");
+                //getchar ();
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int a = 0;
                 int b = 0;
                 StackPop (STK, &b);
                 StackPop (STK, &a);
+                DBG printf ("b = %d\na = %d\n", b, a);
 
                 if (b > a) {
                     int arg = PRC->code[PRC->ip + 1];
@@ -174,13 +179,16 @@ void SPU (stack_t* STK, proc_t* PRC)
                 }
                 else
                     PRC->ip += 2;
+                DBG printf ("Pause...\n");
+                DBG printf ("Enter to continue\n");
+                //getchar ();
                 break;
 
             }
             case CMD_CALL:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
                 PRC->ip++;
 
                 int arg = PRC->code[PRC->ip];
@@ -193,8 +201,8 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_RET:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 int addr = 0;
                 StackPop (&PRC->AddrRet, &addr);
@@ -204,24 +212,27 @@ void SPU (stack_t* STK, proc_t* PRC)
             }
             case CMD_COS:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 break;
             }
             case CMD_DRAW:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 DumpRAM (PRC->RAM);
+                DBG printf ("Pause...\n");
+                DBG printf ("Enter to continue\n");
+                //getchar ();
                 PRC->ip += 1;
                 break;
             }
             case CMD_HLT:
             {
-                printf ("ip = %d ", PRC->ip);
-                printf ("cmd = %d\n", PRC->code[PRC->ip]);
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
                 next = 0;
                 break;
@@ -232,11 +243,11 @@ void SPU (stack_t* STK, proc_t* PRC)
                 next = 0;
             }
         }
-        PrDump (*STK, *PRC);
+        //PrDump (*STK, *PRC);
 
-        printf ("Pause...\n");
-        printf ("Enter to continue\n");
-        getchar ();
+        //printf ("Pause...\n");
+        //printf ("Enter to continue\n");
+        //getchar ();
     }
 }
 
@@ -364,13 +375,16 @@ void PrDump (stack_t STK, proc_t PRC)
 void DumpRAM (int* RAM)                                                        //TD: [100] -> magic number
 {
     printf ("Dump RAM!\n");
-    for (int i = 0; i < sqrt (nRAM); i++)
+    //for (int i = 0; i < nRAM; i++)
+    //    printf ("%d", RAM[
+    for (int i = 1; i <= sqrt (nRAM); i++)
     {
-        assert (i < sqrt (nRAM));
-        for (int j = 0; j < sqrt (nRAM); j++)
+        printf ("i = %d:", i);
+        assert (i <= sqrt (nRAM));
+        for (int j = 1; j <= sqrt (nRAM); j++)
         {
-            assert (j < sqrt (nRAM));
-            if (RAM[i * 10 + j] == 0)
+            assert (j <= sqrt (nRAM));
+            if (RAM[i * (int)sqrt (nRAM) + j] == 0)
                 printf (". ");
             else
                 printf ("* ");
@@ -391,20 +405,20 @@ int GetArgPush (proc_t* PRC, int* REG, int* RAM)
 
     if (argType & MASK_NUM)                                                    //TD: magic number
     {
-        printf ("arg is number\n");
+        DBG printf ("arg is number\n");
         argValue = PRC->code[PRC->ip];
         PRC->ip++;
     }
     if (argType & MASK_REG)
     {
-        printf ("arg is register\n");
+        DBG printf ("arg is register\n");
         int regNum = PRC->code[PRC->ip];
         argValue += REG[regNum];
         PRC->ip++;
     }
     if (argType & MASK_RAM)
     {
-        printf ("call RAM\n");
+        DBG printf ("call RAM\n");
         argValue = RAM[argValue];
     }
 

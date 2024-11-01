@@ -33,7 +33,7 @@
     } proc_t;
 
     const size_t nregisters = 4;
-    const size_t nRAM = 100;
+    const size_t nRAM = 10000;
     const size_t capacity_code = 200;
 
     void PrcCtor (proc_t* PRC);

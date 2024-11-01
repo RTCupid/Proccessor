@@ -1,41 +1,68 @@
+push 0
+pop AX
+push 0
+pop BX
+push 1
+pop CX
+push 0
+pop DX
 
-    push 1
-    pop AX
-    push 1
-    pop BX
 
-LOOPY:
-LOOPX:
-
+while:
+    push 10000
+    push CX
+ja end:
     push AX
+    push AX
+    mul
     push BX
+    push BX
+    mul
     add
-    pop [CX]
 
+    push 2501
+ja incycle:
+    push 0
+    pop [DX]
+    jmp next:
+
+incycle:
+    push 1
+    pop [DX]
+
+next:
+    push DX
+    push 1
+    add
+    pop DX
     push CX
     push 1
     add
     pop CX
-
     push AX
     push 1
     add
     pop AX
+call VerifyAX:
 
-    push AX
-    push 10
-    ja LOOPX:
+    jmp while:
 
-    push BX
-    push 1
-    add
-    pop BX
 
-    push BX
-    push 10
-    ja LOOPY:
-
+end:
     draw
     hlt
 
+
+VerifyAX:
+    push AX
+    push 101
+    ja purpose:
+        push 1
+        pop AX
+        push BX
+        push 1
+        add
+        pop BX
+    purpose:
+    ret
 

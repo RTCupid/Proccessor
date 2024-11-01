@@ -34,11 +34,11 @@
     };
 
     const size_t size_command = 120;
-    const size_t capacity_code = 200;
-    const size_t capacity_labels = 10;
-    const size_t capacity_fixup = 10;
+    const size_t capacity_code = 500;
+    const size_t capacity_labels = 100;
+    const size_t capacity_fixup = 100;
 
-    const size_t max_len_cmd = 20;
+    const size_t max_len_cmd = 120;
 
     struct label_t;
     struct fixup_t;
