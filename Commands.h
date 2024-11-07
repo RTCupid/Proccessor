@@ -32,4 +32,6 @@ DEF_CMD_(DRAW, 15,  false)
 
 DEF_CMD_(IN,   16,  false)
 
+DEF_CMD_(JAE,  17,  true)
+
 DEF_CMD_(HLT,  -1,  false)

@@ -45,15 +45,15 @@ ja end:
     sqrt
     push 2
     div
+
     push EX
     sqrt
     push 2
     div
-    mul
-    push 1
-    add
 
-ja incycle:
+    mul
+
+jae incycle:
     push 0
     pop [DX]
     jmp next:
@@ -89,10 +89,8 @@ VerifyAX:
     push AX
     push EX
     sqrt
-    push 1
-    add
 
-    ja purpose:
+    jae purpose:
         push 1
         pop AX
         push BX
