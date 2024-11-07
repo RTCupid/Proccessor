@@ -151,6 +151,14 @@ void Assembler (asm_t* ASM)
                 }
                 break;
             }
+            case CMD_SQRT:
+            {
+                (ASM->code)[ASM->ip] = CMD_SQRT;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+
+                ASM->ip+=1;
+                break;
+            }
             case CMD_CALL:
             {
                 (ASM->code)[ASM->ip] = CMD_CALL;
@@ -175,6 +183,14 @@ void Assembler (asm_t* ASM)
             case CMD_DRAW:
             {
                 (ASM->code)[ASM->ip] = CMD_DRAW;
+                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+
+                ASM->ip += 1;
+                break;
+            }
+            case CMD_IN:
+            {
+                (ASM->code)[ASM->ip] = CMD_IN;
                 printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;

@@ -6,29 +6,53 @@ push 1
 pop CX
 push 0
 pop DX
-
+in
+pop EX
 
 while:
-    push 10000
+    push EX
     push CX
 ja end:
     push AX
-    push 50
+    push EX
+    sqrt
+    push 2
+    div
     sub
     push AX
-    push 50
+    push EX
+    sqrt
+    push 2
+    div
     sub
     mul
     push BX
-    push 50
+    push EX
+    sqrt
+    push 2
+    div
     sub
     push BX
-    push 50
+    push EX
+    sqrt
+    push 2
+    div
     sub
     mul
     add
 
-    push 2501
+    push EX
+    sqrt
+    push 2
+    div
+    push EX
+    sqrt
+    push 2
+    div
+    mul
+    push 1
+    add
+
 ja incycle:
     push 0
     pop [DX]
@@ -63,7 +87,11 @@ end:
 
 VerifyAX:
     push AX
-    push 101
+    push EX
+    sqrt
+    push 1
+    add
+
     ja purpose:
         push 1
         pop AX

@@ -185,6 +185,19 @@ void SPU (stack_t* STK, proc_t* PRC)
                 break;
 
             }
+            case CMD_SQRT:
+            {
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                int arg = 0;
+                StackPop (STK, &arg);
+
+                stack_elem_t returnedArg = sqrt (arg);
+                StackPush (STK, returnedArg);
+                PRC->ip += 1;
+                break;
+            }
             case CMD_CALL:
             {
                 DBG printf ("ip = %d ", PRC->ip);
@@ -210,13 +223,6 @@ void SPU (stack_t* STK, proc_t* PRC)
                 PRC->ip = addr;
                 break;
             }
-            case CMD_COS:
-            {
-                DBG printf ("ip = %d ", PRC->ip);
-                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
-
-                break;
-            }
             case CMD_DRAW:
             {
                 DBG printf ("ip = %d ", PRC->ip);
@@ -227,6 +233,21 @@ void SPU (stack_t* STK, proc_t* PRC)
                 DBG printf ("Enter to continue\n");
                 //getchar ();
                 PRC->ip += 1;
+                break;
+            }
+            case CMD_IN:
+            {
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                printf ("Enter number: ");
+                stack_elem_t arg = 0;
+                scanf ("%d", &arg);
+
+                StackPush (STK, arg);
+
+                PRC->ip += 1;
+                //getchar();
                 break;
             }
             case CMD_HLT:
@@ -365,7 +386,7 @@ void PrDump (stack_t STK, proc_t PRC)
     }
     printf ("\n");
     printf ("Viktoria\n");
-    printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d\n", (PRC.REG)[AX], (PRC.REG)[BX], (PRC.REG)[CX], (PRC.REG)[DX]);
+    printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d | EX = %d\n", (PRC.REG)[AX], (PRC.REG)[BX], (PRC.REG)[CX], (PRC.REG)[DX], (PRC.REG)[EX]);
 
     printf ("--------------------------------------------------------------------------------\n\n\n");
 }

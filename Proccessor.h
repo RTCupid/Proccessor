@@ -19,7 +19,8 @@
         AX = 0,
         BX = 1,
         CX = 2,
-        DX = 3
+        DX = 3,
+        EX = 4,
     };
 
     typedef struct
@@ -32,7 +33,7 @@
         int  ip;
     } proc_t;
 
-    const size_t nregisters = 4;
+    const size_t nregisters = 5;
     const size_t nRAM = 10000;
     const size_t capacity_code = 200;
 
