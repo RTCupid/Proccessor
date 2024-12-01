@@ -310,7 +310,8 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf ("code[%d] = %d\n\n", *ip, code[*ip]);
         (*ip)++;
     }
-    else if (fscanf (file_asm, "%s", arg)){
+    else if (fscanf (file_asm, "%s", arg))
+    {
         printf("\n<%s>\n", arg);
 
         char* addrReg = strchr (arg, 'X');
