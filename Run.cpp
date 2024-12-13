@@ -12,7 +12,7 @@
 #define DBG if(0)
                                                                                //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
-int main ()
+int main (int argc, char** argv)
 {
     printf ("# My proccessor\n");
     printf ("# (c) RTCupid, 2024\n\n");
@@ -22,9 +22,17 @@ int main ()
     StackCtor (&STK, 8);
 
     proc_t PRC = {};
-    PrcCtor (&PRC);
+    if (argc > 1)
+    {
+        PrcCtor (&PRC);
+    }
+    else
+    {
+        printf ("ERROR: don't find code file\n");
+        abort ();
+    }
 
-    SPU (&STK, &PRC);
+    SPU (&STK, &PRC, argv[1]);
 
     PrcDtor (&PRC);
 
@@ -36,9 +44,9 @@ int main ()
 
 // Run processor...............................................................
 
-void SPU (stack_t* STK, proc_t* PRC)
+void SPU (stack_t* STK, proc_t* PRC, char* code_file)
 {
-    MakeProgrammCode (PRC);
+    MakeProgrammCode (PRC, code_file);
     DBG printf ("size_code = %d\n", PRC->size);
 
     int next = 1;
@@ -326,6 +334,11 @@ void PrcCtor (proc_t* PRC)
         }
 
     PRC->code = (int*)calloc (capacity_code, sizeof (int));
+    if (PRC->code == NULL)
+        {
+        printf ("ERROR: calloc to RAM return NULL");
+        assert (0);
+        }
     PRC->size = 0;
 
 }
@@ -348,9 +361,14 @@ void PrcDtor (proc_t* PRC)
 
 // Making array of code........................................................
 
-void MakeProgrammCode (proc_t* PRC)
+void MakeProgrammCode (proc_t* PRC, char* code_file)
 {
-    FILE* file_code = fopen ("Programm_code.txt", "r");
+    FILE* file_code = fopen (code_file, "r");
+    if (file_code == NULL)
+    {
+        printf ("ERROR: Don't find file of code!\n");
+        abort ();
+    }
 
     int cmd = 0;
     fscanf (file_code, "%d", &cmd);

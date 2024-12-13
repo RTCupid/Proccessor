@@ -57,7 +57,7 @@
         char cmd[size_command];
     } asm_t;
 
-    void AsmCtor (asm_t* ASM);
+    void AsmCtor (asm_t* ASM, char* asm_file);
 
     void AsmDtor (asm_t* ASM);
 

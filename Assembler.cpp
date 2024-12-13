@@ -12,14 +12,28 @@
 
 //TD: many .cpp and many .h in future
 // Don't forget about architecture of project
+#define DBG if(0)
 
-int main (/*int argc, char** argv*/) //TODO: K & R - аргументы командной строки и typedef
+int main (int argc, char* argv[]) //TODO: K & R - аргументы командной строки и typedef
 {
     printf ("# My processor\n");
     printf ("# (c) RTCupid, 2024\n\n");
 
     asm_t ASM = {};
-    AsmCtor(&ASM);
+    for (int i = 0; i < argc; i++)
+    {
+        printf ("argv[%d] = <%s>\n", i, argv[i]);
+    }
+
+    if (argc > 1)
+    {
+        AsmCtor(&ASM, argv[1]);
+    }
+    else
+    {
+        printf ("Don't find asm file\n");
+        abort ();
+    }
 
     Assembler (&ASM);
 
@@ -36,7 +50,7 @@ void Assembler (asm_t* ASM)
     while (1)
     {                                          //TD: remove magic number
         int endCompile = fscanf (ASM->file_asm, "%s", ASM->cmd);
-        printf (">>> cmd = <%s>\n", ASM->cmd);
+        DBG printf (">>> cmd = <%s>\n", ASM->cmd);
 
         if (endCompile == EOF)
         {
@@ -44,7 +58,7 @@ void Assembler (asm_t* ASM)
             break;
         }
         int id = IdCommand (ASM->cmd);
-        printf ("\n\n>>>>>> <%d>\n\n", id);
+        DBG printf ("\n\n>>>>>> <%d>\n\n", id);
 
         //if (!IsLabel (cmd)) {
         //    printf ("                                                        <%s> is not label\n", cmd);
@@ -54,14 +68,14 @@ void Assembler (asm_t* ASM)
         {
             case CMD_LABEL:
             {
-                printf ("    <%s> is label\n", ASM->cmd);
+                DBG printf ("    <%s> is label\n", ASM->cmd);
 
                 size_t nelem = 0;
 
                 DumpLabels (ASM->LABELS, ASM->index_lab);
 
                 bool in_labels = FindInLabels (&nelem, ASM->cmd, ASM->index_lab, ASM->LABELS);
-                printf ("FindInLabels (%s) returned %d\n", ASM->cmd, in_labels);
+                DBG printf ("FindInLabels (%s) returned %d\n", ASM->cmd, in_labels);
 
                 AddLabel (in_labels, nelem, ASM->cmd, ASM->ip, ASM->LABELS, &(ASM->index_lab));
                 break;
@@ -70,14 +84,14 @@ void Assembler (asm_t* ASM)
             {
                 (ASM->code)[ASM->ip] = CMD_PUSH;
                 ASM->ip++;
-                printf ("code[%d] = <%d>\n", ASM->ip - 1, (ASM->code)[ASM->ip - 1]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip - 1, (ASM->code)[ASM->ip - 1]);
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
             case CMD_POP:
             {
                 (ASM->code)[ASM->ip] = CMD_POP;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
                 ASM->ip++;
 
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
@@ -86,7 +100,7 @@ void Assembler (asm_t* ASM)
             case CMD_ADD:                                        //TD: make function that compares strings and returns number - command id
             {                                                   //TD: switch case
                 (ASM->code)[ASM->ip] = CMD_ADD;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -94,7 +108,7 @@ void Assembler (asm_t* ASM)
             case CMD_SUB:
             {
                 (ASM->code)[ASM->ip] = CMD_SUB;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -102,7 +116,7 @@ void Assembler (asm_t* ASM)
             case CMD_DIV:
             {
                 (ASM->code)[ASM->ip] = CMD_DIV;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -110,7 +124,7 @@ void Assembler (asm_t* ASM)
             case CMD_MUL:
             {
                 (ASM->code)[ASM->ip] = CMD_MUL;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -118,7 +132,7 @@ void Assembler (asm_t* ASM)
             case CMD_OUT:
             {
                 (ASM->code)[ASM->ip] = CMD_OUT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -126,13 +140,13 @@ void Assembler (asm_t* ASM)
             case CMD_JMP:
             {
                 (ASM->code)[ASM->ip] = CMD_JMP;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
                 if (err_t)
                 {
-                    printf ("arg jmp is not label");
+                    DBG printf ("arg jmp is not label");
                     assert(0);
                 }
                 break;
@@ -140,13 +154,13 @@ void Assembler (asm_t* ASM)
             case CMD_JA:
             {
                 (ASM->code)[ASM->ip] = CMD_JA;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    DBG printf ("arg ja is not label");
                     assert(0);
                 }
                 break;
@@ -154,13 +168,13 @@ void Assembler (asm_t* ASM)
             case CMD_JAE:
             {
                 (ASM->code)[ASM->ip] = CMD_JAE;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    DBG printf ("arg ja is not label");
                     assert(0);
                 }
                 break;
@@ -168,7 +182,7 @@ void Assembler (asm_t* ASM)
             case CMD_SQRT:
             {
                 (ASM->code)[ASM->ip] = CMD_SQRT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip+=1;
                 break;
@@ -176,12 +190,12 @@ void Assembler (asm_t* ASM)
             case CMD_CALL:
             {
                 (ASM->code)[ASM->ip] = CMD_CALL;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
                 if (err_t)
                 {
-                    printf ("arg call is not label");
+                    DBG printf ("arg call is not label");
                     assert(0);
                 }
                 break;
@@ -189,7 +203,7 @@ void Assembler (asm_t* ASM)
             case CMD_RET:
             {
                 (ASM->code)[ASM->ip] = CMD_RET;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -197,7 +211,7 @@ void Assembler (asm_t* ASM)
             case CMD_DRAW:
             {
                 (ASM->code)[ASM->ip] = CMD_DRAW;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -205,7 +219,7 @@ void Assembler (asm_t* ASM)
             case CMD_IN:
             {
                 (ASM->code)[ASM->ip] = CMD_IN;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -213,7 +227,7 @@ void Assembler (asm_t* ASM)
             case CMD_HLT:
             {
                 (ASM->code)[ASM->ip] = CMD_HLT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -238,14 +252,20 @@ void Assembler (asm_t* ASM)
 
 // Constructor of ASM structure................................................
 
-void AsmCtor(asm_t* ASM)
+void AsmCtor(asm_t* ASM, char* asm_file)
 {
     ASM->ip = 0;
 
     //ASM->AddrFunc = {};
     //StackCtor (ASM->AddrFunc, 20);
 
-    ASM->file_asm  = fopen ("DrawСircle_asm.txt", "rb");                        //TODO: use argumnets of cmd in future! ??????
+    DBG printf ("asm_file = <%s>\n", asm_file);
+    ASM->file_asm  = fopen (asm_file, "rb");                        //TODO: use argumnets of cmd in future! ??????
+    if (ASM->file_asm == NULL)
+    {
+        printf ("ERROR: can not find asm file to read\n");
+        abort ();
+    }
 
     ASM->code       = (int*) calloc (capacity_code,   sizeof (ASM->code[0]));
     ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
@@ -281,7 +301,7 @@ void MakeCodeFile (int* code)
     int ip = 0;
     while (1) {
         fprintf (file_code, "%d\n", code[ip]);
-        printf ("code[%d] = %d\n", ip, code[ip]);
+        DBG printf ("code[%d] = %d\n", ip, code[ip]);
         if (code[ip] == CMD_EOF)
             break;
 
@@ -303,101 +323,101 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
     {
         argType |=  1;
         code[*ip] = argType;
-        printf ("code[%d] = %d\n", *ip, code[*ip]);
+        DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
         (*ip)++;
 
         code[*ip] = *((int*)arg);
-        printf ("code[%d] = %d\n\n", *ip, code[*ip]);
+        DBG printf ("code[%d] = %d\n\n", *ip, code[*ip]);
         (*ip)++;
     }
     else if (fscanf (file_asm, "%s", arg))
     {
-        printf("\n<%s>\n", arg);
+        DBG printf("\n<%s>\n", arg);
 
         char* addrReg = strchr (arg, 'X');
         if (addrReg != NULL)
             argType = argType | 2;
-        printf ("addrReg = <%p>\n", addrReg);
+        DBG printf ("addrReg = <%p>\n", addrReg);
 
         char* addrAdd = strchr (arg, '+');
         if (addrAdd != NULL)
             argType = argType | 3;
-        printf ("addrAdd = <%p>\n", addrAdd);
+        DBG printf ("addrAdd = <%p>\n", addrAdd);
 
         char* addrRam = strchr (arg, '[');
         if (addrRam != NULL)
             argType = argType | 4;
-        printf ("addrRam = <%p>\n", addrRam);
+        DBG printf ("addrRam = <%p>\n", addrRam);
 
         if ((argType & 2) == 0)
             argType = argType | 1;
 
-        printf ("argType = <%d>\n", argType);
+        DBG printf ("argType = <%d>\n", argType);
         switch (argType)
         {
             case ARG_NUM:                                                      //TD: Make enum or smth but not MAGIC numbers
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             case ARG_REG:
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 code[*ip] = numReg;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             case ARG_REG_NUM:
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 numNum = (int)atol (addrAdd + 1 * sizeof (char));
                 code[*ip] = numNum;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 code[*ip] = numReg;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             case ARG_RAM_NUM:
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 numNum = (int)atol (addrRam + 1 * sizeof (char));
                 code[*ip] = numNum;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             case ARG_RAM_REG:
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 code[*ip] = numReg;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             case ARG_RAM_REG_NUM:
                 code[*ip] = argType;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 numReg = *(addrReg - 1 * sizeof (char)) - 'A';
                 numNum = (int)atol (addrAdd + 1 * sizeof (char));
                 code[*ip] = numNum;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
 
                 code[*ip] = numReg;
-                printf ("code[%d] = %d\n", *ip, code[*ip]);
+                DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
                 break;
             default:
@@ -433,8 +453,8 @@ int IdCommand (char* cmd)
 
     char name_cmd[size_command] = {};
 
-    printf ("name_cmd = %p\n",    name_cmd);
-    printf ("name_cmd[0] = <%c>\n", name_cmd[0]);
+    DBG printf ("name_cmd = %p\n",    name_cmd);
+    DBG printf ("name_cmd[0] = <%c>\n", name_cmd[0]);
 
     if (IsLabel (cmd))
     {
@@ -460,7 +480,7 @@ char* ToName (const char* name, char name_cmd[size_command])
         name_cmd[index] = (char)tolower ((name[index]));
         index++;
     }
-    printf ("in ToName (...) name_cmd = <%s>\n", name_cmd);
+    DBG printf ("in ToName (...) name_cmd = <%s>\n", name_cmd);
     return name_cmd;
 }
 
@@ -480,7 +500,7 @@ bool JmpFunc (asm_t* ASM)
     else {
         fscanf (ASM->file_asm, "%s", (char*)arg);
 
-        printf ("arg = <%s>\n", (char*)arg);
+        DBG printf ("arg = <%s>\n", (char*)arg);
 
         if (IsLabel ((char*)arg))
         {
@@ -492,8 +512,8 @@ bool JmpFunc (asm_t* ASM)
             (ASM->code)[ASM->ip] = (ASM->LABELS)[nelem].addr;
             ASM->ip++;
 
-            printf ("LABELS[%lu].addr = <%d>\n", nelem, (ASM->LABELS)[nelem].addr);
-            printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+            DBG printf ("LABELS[%lu].addr = <%d>\n", nelem, (ASM->LABELS)[nelem].addr);
+            DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
             }
             else
             {
