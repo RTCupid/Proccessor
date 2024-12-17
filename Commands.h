@@ -34,6 +34,8 @@ DEF_CMD_(IN,   16,  false)
 
 DEF_CMD_(JAE,  17,  true)
 
-DEF_CMD_(MEOW, 18,  true)
+DEF_CMD_(JE,   18,  true)
+
+DEF_CMD_(MEOW, 19,  true)
 
 DEF_CMD_(HLT,  -1,  false)

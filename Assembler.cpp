@@ -188,6 +188,20 @@ void Assembler (asm_t* ASM)
                 }
                 break;
             }
+            case CMD_JE:
+            {
+                (ASM->code)[ASM->ip] = CMD_JE;
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+
+                bool err_t = JmpFunc (ASM);
+
+                if (err_t)
+                {
+                    DBG printf ("arg ja is not label");
+                    assert(0);
+                }
+                break;
+            }
             case CMD_SQRT:
             {
                 (ASM->code)[ASM->ip] = CMD_SQRT;

@@ -1,58 +1,159 @@
- ;input
- in
- pop AX
- in
- pop BX
- in
- pop CX
+;input
+    in
+    pop AX
+    in
+    pop BX
+    in
+    pop CX
 
+    push 0
+    push AX
+je AX_NULL:         ; AX = 0 =>
 
+    push 0
+    push BX
+je BX_NULL:         ; BX = 0 =>
 
-;discriminant
- push BX
- push BX
- mul
+    push 0
+    push CX
+je CX_NULL:         ; CX = 0 =>
 
- push 4
- push CX
- push AX
- mul
- mul
+;discriminant AX != 0, BX != 0, CX != 0
+    push BX
+    push BX         ; BX^2
+    mul
 
- sub
+    push 4
+    push CX
+    push AX         ; 4 * AX * CX
+    mul
+    mul
 
-pop DX
+    sub             ; -
 
-;answer 1
-push -1
-push BX
-mul
+    pop DX          ; DX = BX^2 - 4 * AX * CX
 
-push DX
-sqrt
+    ;answer 1
+    push -1
+    push BX         ; -BX
+    mul
 
-sub
+    push DX         ; sqrt (DX)
+    sqrt
 
-push 2
-push AX
-mul
-div
+    sub             ; -
 
-;answer 2
-push -1
-push BX
-mul
+    push 2
+    push AX         ; 2 * AX
+    mul
+    div             ; x1 = (-BX - sqrt  (DX)) / (2 * AX)
 
-push DX
-sqrt
+    ;answer 2
+    push -1
+    push BX         ; -BX
+    mul
 
-add
+    push DX         ; sqrt (DX)
+    sqrt
 
-push 2
-push AX
-mul
-div
+    add             ; +
 
-out
-out
-hlt
+    push 2
+    push AX         ; 2 * AX
+    mul
+    div
+
+    push 2          ; two roots
+    out
+    out             ; first  root
+    out             ; second root
+    hlt
+
+AX_NULL:
+    push 0
+    push BX
+
+    je AX_BX_NULL:  ; AX = 0 & BX = 0 =>
+
+    push CX
+    push BX
+    div             ;   CX / BX
+
+    push -1
+    mul             ; - CX / BX
+
+    push 1
+    out             ; one root
+    out             ; x = -CX / BX
+
+    hlt
+
+BX_NULL:
+    push 0
+    push CX
+
+    ja no_roots:
+
+    push -1
+    push CX         ; -CX
+    mul
+
+    push AX         ; -CX / AX
+    div
+
+    sqrt
+    pop  [1]        ;[1] =   sqrt (-CX / AX)
+
+    push [1]        ; x1 =   sqrt (-CX / AX)
+    push [1]
+    push -1
+    mul             ; x2 = - sqrt (-CX / AX)
+
+    out
+    out
+
+    hlt
+
+CX_NULL:
+    push BX
+    push AX
+    div
+    push -1
+    mul             ; x2 = -BX/AX (AX != 0)
+
+    push 0          ; x1 = 0
+    push 2          ; two roots
+
+    out
+    out
+    out
+
+    hlt
+
+no_roots:
+    push 0
+    out
+
+    hlt
+
+answ_null:
+    push 1
+    push [1]
+    out
+    out
+
+    hlt
+
+AX_BX_NULL:
+    push 0
+    push CX
+
+    je AX_BX_CX_NULL:
+
+    jmp no_roots:
+
+AX_BX_CX_NULL:
+    push 8          ; inf
+    out
+
+    hlt
