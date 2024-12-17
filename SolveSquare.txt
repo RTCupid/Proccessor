@@ -33,6 +33,16 @@ je CX_NULL:         ; CX = 0 =>
 
     pop DX          ; DX = BX^2 - 4 * AX * CX
 
+    push DX
+    push 0
+
+    ja no_roots:    ; discriminant < 0
+
+    push DX
+    push 0
+
+    je DX_NULL:
+
     ;answer 1
     push -1
     push BX         ; -BX
@@ -127,6 +137,24 @@ CX_NULL:
     out
     out
     out
+
+    hlt
+
+DX_NULL:
+    push BX
+    push -1
+    mul
+
+    push AX
+    push 2
+    mul
+
+    div             ; x = -BX / (2 * AX)
+
+    push 1
+    out             ; one root
+
+    out             ; root
 
     hlt
 

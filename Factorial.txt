@@ -1,12 +1,12 @@
 ;input
 in
-pop CX
+pop CX              ; input CX
 
 push 1
-pop  BX
+pop  BX             ; BX = 1
 
 push 1
-pop  AX
+pop  AX             ; AX = 1
 
 ;recursive call
 call Factorial:
@@ -21,23 +21,23 @@ Factorial:
     push AX
     push 1
     add
-    pop AX
+    pop AX          ; AX++
 
     push CX
     push AX
 
-    jae endif:
+    jae endif:      ; if (AX >= CX)  => =>
         call Factorial:
-    endif:
+    endif:          ; <= <= <= <= <= <= <=
 
     push AX
     push BX
     mul
-    pop  BX     ;BX *= AX
+    pop  BX         ;BX *= AX
 
     push AX
     push 1
     sub
-    pop  AX
+    pop  AX         ; AX--
 
     ret

@@ -66,7 +66,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int arg = GetArgPush (PRC, PRC->REG, PRC->RAM);
 
                 DBG printf ("arg = %d\n", arg);
-                StackPush (STK, arg);
+                StackPush (STK, arg * 100);
                 break;
             }
             case CMD_POP:
@@ -124,7 +124,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int b = 0;
                 StackPop (STK, &b);
 
-                StackPush (STK, b / a);
+                StackPush (STK, (b / a) * 100);
 
                 PRC->ip += 1;
                 break;
@@ -139,7 +139,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int b = 0;
                 StackPop (STK, &b);
 
-                StackPush (STK, b * a);
+                StackPush (STK, b * a / 100);
 
                 PRC->ip += 1;
                 break;
@@ -152,7 +152,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int value = 0;
                 StackPop (STK, &value);
 
-                DBG printf (GRN "return value = <%d>\n" RESET, value);
+                DBG printf (GRN "return value = <%g>\n" RESET, (double)value / 100);
 
                 PRC->ip += 1;
                 break;
