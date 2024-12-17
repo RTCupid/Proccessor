@@ -1,0 +1,58 @@
+ ;input
+ in
+ pop AX
+ in
+ pop BX
+ in
+ pop CX
+
+
+
+;discriminant
+ push BX
+ push BX
+ mul
+
+ push 4
+ push CX
+ push AX
+ mul
+ mul
+
+ sub
+
+pop DX
+
+;answer 1
+push -1
+push BX
+mul
+
+push DX
+sqrt
+
+sub
+
+push 2
+push AX
+mul
+div
+
+;answer 2
+push -1
+push BX
+mul
+
+push DX
+sqrt
+
+add
+
+push 2
+push AX
+mul
+div
+
+out
+out
+hlt

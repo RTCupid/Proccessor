@@ -1,4 +1,4 @@
-
+;input
 in
 pop CX
 
@@ -8,8 +8,10 @@ pop  BX
 push 1
 pop  AX
 
+;recursive call
 call Factorial:
 
+;output
 push BX
 out
 
@@ -19,17 +21,17 @@ Factorial:
     push AX
     push BX
     mul
-    pop  BX
+    pop  BX     ;BX *= AX
 
     push 1
     push AX
     add
-    pop  AX
+    pop  AX     ;AX++
 
     push AX
     push CX
-    jae endif:
-    ret
+    jae endif:  ;if (CX <= AX)
+    ret         ;   return
     endif:
     call Factorial:
     ret

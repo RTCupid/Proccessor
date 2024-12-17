@@ -15,7 +15,7 @@ FLAGS = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ \
 	signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
 run: Asm.exe Run.exe
-	./Asm.exe Factorial.txt
+	./Asm.exe SolveSquare.txt
 	./Run.exe Programm_code.txt
 
 Asm.exe: Assembler.cpp Assembler.h Asm_labels.cpp Asm_labels.h
