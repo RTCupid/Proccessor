@@ -350,7 +350,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 next = 0;
             }
         }
-        //PrDump (*STK, *PRC);
+        PrDump (*STK, *PRC);
 
         //printf ("Pause...\n");
         //printf ("Enter to continue\n");

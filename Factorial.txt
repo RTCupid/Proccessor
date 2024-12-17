@@ -19,19 +19,25 @@ hlt
 
 Factorial:
     push AX
+    push 1
+    add
+    pop AX
+
+    push CX
+    push AX
+
+    jae endif:
+        call Factorial:
+    endif:
+
+    push AX
     push BX
     mul
     pop  BX     ;BX *= AX
 
+    push AX
     push 1
-    push AX
-    add
-    pop  AX     ;AX++
+    sub
+    pop  AX
 
-    push AX
-    push CX
-    jae endif:  ;if (CX <= AX)
-    ret         ;   return
-    endif:
-    call Factorial:
     ret
