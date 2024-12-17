@@ -5,7 +5,7 @@ pop CX              ; input CX
 push 1
 pop  BX             ; BX = 1
 
-push 1
+push 0
 pop  AX             ; AX = 1
 
 ;recursive call
