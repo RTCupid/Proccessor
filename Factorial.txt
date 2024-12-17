@@ -1,0 +1,35 @@
+
+in
+pop CX
+
+push 1
+pop  BX
+
+push 1
+pop  AX
+
+call Factorial:
+
+push BX
+out
+
+hlt
+
+Factorial:
+    push AX
+    push BX
+    mul
+    pop  BX
+
+    push 1
+    push AX
+    add
+    pop  AX
+
+    push AX
+    push CX
+    jae endif:
+    ret
+    endif:
+    call Factorial:
+    ret

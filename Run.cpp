@@ -8,8 +8,9 @@
 
 #include "Stack/Stack.cpp"
 #include "Stack/Stack_Error_Checking.cpp"
+#include "colors.h"
 
-#define DBG if(0)
+#define DBG if(1)
                                                                                //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main (int argc, char** argv)
@@ -71,7 +72,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
             case CMD_POP:
             {                                      // from stack to Reg DX
                 DBG printf ("ip = %d ", PRC->ip);
-                DBG printf ("cmd = %d ", PRC->code[PRC->ip]);
+                DBG printf ("cmd = %d \n", PRC->code[PRC->ip]);
 
                 int value = 0;
                 StackPop (STK, &value);
@@ -151,7 +152,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int value = 0;
                 StackPop (STK, &value);
 
-                DBG printf ("return value = <%d>\n", value);
+                DBG printf (GRN "return value = <%d>\n" RESET, value);
 
                 PRC->ip += 1;
                 break;
@@ -227,7 +228,33 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 int arg = 0;
                 StackPop (STK, &arg);
 
-                stack_elem_t returnedArg = sqrt (arg);
+                stack_elem_t returnedArg = (int)sqrt (arg);
+                StackPush (STK, returnedArg);
+                PRC->ip += 1;
+                break;
+            }
+            case CMD_SIN:
+            {
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                int arg = 0;
+                StackPop (STK, &arg);
+
+                stack_elem_t returnedArg = (int)sin (arg);
+                StackPush (STK, returnedArg);
+                PRC->ip += 1;
+                break;
+            }
+            case CMD_COS:
+            {
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+                int arg = 0;
+                StackPop (STK, &arg);
+
+                stack_elem_t returnedArg = (int)cos (arg);
                 StackPush (STK, returnedArg);
                 PRC->ip += 1;
                 break;
@@ -284,11 +311,36 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 //getchar();
                 break;
             }
+            case CMD_MEOW:
+            {
+                DBG printf ("ip = %d ", PRC->ip);
+                DBG printf ("cmd = %d ", PRC->code[PRC->ip]);
+
+                int arg = 0;
+
+                StackPop (STK, &arg);
+
+                printf ("\n");
+                for (int i = 0; i < arg; i++)
+                {
+                    printf (BLU "meow " RESET);
+                }
+                printf ("\n");
+
+                PRC->ip += 1;
+                break;
+            }
             case CMD_HLT:
             {
                 DBG printf ("ip = %d ", PRC->ip);
                 DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
+                next = 0;
+                break;
+            }
+            case CMD_EOF:
+            {
+                DBG printf (RED "EOF" RESET);
                 next = 0;
                 break;
             }
@@ -317,7 +369,7 @@ void PrcCtor (proc_t* PRC)
     PrintErrorStack (error, "StackCtor");
 
     //assert (0);
-    StackDump (&PRC->AddrRet);
+    //StackDump (&PRC->AddrRet);
 
     PRC->REG = (int*)calloc (nregisters, sizeof (int));
     if (PRC->REG == NULL)

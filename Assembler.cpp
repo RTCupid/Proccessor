@@ -3,16 +3,19 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+
 #include "Assembler.h"
 #include "Asm_labels.h"
 #include "Enum.h"
+#include "colors.h"
 
 #include "Stack/Stack.cpp"
 #include "Stack/Stack_Error_Checking.cpp"
 
+
 //TD: many .cpp and many .h in future
 // Don't forget about architecture of project
-#define DBG if(0)
+#define DBG if(1)
 
 int main (int argc, char* argv[]) //TODO: K & R - аргументы командной строки и typedef
 {
@@ -52,6 +55,12 @@ void Assembler (asm_t* ASM)
         int endCompile = fscanf (ASM->file_asm, "%s", ASM->cmd);
         DBG printf (">>> cmd = <%s>\n", ASM->cmd);
 
+        if (ASM->cmd[0] == ';')
+        {
+            SkipComment (ASM);
+            continue;
+        }
+
         if (endCompile == EOF)
         {
             (ASM->code)[ASM->ip] = CMD_EOF;
@@ -72,7 +81,7 @@ void Assembler (asm_t* ASM)
 
                 size_t nelem = 0;
 
-                DumpLabels (ASM->LABELS, ASM->index_lab);
+                DBG DumpLabels (ASM->LABELS, ASM->index_lab);
 
                 bool in_labels = FindInLabels (&nelem, ASM->cmd, ASM->index_lab, ASM->LABELS);
                 DBG printf ("FindInLabels (%s) returned %d\n", ASM->cmd, in_labels);
@@ -232,6 +241,12 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
+            case CMD_MEOW:
+            {
+                (ASM->code)[ASM->ip] = CMD_MEOW;
+                ASM->ip++;
+                break;
+            }
             default:
             {
                 printf ("unknown ID\n");
@@ -243,12 +258,25 @@ void Assembler (asm_t* ASM)
 
     printf ("Start FIXUP\n");
 
-    DumpFixup (ASM->FIXUP, ASM->index_fix);
+    DBG DumpFixup (ASM->FIXUP, ASM->index_fix);
 
     RunFixup (ASM->index_fix, ASM->index_lab, ASM->code, ASM->LABELS, ASM->FIXUP);
 
     MakeCodeFile (ASM->code);
 }
+
+void SkipComment (asm_t* ASM)
+{
+    printf (MAG "Skip Comment\n" RESET);
+    while (1)
+    {
+        int symbol = fgetc (ASM->file_asm);
+        if (symbol == '\n')
+        {
+            break;
+        }
+    }
+};
 
 // Constructor of ASM structure................................................
 

@@ -63,6 +63,8 @@
 
     void Assembler (asm_t* ASM);
 
+    void SkipComment (asm_t* ASM);
+
     void MakeCodeFile (int* code);
 
     void CompileArg (FILE* file_asm, int* code, int* ip);

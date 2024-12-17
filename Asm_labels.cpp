@@ -4,6 +4,7 @@
 #include "Asm_labels.h"
 
 //.............................................................................
+#define DBG if(0)
 
 int IsLabel (char* cmd)
 {
@@ -11,9 +12,9 @@ int IsLabel (char* cmd)
     for (int i = 0; cmd[i] != '\0'; i++)
         if (cmd[i] == ':') {
             islabel = 1;
-            printf ("                                                  <%s> is label\n", cmd);
+            DBG printf ("                                                  <%s> is label\n", cmd);
         }
-    printf ("islabel = %d\n", islabel);
+    DBG printf ("islabel = %d\n", islabel);
     return islabel;
 }
 
@@ -61,8 +62,8 @@ bool FindInLabels (size_t* nelem, char* name, size_t index_lab, label_t* LABELS)
     bool in_labels = false;
     while (*nelem < index_lab)                                                 //TD: while
     {
-        printf ("LABELS[%lu].name = <%s>\n", *nelem, LABELS[*nelem].name);
-        printf ("LABELS[%lu].addr = <%d>\n", *nelem, LABELS[*nelem].addr);
+        DBG printf ("LABELS[%lu].name = <%s>\n", *nelem, LABELS[*nelem].name);
+        DBG printf ("LABELS[%lu].addr = <%d>\n", *nelem, LABELS[*nelem].addr);
 
         if (strcmp (LABELS[*nelem].name, name) == 0)
         {
@@ -95,7 +96,7 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
         LABELS[*index_lab].addr = ip;
         (*index_lab)++;
 
-        printf ("\nLABEL ADDED:\n");
+        DBG printf ("\nLABEL ADDED:\n");
         DumpLabels (LABELS, *index_lab);
     }
 }
