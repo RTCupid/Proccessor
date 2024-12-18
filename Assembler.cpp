@@ -15,7 +15,7 @@
 
 //TD: many .cpp and many .h in future
 // Don't forget about architecture of project
-#define DBG if(1)
+#define DBG if(0)
 
 int main (int argc, char* argv[]) //TODO: K & R - аргументы командной строки и typedef
 {
@@ -309,9 +309,9 @@ void AsmCtor(asm_t* ASM, char* asm_file)
         abort ();
     }
 
-    ASM->code       = (int*) calloc (capacity_code,   sizeof (ASM->code[0]));
-    ASM->LABELS = (label_t*) calloc (capacity_labels, sizeof (ASM->LABELS[0]));
-    ASM->FIXUP  = (fixup_t*) calloc (capacity_fixup,  sizeof (ASM->FIXUP[0]));
+    ASM->code       = (int*) calloc (Capacity_code,   sizeof (ASM->code[0]));
+    ASM->LABELS = (label_t*) calloc (Capacity_labels, sizeof (ASM->LABELS[0]));
+    ASM->FIXUP  = (fixup_t*) calloc (Capacity_fixup,  sizeof (ASM->FIXUP[0]));
 
     ASM->index_lab = 0;
     ASM->index_fix = 0;
@@ -357,7 +357,7 @@ void MakeCodeFile (int* code)
 void CompileArg (FILE* file_asm, int* code, int* ip)
 {
     int argType = 0;
-    char* arg = (char*)calloc (size_command, sizeof (char)); //TD: Magic number
+    char* arg = (char*)calloc (Size_command, sizeof (char)); //TD: Magic number
     int numReg = 0;
     int numNum = 0;
 
@@ -493,7 +493,7 @@ int IdCommand (char* cmd)
                 return CMD_##name;                          \
             }
 
-    char name_cmd[size_command] = {};
+    char name_cmd[Size_command] = {};
 
     DBG printf ("name_cmd = %p\n",    name_cmd);
     DBG printf ("name_cmd[0] = <%c>\n", name_cmd[0]);
@@ -509,11 +509,11 @@ int IdCommand (char* cmd)
     #undef DEF_CMD_
 }
 
-char* ToName (const char* name, char name_cmd[size_command])
+char* ToName (const char* name, char name_cmd[Size_command])
 {
-    for (size_t i = 0; i < size_command; i++)                                  // clear array of name
+    for (size_t i = 0; i < Size_command; i++)                                  // clear array of name
     {
-        assert (i < size_command);
+        assert (i < Size_command);
         name_cmd[i] = '\0';
     }
     size_t index = 0;

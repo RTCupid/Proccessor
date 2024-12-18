@@ -33,10 +33,10 @@
         ARG_RAM_REG_NUM = 7,
     };
 
-    const size_t size_command = 120;
-    const size_t capacity_code = 500;
-    const size_t capacity_labels = 100;
-    const size_t capacity_fixup = 100;
+    const size_t Size_command = 120;
+    const size_t Capacity_code = 500;
+    const size_t Capacity_labels = 100;
+    const size_t Capacity_fixup = 100;
 
     const size_t max_len_cmd = 120;
 
@@ -54,7 +54,7 @@
         size_t index_lab;
         size_t index_fix;
         size_t index_addr;
-        char cmd[size_command];
+        char cmd[Size_command];
     } asm_t;
 
     void AsmCtor (asm_t* ASM, char* asm_file);
@@ -73,7 +73,7 @@
 
     int IdCommand (char* cmd);
 
-    char* ToName (const char* name, char name_cmd[size_command]);
+    char* ToName (const char* name, char name_cmd[Size_command]);
 
     bool JmpFunc (asm_t* ASM);
 #endif

@@ -104,6 +104,11 @@ BX_NULL:
 
     ja no_roots:
 
+    push 0
+    push CX
+
+    je answ_null:   ; x = 0
+
     push -1
     push CX         ; -CX
     mul
@@ -119,6 +124,8 @@ BX_NULL:
     push -1
     mul             ; x2 = - sqrt (-CX / AX)
 
+    push 2
+    out             ; two roots
     out
     out
 
@@ -165,8 +172,8 @@ no_roots:
     hlt
 
 answ_null:
+    push 0
     push 1
-    push [1]
     out
     out
 

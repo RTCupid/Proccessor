@@ -907,7 +907,7 @@ extern int __overflow (FILE *, int);
 # 36 "/usr/include/c++/13/stdlib.h" 3
 # 1 "/usr/include/c++/13/cstdlib" 1 3
 # 39 "/usr/include/c++/13/cstdlib" 3
-       
+
 # 40 "/usr/include/c++/13/cstdlib" 3
 
 # 1 "/usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h" 1 3
@@ -2415,7 +2415,7 @@ extern int getloadavg (double __loadavg[], int __nelem)
 
 # 1 "/usr/include/c++/13/bits/std_abs.h" 1 3
 # 33 "/usr/include/c++/13/bits/std_abs.h" 3
-       
+
 # 34 "/usr/include/c++/13/bits/std_abs.h" 3
 # 46 "/usr/include/c++/13/bits/std_abs.h" 3
 extern "C++"
@@ -3182,7 +3182,7 @@ extern int toupper_l (int __c, locale_t __l) noexcept (true);
 # 36 "/usr/include/c++/13/math.h" 3
 # 1 "/usr/include/c++/13/cmath" 1 3
 # 39 "/usr/include/c++/13/cmath" 3
-       
+
 # 40 "/usr/include/c++/13/cmath" 3
 
 # 1 "/usr/include/c++/13/bits/requires_hosted.h" 1 3
@@ -3191,7 +3191,7 @@ extern int toupper_l (int __c, locale_t __l) noexcept (true);
 
 # 1 "/usr/include/c++/13/bits/cpp_type_traits.h" 1 3
 # 35 "/usr/include/c++/13/bits/cpp_type_traits.h" 3
-       
+
 # 36 "/usr/include/c++/13/bits/cpp_type_traits.h" 3
 # 67 "/usr/include/c++/13/bits/cpp_type_traits.h" 3
 extern "C++" {
@@ -3622,7 +3622,7 @@ __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; t
 
 
   template<typename _Iterator>
-   
+
     inline _Iterator
     __miter_base(_Iterator __it)
     { return __it; }
@@ -3633,7 +3633,7 @@ __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; t
 # 45 "/usr/include/c++/13/cmath" 2 3
 # 1 "/usr/include/c++/13/ext/type_traits.h" 1 3
 # 32 "/usr/include/c++/13/ext/type_traits.h" 3
-       
+
 # 33 "/usr/include/c++/13/ext/type_traits.h" 3
 
 
@@ -8757,7 +8757,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 # 1 "/usr/include/c++/13/ext/numeric_traits.h" 1 3
 # 32 "/usr/include/c++/13/ext/numeric_traits.h" 3
-       
+
 # 33 "/usr/include/c++/13/ext/numeric_traits.h" 3
 
 
@@ -8869,7 +8869,7 @@ namespace __gnu_cxx __attribute__ ((__visibility__ ("default")))
 # 60 "/usr/include/c++/13/bits/stl_pair.h" 3
 # 1 "/usr/include/c++/13/type_traits" 1 3
 # 32 "/usr/include/c++/13/type_traits" 3
-       
+
 # 33 "/usr/include/c++/13/type_traits" 3
 
 
@@ -9557,7 +9557,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
   template<typename _Tp>
     struct
-   
+
     is_pod
     : public integral_constant<bool, __is_pod(_Tp)>
     {
@@ -10621,7 +10621,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
   template<std::size_t _Len, std::size_t _Align =
     __alignof__(typename __aligned_storage_msa<_Len>::__type)>
     struct
-   
+
     aligned_storage
     {
       union type
@@ -10654,7 +10654,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 2141 "/usr/include/c++/13/type_traits" 3
   template <size_t _Len, typename... _Types>
     struct
-   
+
     aligned_union
     {
     private:
@@ -11174,7 +11174,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _Tp>
-   
+
     inline
     _Require<__not_<__is_tuple_like<_Tp>>,
       is_move_constructible<_Tp>,
@@ -11184,7 +11184,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
              is_nothrow_move_assignable<_Tp>>::value);
 
   template<typename _Tp, size_t _Nm>
-   
+
     inline
     __enable_if_t<__is_swappable<_Tp>::value>
     swap(_Tp (&__a)[_Nm], _Tp (&__b)[_Nm])
@@ -11659,7 +11659,7 @@ template <typename _Tp>
 template <typename _Tp>
   inline constexpr bool is_standard_layout_v = __is_standard_layout(_Tp);
 template <typename _Tp>
- 
+
   inline constexpr bool is_pod_v = __is_pod(_Tp);
 template <typename _Tp>
   [[__deprecated__]]
@@ -11926,7 +11926,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template <typename _Tp, typename _Up = _Tp>
-   
+
     inline _Tp
     __exchange(_Tp& __obj, _Up&& __new_val)
     {
@@ -11936,7 +11936,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 179 "/usr/include/c++/13/bits/move.h" 3
   template<typename _Tp>
-   
+
     inline
 
     typename enable_if<__and_<__not_<__is_tuple_like<_Tp>>,
@@ -11962,7 +11962,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _Tp, size_t _Nm>
-   
+
     inline
 
     typename enable_if<__is_swappable<_Tp>::value>::type
@@ -11982,7 +11982,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 62 "/usr/include/c++/13/bits/stl_pair.h" 2 3
 # 1 "/usr/include/c++/13/bits/utility.h" 1 3
 # 36 "/usr/include/c++/13/bits/utility.h" 3
-       
+
 # 37 "/usr/include/c++/13/bits/utility.h" 3
 
 
@@ -12814,7 +12814,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 65 "/usr/include/c++/13/bits/stl_algobase.h" 2 3
 # 1 "/usr/include/c++/13/bits/stl_iterator_base_types.h" 1 3
 # 62 "/usr/include/c++/13/bits/stl_iterator_base_types.h" 3
-       
+
 # 63 "/usr/include/c++/13/bits/stl_iterator_base_types.h" 3
 # 74 "/usr/include/c++/13/bits/stl_iterator_base_types.h" 3
 namespace std __attribute__ ((__visibility__ ("default")))
@@ -12949,12 +12949,12 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 66 "/usr/include/c++/13/bits/stl_algobase.h" 2 3
 # 1 "/usr/include/c++/13/bits/stl_iterator_base_funcs.h" 1 3
 # 62 "/usr/include/c++/13/bits/stl_iterator_base_funcs.h" 3
-       
+
 # 63 "/usr/include/c++/13/bits/stl_iterator_base_funcs.h" 3
 
 # 1 "/usr/include/c++/13/bits/concept_check.h" 1 3
 # 33 "/usr/include/c++/13/bits/concept_check.h" 3
-       
+
 # 34 "/usr/include/c++/13/bits/concept_check.h" 3
 # 65 "/usr/include/c++/13/bits/stl_iterator_base_funcs.h" 2 3
 # 1 "/usr/include/c++/13/debug/assertions.h" 1 3
@@ -12978,7 +12978,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
                input_iterator_tag)
     {
 
-     
+
 
       typename iterator_traits<_InputIterator>::difference_type __n = 0;
       while (__first != __last)
@@ -12997,7 +12997,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
                random_access_iterator_tag)
     {
 
-     
+
 
       return __last - __first;
     }
@@ -13039,7 +13039,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     __advance(_InputIterator& __i, _Distance __n, input_iterator_tag)
     {
 
-     
+
       do { if (std::__is_constant_evaluated() && !bool(__n >= 0)) __builtin_unreachable(); } while (false);
       while (__n--)
  ++__i;
@@ -13051,7 +13051,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
        bidirectional_iterator_tag)
     {
 
-     
+
 
       if (__n > 0)
         while (__n--)
@@ -13067,7 +13067,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
               random_access_iterator_tag)
     {
 
-     
+
 
       if (__builtin_constant_p(__n) && __n == 1)
  ++__i;
@@ -13102,7 +13102,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
   iterator_traits<_InputIterator>::difference_type __n = 1)
     {
 
-     
+
       std::advance(__x, __n);
       return __x;
     }
@@ -13114,7 +13114,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
   iterator_traits<_BidirectionalIterator>::difference_type __n = 1)
     {
 
-     
+
 
       std::advance(__x, -__n);
       return __x;
@@ -13312,7 +13312,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 {
 
 # 113 "/usr/include/c++/13/bits/stl_iterator.h" 3
- 
+
 # 113 "/usr/include/c++/13/bits/stl_iterator.h" 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -13675,7 +13675,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     { return reverse_iterator<_Iterator>(__i); }
 # 666 "/usr/include/c++/13/bits/stl_iterator.h" 3
   template<typename _Iterator>
-   
+
     auto
     __niter_base(reverse_iterator<_Iterator> __it)
     -> decltype(__make_reverse_iterator(__niter_base(__it.base())))
@@ -13687,7 +13687,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     { };
 
   template<typename _Iterator>
-   
+
     auto
     __miter_base(reverse_iterator<_Iterator> __it)
     -> decltype(__make_reverse_iterator(__miter_base(__it.base())))
@@ -13712,7 +13712,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
       back_insert_iterator(_Container& __x)
       : container(std::__addressof(__x)) { }
 # 735 "/usr/include/c++/13/bits/stl_iterator.h" 3
-     
+
       back_insert_iterator&
       operator=(const typename _Container::value_type& __value)
       {
@@ -13720,7 +13720,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
  return *this;
       }
 
-     
+
       back_insert_iterator&
       operator=(typename _Container::value_type&& __value)
       {
@@ -13736,13 +13736,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
       { return *this; }
 
 
-     
+
       back_insert_iterator&
       operator++()
       { return *this; }
 
 
-     
+
       back_insert_iterator
       operator++(int)
       { return *this; }
@@ -13773,7 +13773,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
       front_insert_iterator(_Container& __x)
       : container(std::__addressof(__x)) { }
 # 836 "/usr/include/c++/13/bits/stl_iterator.h" 3
-     
+
       front_insert_iterator&
       operator=(const typename _Container::value_type& __value)
       {
@@ -13781,7 +13781,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
  return *this;
       }
 
-     
+
       front_insert_iterator&
       operator=(typename _Container::value_type&& __value)
       {
@@ -13797,13 +13797,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
       { return *this; }
 
 
-     
+
       front_insert_iterator&
       operator++()
       { return *this; }
 
 
-     
+
       front_insert_iterator
       operator++(int)
       { return *this; }
@@ -13832,11 +13832,11 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
       typedef _Container container_type;
 # 928 "/usr/include/c++/13/bits/stl_iterator.h" 3
-     
+
       insert_iterator(_Container& __x, _Iter __i)
       : container(std::__addressof(__x)), iter(__i) {}
 # 964 "/usr/include/c++/13/bits/stl_iterator.h" 3
-     
+
       insert_iterator&
       operator=(const typename _Container::value_type& __value)
       {
@@ -13845,7 +13845,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
  return *this;
       }
 
-     
+
       insert_iterator&
       operator=(typename _Container::value_type&& __value)
       {
@@ -13862,13 +13862,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
       { return *this; }
 
 
-     
+
       insert_iterator&
       operator++()
       { return *this; }
 
 
-     
+
       insert_iterator&
       operator++(int)
       { return *this; }
@@ -13935,17 +13935,17 @@ namespace __gnu_cxx __attribute__ ((__visibility__ ("default")))
         : _M_current(__i.base()) { }
 
 
-     
+
       reference
       operator*() const noexcept
       { return *_M_current; }
 
-     
+
       pointer
       operator->() const noexcept
       { return _M_current; }
 
-     
+
       __normal_iterator&
       operator++() noexcept
       {
@@ -13953,13 +13953,13 @@ namespace __gnu_cxx __attribute__ ((__visibility__ ("default")))
  return *this;
       }
 
-     
+
       __normal_iterator
       operator++(int) noexcept
       { return __normal_iterator(_M_current++); }
 
 
-     
+
       __normal_iterator&
       operator--() noexcept
       {
@@ -13967,38 +13967,38 @@ namespace __gnu_cxx __attribute__ ((__visibility__ ("default")))
  return *this;
       }
 
-     
+
       __normal_iterator
       operator--(int) noexcept
       { return __normal_iterator(_M_current--); }
 
 
-     
+
       reference
       operator[](difference_type __n) const noexcept
       { return _M_current[__n]; }
 
-     
+
       __normal_iterator&
       operator+=(difference_type __n) noexcept
       { _M_current += __n; return *this; }
 
-     
+
       __normal_iterator
       operator+(difference_type __n) const noexcept
       { return __normal_iterator(_M_current + __n); }
 
-     
+
       __normal_iterator&
       operator-=(difference_type __n) noexcept
       { _M_current -= __n; return *this; }
 
-     
+
       __normal_iterator
       operator-(difference_type __n) const noexcept
       { return __normal_iterator(_M_current - __n); }
 
-     
+
       const _Iterator&
       base() const noexcept
       { return _M_current; }
@@ -14145,7 +14145,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _Iterator, typename _Container>
-   
+
     _Iterator
     __niter_base(__gnu_cxx::__normal_iterator<_Iterator, _Container> __it)
     noexcept(std::is_nothrow_copy_constructible<_Iterator>::value)
@@ -14462,7 +14462,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     { return _ReturnType(__i); }
 # 2951 "/usr/include/c++/13/bits/stl_iterator.h" 3
   template<typename _Iterator>
-   
+
     auto
     __niter_base(move_iterator<_Iterator> __it)
     -> decltype(make_move_iterator(__niter_base(__it.base())))
@@ -14476,7 +14476,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     };
 
   template<typename _Iterator>
-   
+
     auto
     __miter_base(move_iterator<_Iterator> __it)
     -> decltype(__miter_base(__it.base()))
@@ -14549,23 +14549,23 @@ namespace __ops
 
 
 
-   
+
     explicit
     _Iter_less_val(_Iter_less_iter) { }
 
     template<typename _Iterator, typename _Value>
-     
+
       bool
       operator()(_Iterator __it, _Value& __val) const
       { return *__it < __val; }
   };
 
- 
+
   inline _Iter_less_val
   __iter_less_val()
   { return _Iter_less_val(); }
 
- 
+
   inline _Iter_less_val
   __iter_comp_val(_Iter_less_iter)
   { return _Iter_less_val(); }
@@ -14578,23 +14578,23 @@ namespace __ops
 
 
 
-   
+
     explicit
     _Val_less_iter(_Iter_less_iter) { }
 
     template<typename _Value, typename _Iterator>
-     
+
       bool
       operator()(_Value& __val, _Iterator __it) const
       { return __val < *__it; }
   };
 
- 
+
   inline _Val_less_iter
   __val_less_iter()
   { return _Val_less_iter(); }
 
- 
+
   inline _Val_less_iter
   __val_comp_iter(_Iter_less_iter)
   { return _Val_less_iter(); }
@@ -14602,13 +14602,13 @@ namespace __ops
   struct _Iter_equal_to_iter
   {
     template<typename _Iterator1, typename _Iterator2>
-     
+
       bool
       operator()(_Iterator1 __it1, _Iterator2 __it2) const
       { return *__it1 == *__it2; }
   };
 
- 
+
   inline _Iter_equal_to_iter
   __iter_equal_to_iter()
   { return _Iter_equal_to_iter(); }
@@ -14616,18 +14616,18 @@ namespace __ops
   struct _Iter_equal_to_val
   {
     template<typename _Iterator, typename _Value>
-     
+
       bool
       operator()(_Iterator __it, _Value& __val) const
       { return *__it == __val; }
   };
 
- 
+
   inline _Iter_equal_to_val
   __iter_equal_to_val()
   { return _Iter_equal_to_val(); }
 
- 
+
   inline _Iter_equal_to_val
   __iter_comp_val(_Iter_equal_to_iter)
   { return _Iter_equal_to_val(); }
@@ -14660,20 +14660,20 @@ namespace __ops
     {
       _Compare _M_comp;
 
-     
+
       explicit
       _Iter_comp_val(_Compare __comp)
  : _M_comp(std::move(__comp))
       { }
 
-     
+
       explicit
       _Iter_comp_val(const _Iter_comp_iter<_Compare>& __comp)
  : _M_comp(__comp._M_comp)
       { }
 
 
-     
+
       explicit
       _Iter_comp_val(_Iter_comp_iter<_Compare>&& __comp)
  : _M_comp(std::move(__comp._M_comp))
@@ -14688,13 +14688,13 @@ namespace __ops
     };
 
   template<typename _Compare>
-   
+
     inline _Iter_comp_val<_Compare>
     __iter_comp_val(_Compare __comp)
     { return _Iter_comp_val<_Compare>(std::move(__comp)); }
 
   template<typename _Compare>
-   
+
     inline _Iter_comp_val<_Compare>
     __iter_comp_val(_Iter_comp_iter<_Compare> __comp)
     { return _Iter_comp_val<_Compare>(std::move(__comp)); }
@@ -14704,20 +14704,20 @@ namespace __ops
     {
       _Compare _M_comp;
 
-     
+
       explicit
       _Val_comp_iter(_Compare __comp)
  : _M_comp(std::move(__comp))
       { }
 
-     
+
       explicit
       _Val_comp_iter(const _Iter_comp_iter<_Compare>& __comp)
  : _M_comp(__comp._M_comp)
       { }
 
 
-     
+
       explicit
       _Val_comp_iter(_Iter_comp_iter<_Compare>&& __comp)
  : _M_comp(std::move(__comp._M_comp))
@@ -14732,13 +14732,13 @@ namespace __ops
     };
 
   template<typename _Compare>
-   
+
     inline _Val_comp_iter<_Compare>
     __val_comp_iter(_Compare __comp)
     { return _Val_comp_iter<_Compare>(std::move(__comp)); }
 
   template<typename _Compare>
-   
+
     inline _Val_comp_iter<_Compare>
     __val_comp_iter(_Iter_comp_iter<_Compare> __comp)
     { return _Val_comp_iter<_Compare>(std::move(__comp)); }
@@ -14748,7 +14748,7 @@ namespace __ops
     {
       _Value& _M_value;
 
-     
+
       explicit
       _Iter_equals_val(_Value& __value)
  : _M_value(__value)
@@ -14762,7 +14762,7 @@ namespace __ops
     };
 
   template<typename _Value>
-   
+
     inline _Iter_equals_val<_Value>
     __iter_equals_val(_Value& __val)
     { return _Iter_equals_val<_Value>(__val); }
@@ -14772,7 +14772,7 @@ namespace __ops
     {
       _Iterator1 _M_it1;
 
-     
+
       explicit
       _Iter_equals_iter(_Iterator1 __it1)
  : _M_it1(__it1)
@@ -14786,7 +14786,7 @@ namespace __ops
     };
 
   template<typename _Iterator>
-   
+
     inline _Iter_equals_iter<_Iterator>
     __iter_comp_iter(_Iter_equal_to_iter, _Iterator __it)
     { return _Iter_equals_iter<_Iterator>(__it); }
@@ -14796,7 +14796,7 @@ namespace __ops
     {
       _Predicate _M_pred;
 
-     
+
       explicit
       _Iter_pred(_Predicate __pred)
  : _M_pred(std::move(__pred))
@@ -14810,7 +14810,7 @@ namespace __ops
     };
 
   template<typename _Predicate>
-   
+
     inline _Iter_pred<_Predicate>
     __pred_iter(_Predicate __pred)
     { return _Iter_pred<_Predicate>(std::move(__pred)); }
@@ -14821,7 +14821,7 @@ namespace __ops
       _Compare _M_comp;
       _Value& _M_value;
 
-     
+
       _Iter_comp_to_val(_Compare __comp, _Value& __value)
  : _M_comp(std::move(__comp)), _M_value(__value)
       { }
@@ -14835,7 +14835,7 @@ namespace __ops
 
   template<typename _Compare, typename _Value>
     _Iter_comp_to_val<_Compare, _Value>
-   
+
     __iter_comp_val(_Compare __comp, _Value &__val)
     {
       return _Iter_comp_to_val<_Compare, _Value>(std::move(__comp), __val);
@@ -14847,7 +14847,7 @@ namespace __ops
       _Compare _M_comp;
       _Iterator1 _M_it1;
 
-     
+
       _Iter_comp_to_iter(_Compare __comp, _Iterator1 __it1)
  : _M_comp(std::move(__comp)), _M_it1(__it1)
       { }
@@ -14860,7 +14860,7 @@ namespace __ops
     };
 
   template<typename _Compare, typename _Iterator>
-   
+
     inline _Iter_comp_to_iter<_Compare, _Iterator>
     __iter_comp_iter(_Iter_comp_iter<_Compare> __comp, _Iterator __it)
     {
@@ -14873,7 +14873,7 @@ namespace __ops
     {
       _Predicate _M_pred;
 
-     
+
       explicit
       _Iter_negate(_Predicate __pred)
  : _M_pred(std::move(__pred))
@@ -14887,7 +14887,7 @@ namespace __ops
     };
 
   template<typename _Predicate>
-   
+
     inline _Iter_negate<_Predicate>
     __negate(_Iter_pred<_Predicate> __pred)
     { return _Iter_negate<_Predicate>(std::move(__pred._M_pred)); }
@@ -14901,7 +14901,7 @@ namespace __ops
 
 # 1 "/usr/include/c++/13/bit" 1 3
 # 32 "/usr/include/c++/13/bit" 3
-       
+
 # 33 "/usr/include/c++/13/bit" 3
 # 55 "/usr/include/c++/13/bit" 3
 namespace std __attribute__ ((__visibility__ ("default")))
@@ -15158,29 +15158,29 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 152 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _ForwardIterator1, typename _ForwardIterator2>
-   
+
     inline void
     iter_swap(_ForwardIterator1 __a, _ForwardIterator2 __b)
     {
 
-     
 
-     
+
+
 # 185 "/usr/include/c++/13/bits/stl_algobase.h" 3
       swap(*__a, *__b);
 
     }
 # 201 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _ForwardIterator1, typename _ForwardIterator2>
-   
+
     _ForwardIterator2
     swap_ranges(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
   _ForwardIterator2 __first2)
     {
 
-     
 
-     
+
+
 
       ;
 
@@ -15195,7 +15195,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     min(const _Tp& __a, const _Tp& __b)
     {
 
-     
+
 
       if (__b < __a)
  return __b;
@@ -15208,7 +15208,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     max(const _Tp& __a, const _Tp& __b)
     {
 
-     
+
 
       if (__a < __b)
  return __b;
@@ -15240,7 +15240,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _Iterator>
-   
+
     inline _Iterator
     __niter_base(_Iterator __it)
     noexcept(std::is_nothrow_copy_constructible<_Iterator>::value)
@@ -15255,14 +15255,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _From, typename _To>
-   
+
     inline _From
     __niter_wrap(_From __from, _To __res)
     { return __from + (__res - std::__niter_base(__from)); }
 
 
   template<typename _Iterator>
-   
+
     inline _Iterator
     __niter_wrap(const _Iterator&, _Iterator __res)
     { return __res; }
@@ -15421,7 +15421,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<bool _IsMove, typename _II, typename _OI>
-   
+
     inline _OI
     __copy_move_a2(_II __first, _II __last, _OI __result)
     {
@@ -15456,13 +15456,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
     __copy_move_a1(_II, _II, std::_Deque_iterator<_Tp, _Tp&, _Tp*>);
 
   template<bool _IsMove, typename _II, typename _OI>
-   
+
     inline _OI
     __copy_move_a1(_II __first, _II __last, _OI __result)
     { return std::__copy_move_a2<_IsMove>(__first, __last, __result); }
 
   template<bool _IsMove, typename _II, typename _OI>
-   
+
     inline _OI
     __copy_move_a(_II __first, _II __last, _OI __result)
     {
@@ -15494,7 +15494,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     const ::__gnu_debug::_Safe_iterator<_OIte, _OSeq, _OCat>&);
 
   template<typename _InputIterator, typename _Size, typename _OutputIterator>
-   
+
     _OutputIterator
     __copy_n_a(_InputIterator __first, _Size __n, _OutputIterator __result,
         bool)
@@ -15530,13 +15530,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
         bool);
 # 621 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II, typename _OI>
-   
+
     inline _OI
     copy(_II __first, _II __last, _OI __result)
     {
 
-     
-     
+
+
 
       ;
 
@@ -15545,13 +15545,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 654 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II, typename _OI>
-   
+
     inline _OI
     move(_II __first, _II __last, _OI __result)
     {
 
-     
-     
+
+
 
       ;
 
@@ -15647,7 +15647,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     };
 
   template<bool _IsMove, typename _BI1, typename _BI2>
-   
+
     inline _BI2
     __copy_move_backward_a2(_BI1 __first, _BI1 __last, _BI2 __result)
     {
@@ -15665,7 +15665,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<bool _IsMove, typename _BI1, typename _BI2>
-   
+
     inline _BI2
     __copy_move_backward_a1(_BI1 __first, _BI1 __last, _BI2 __result)
     { return std::__copy_move_backward_a2<_IsMove>(__first, __last, __result); }
@@ -15693,7 +15693,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
        std::_Deque_iterator<_Tp, _Tp&, _Tp*>);
 
   template<bool _IsMove, typename _II, typename _OI>
-   
+
     inline _OI
     __copy_move_backward_a(_II __first, _II __last, _OI __result)
     {
@@ -15727,14 +15727,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
   const ::__gnu_debug::_Safe_iterator<_OIte, _OSeq, _OCat>&);
 # 854 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _BI1, typename _BI2>
-   
+
     inline _BI2
     copy_backward(_BI1 __first, _BI1 __last, _BI2 __result)
     {
 
-     
-     
-     
+
+
+
 
       ;
 
@@ -15743,14 +15743,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 889 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _BI1, typename _BI2>
-   
+
     inline _BI2
     move_backward(_BI1 __first, _BI1 __last, _BI2 __result)
     {
 
-     
-     
-     
+
+
+
 
       ;
 
@@ -15765,7 +15765,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _ForwardIterator, typename _Tp>
-   
+
     inline typename
     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
     __fill_a1(_ForwardIterator __first, _ForwardIterator __last,
@@ -15776,7 +15776,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _ForwardIterator, typename _Tp>
-   
+
     inline typename
     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
     __fill_a1(_ForwardIterator __first, _ForwardIterator __last,
@@ -15789,7 +15789,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _Tp>
-   
+
     inline typename
     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
     __fill_a1(_Tp* __first, _Tp* __last, const _Tp& __c)
@@ -15801,7 +15801,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _Ite, typename _Cont, typename _Tp>
-   
+
     inline void
     __fill_a1(::__gnu_cxx::__normal_iterator<_Ite, _Cont> __first,
        ::__gnu_cxx::__normal_iterator<_Ite, _Cont> __last,
@@ -15814,13 +15814,13 @@ namespace std __attribute__ ((__visibility__ ("default")))
        const std::_Deque_iterator<_Tp, _Tp&, _Tp*>&,
        const _VTp&);
 
- 
+
   void
   __fill_a1(std::_Bit_iterator, std::_Bit_iterator,
      const bool&);
 
   template<typename _FIte, typename _Tp>
-   
+
     inline void
     __fill_a(_FIte __first, _FIte __last, const _Tp& __value)
     { std::__fill_a1(__first, __last, __value); }
@@ -15832,12 +15832,12 @@ namespace std __attribute__ ((__visibility__ ("default")))
       const _Tp&);
 # 997 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _ForwardIterator, typename _Tp>
-   
+
     inline void
     fill(_ForwardIterator __first, _ForwardIterator __last, const _Tp& __value)
     {
 
-     
+
 
       ;
 
@@ -15876,7 +15876,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _OutputIterator, typename _Size, typename _Tp>
-   
+
     inline typename
     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
     __fill_n_a1(_OutputIterator __first, _Size __n, const _Tp& __value)
@@ -15887,7 +15887,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _OutputIterator, typename _Size, typename _Tp>
-   
+
     inline typename
     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
     __fill_n_a1(_OutputIterator __first, _Size __n, const _Tp& __value)
@@ -15906,7 +15906,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
         std::input_iterator_tag);
 
   template<typename _OutputIterator, typename _Size, typename _Tp>
-   
+
     inline _OutputIterator
     __fill_n_a(_OutputIterator __first, _Size __n, const _Tp& __value,
         std::output_iterator_tag)
@@ -15918,7 +15918,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _OutputIterator, typename _Size, typename _Tp>
-   
+
     inline _OutputIterator
     __fill_n_a(_OutputIterator __first, _Size __n, const _Tp& __value,
         std::input_iterator_tag)
@@ -15930,7 +15930,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _OutputIterator, typename _Size, typename _Tp>
-   
+
     inline _OutputIterator
     __fill_n_a(_OutputIterator __first, _Size __n, const _Tp& __value,
         std::random_access_iterator_tag)
@@ -15948,12 +15948,12 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1149 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _OI, typename _Size, typename _Tp>
-   
+
     inline _OI
     fill_n(_OI __first, _Size __n, const _Tp& __value)
     {
 
-     
+
 
       return std::__fill_n_a(__first, std::__size_to_integer(__n), __value,
           std::__iterator_category(__first));
@@ -16009,7 +16009,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
   std::_Deque_iterator<_Tp, _Ref, _Ptr>);
 
   template<typename _II1, typename _II2>
-   
+
     inline bool
     __equal_aux1(_II1 __first1, _II1 __last1, _II2 __first2)
     {
@@ -16021,7 +16021,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _II1, typename _II2>
-   
+
     inline bool
     __equal_aux(_II1 __first1, _II1 __last1, _II2 __first2)
     {
@@ -16087,7 +16087,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     };
 
   template<typename _II1, typename _II2, typename _Compare>
-   
+
     bool
     __lexicographical_compare_impl(_II1 __first1, _II1 __last1,
        _II2 __first2, _II2 __last2,
@@ -16169,7 +16169,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     };
 
   template<typename _II1, typename _II2>
-   
+
     inline bool
     __lexicographical_compare_aux1(_II1 __first1, _II1 __last1,
        _II2 __first2, _II2 __last2)
@@ -16218,7 +16218,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
  std::_Deque_iterator<_Tp2, _Ref2, _Ptr2>);
 
   template<typename _II1, typename _II2>
-   
+
     inline bool
     __lexicographical_compare_aux(_II1 __first1, _II1 __last1,
       _II2 __first2, _II2 __last2)
@@ -16255,7 +16255,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
   const ::__gnu_debug::_Safe_iterator<_Iter2, _Seq2, _Cat2>&);
 
   template<typename _ForwardIterator, typename _Tp, typename _Compare>
-   
+
     _ForwardIterator
     __lower_bound(_ForwardIterator __first, _ForwardIterator __last,
     const _Tp& __val, _Compare __comp)
@@ -16283,14 +16283,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1495 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _ForwardIterator, typename _Tp>
-   
+
     inline _ForwardIterator
     lower_bound(_ForwardIterator __first, _ForwardIterator __last,
   const _Tp& __val)
     {
 
-     
-     
+
+
 
       ;
 
@@ -16312,14 +16312,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 # 1544 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II1, typename _II2>
-   
+
     inline bool
     equal(_II1 __first1, _II1 __last1, _II2 __first2)
     {
 
-     
-     
-     
+
+
+
 
 
       ;
@@ -16328,14 +16328,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1575 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _IIter1, typename _IIter2, typename _BinaryPredicate>
-   
+
     inline bool
     equal(_IIter1 __first1, _IIter1 __last1,
    _IIter2 __first2, _BinaryPredicate __binary_pred)
     {
 
-     
-     
+
+
       ;
 
       for (; __first1 != __last1; ++__first1, (void)++__first2)
@@ -16347,7 +16347,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _II1, typename _II2>
-   
+
     inline bool
     __equal4(_II1 __first1, _II1 __last1, _II2 __first2, _II2 __last2)
     {
@@ -16373,7 +16373,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _II1, typename _II2, typename _BinaryPredicate>
-   
+
     inline bool
     __equal4(_II1 __first1, _II1 __last1, _II2 __first2, _II2 __last2,
       _BinaryPredicate __binary_pred)
@@ -16400,14 +16400,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1665 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II1, typename _II2>
-   
+
     inline bool
     equal(_II1 __first1, _II1 __last1, _II2 __first2, _II2 __last2)
     {
 
-     
-     
-     
+
+
+
 
 
       ;
@@ -16417,14 +16417,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1698 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _IIter1, typename _IIter2, typename _BinaryPredicate>
-   
+
     inline bool
     equal(_IIter1 __first1, _IIter1 __last1,
    _IIter2 __first2, _IIter2 __last2, _BinaryPredicate __binary_pred)
     {
 
-     
-     
+
+
       ;
       ;
 
@@ -16433,7 +16433,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1730 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II1, typename _II2>
-   
+
     inline bool
     lexicographical_compare(_II1 __first1, _II1 __last1,
        _II2 __first2, _II2 __last2)
@@ -16443,10 +16443,10 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 
-     
-     
-     
-     
+
+
+
+
       ;
       ;
 
@@ -16455,14 +16455,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1765 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _II1, typename _II2, typename _Compare>
-   
+
     inline bool
     lexicographical_compare(_II1 __first1, _II1 __last1,
        _II2 __first2, _II2 __last2, _Compare __comp)
     {
 
-     
-     
+
+
       ;
       ;
 
@@ -16473,7 +16473,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 1880 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _InputIterator1, typename _InputIterator2,
     typename _BinaryPredicate>
-   
+
     pair<_InputIterator1, _InputIterator2>
     __mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
         _InputIterator2 __first2, _BinaryPredicate __binary_pred)
@@ -16487,15 +16487,15 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1908 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _InputIterator1, typename _InputIterator2>
-   
+
     inline pair<_InputIterator1, _InputIterator2>
     mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2)
     {
 
-     
-     
-     
+
+
+
 
 
       ;
@@ -16506,14 +16506,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 1942 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _InputIterator1, typename _InputIterator2,
     typename _BinaryPredicate>
-   
+
     inline pair<_InputIterator1, _InputIterator2>
     mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _BinaryPredicate __binary_pred)
     {
 
-     
-     
+
+
       ;
 
       return std::__mismatch(__first1, __last1, __first2,
@@ -16524,7 +16524,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
   template<typename _InputIterator1, typename _InputIterator2,
     typename _BinaryPredicate>
-   
+
     pair<_InputIterator1, _InputIterator2>
     __mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
         _InputIterator2 __first2, _InputIterator2 __last2,
@@ -16540,15 +16540,15 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 1991 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _InputIterator1, typename _InputIterator2>
-   
+
     inline pair<_InputIterator1, _InputIterator2>
     mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _InputIterator2 __last2)
     {
 
-     
-     
-     
+
+
+
 
 
       ;
@@ -16560,15 +16560,15 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 2027 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _InputIterator1, typename _InputIterator2,
     typename _BinaryPredicate>
-   
+
     inline pair<_InputIterator1, _InputIterator2>
     mismatch(_InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _InputIterator2 __last2,
       _BinaryPredicate __binary_pred)
     {
 
-     
-     
+
+
       ;
       ;
 
@@ -16581,7 +16581,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _InputIterator, typename _Predicate>
-   
+
     inline _InputIterator
     __find_if(_InputIterator __first, _InputIterator __last,
        _Predicate __pred, input_iterator_tag)
@@ -16593,7 +16593,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
   template<typename _RandomAccessIterator, typename _Predicate>
-   
+
     _RandomAccessIterator
     __find_if(_RandomAccessIterator __first, _RandomAccessIterator __last,
        _Predicate __pred, random_access_iterator_tag)
@@ -16644,7 +16644,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _Iterator, typename _Predicate>
-   
+
     inline _Iterator
     __find_if(_Iterator __first, _Iterator __last, _Predicate __pred)
     {
@@ -16653,7 +16653,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _InputIterator, typename _Predicate>
-   
+
     typename iterator_traits<_InputIterator>::difference_type
     __count_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)
     {
@@ -16665,7 +16665,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
   template<typename _ForwardIterator, typename _Predicate>
-   
+
     _ForwardIterator
     __remove_if(_ForwardIterator __first, _ForwardIterator __last,
   _Predicate __pred)
@@ -16687,7 +16687,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
   template<typename _ForwardIterator1, typename _ForwardIterator2,
     typename _BinaryPredicate>
-   
+
     bool
     __is_permutation(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
        _ForwardIterator2 __first2, _BinaryPredicate __pred)
@@ -16724,15 +16724,15 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 # 2204 "/usr/include/c++/13/bits/stl_algobase.h" 3
   template<typename _ForwardIterator1, typename _ForwardIterator2>
-   
+
     inline bool
     is_permutation(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
      _ForwardIterator2 __first2)
     {
 
-     
-     
-     
+
+
+
 
 
       ;
@@ -16747,7 +16747,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 44 "/usr/include/c++/13/bits/specfun.h" 2 3
 # 1 "/usr/include/c++/13/limits" 1 3
 # 40 "/usr/include/c++/13/limits" 3
-       
+
 # 41 "/usr/include/c++/13/limits" 3
 # 158 "/usr/include/c++/13/limits" 3
 namespace std __attribute__ ((__visibility__ ("default")))
@@ -22144,7 +22144,7 @@ extern void __assert (const char *__assertion, const char *__file, int __line)
 # 5 "Stack/Stack.cpp" 2
 # 1 "/usr/include/c++/13/cstdint" 1 3
 # 32 "/usr/include/c++/13/cstdint" 3
-       
+
 # 33 "/usr/include/c++/13/cstdint" 3
 # 45 "/usr/include/c++/13/cstdint" 3
 # 1 "/usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h" 1 3 4
@@ -22364,14 +22364,14 @@ typedef uint64_t hash_t;
 
 err_t StackCtor (stack_t* stk, size_t startCapacity)
     {
-    if (stk == 
+    if (stk ==
 # 13 "Stack/Stack.cpp" 3 4
               __null
 # 13 "Stack/Stack.cpp"
                   )
         return STK_NOT_EXSIST;
 
-    if (stk->buffer != 
+    if (stk->buffer !=
 # 16 "Stack/Stack.cpp" 3 4
                       __null
 # 16 "Stack/Stack.cpp"
@@ -22381,7 +22381,7 @@ err_t StackCtor (stack_t* stk, size_t startCapacity)
         }
 # 31 "Stack/Stack.cpp"
     stk->buffer = (stack_elem_t*)calloc (startCapacity, sizeof (stack_elem_t));
-    if (stk->buffer == 
+    if (stk->buffer ==
 # 32 "Stack/Stack.cpp" 3 4
                       __null
 # 32 "Stack/Stack.cpp"
@@ -22404,7 +22404,7 @@ err_t StackCtor (stack_t* stk, size_t startCapacity)
 # 108 "Stack/Stack.cpp"
 err_t StackPush (stack_t* stk, stack_elem_t elem)
     {
-    if (stk == 
+    if (stk ==
 # 110 "Stack/Stack.cpp" 3 4
               __null
 # 110 "Stack/Stack.cpp"
@@ -22444,7 +22444,7 @@ err_t StackPush (stack_t* stk, stack_elem_t elem)
 
 err_t StackPop (stack_t* stk, stack_elem_t* elem_from_stack)
     {
-    if (elem_from_stack == 
+    if (elem_from_stack ==
 # 154 "Stack/Stack.cpp" 3 4
                           __null
 # 154 "Stack/Stack.cpp"
@@ -22479,7 +22479,7 @@ err_t StackPop (stack_t* stk, stack_elem_t* elem_from_stack)
 
 err_t StackDtor (stack_t* stk)
     {
-    if (stk == 
+    if (stk ==
 # 201 "Stack/Stack.cpp" 3 4
               __null
 # 201 "Stack/Stack.cpp"
@@ -22494,7 +22494,7 @@ err_t StackDtor (stack_t* stk)
 
     free (stk->buffer);
 
-    stk->buffer = 
+    stk->buffer =
 # 212 "Stack/Stack.cpp" 3 4
                  __null
 # 212 "Stack/Stack.cpp"
@@ -22523,7 +22523,7 @@ err_t StackAssert (stack_t* stk, const char* namefnc)
         {
         StackDump (stk);
         PrintErrorStack (error, namefnc);
-        
+
 # 12 "Stack/Stack_Error_Checking.cpp" 3 4
        (static_cast <bool> (
 # 12 "Stack/Stack_Error_Checking.cpp"
@@ -22545,7 +22545,7 @@ err_t StackAssert (stack_t* stk, const char* namefnc)
 err_t StackDump (stack_t* stk)
     {
 # 34 "Stack/Stack_Error_Checking.cpp"
-    if (stk == 
+    if (stk ==
 # 34 "Stack/Stack_Error_Checking.cpp" 3 4
               __null
 # 34 "Stack/Stack_Error_Checking.cpp"
@@ -22601,7 +22601,7 @@ const char* StackErrorToString(err_t error)
 
 err_t Veryficator (const stack_t* stk)
     {
-    if (stk == 
+    if (stk ==
 # 93 "Stack/Stack_Error_Checking.cpp" 3 4
               __null
 # 93 "Stack/Stack_Error_Checking.cpp"
@@ -22611,7 +22611,7 @@ err_t Veryficator (const stack_t* stk)
 
 
 
-    if (stk->buffer == 
+    if (stk->buffer ==
 # 99 "Stack/Stack_Error_Checking.cpp" 3 4
                       __null
 # 99 "Stack/Stack_Error_Checking.cpp"
@@ -22682,7 +22682,7 @@ err_t PrintSTK (stack_t* stk)
         ARG_RAM_REG_NUM = 7,
     };
 
-    const size_t size_command = 120;
+    const size_t Size_command = 120;
     const size_t capacity_code = 200;
     const size_t capacity_labels = 10;
     const size_t capacity_fixup = 10;
@@ -22711,7 +22711,7 @@ err_t PrintSTK (stack_t* stk)
         fixup_t* FIXUP;
         size_t index_lab;
         size_t index_fix;
-        char cmd[size_command];
+        char cmd[Size_command];
     } asm_t;
 
     void AsmCtor(asm_t* ASM);
@@ -22740,7 +22740,7 @@ err_t PrintSTK (stack_t* stk)
 
     int IdCommand (char* cmd);
 
-    char* ToName (const char* name, char name_cmd[size_command]);
+    char* ToName (const char* name, char name_cmd[Size_command]);
 # 7 "Assembler.cpp" 2
 # 1 "Enum.h" 1
 
@@ -22946,13 +22946,13 @@ void Assembler (asm_t* ASM)
                 DumpLabels (ASM->LABELS, ASM->index_lab);
 
                 void* arg = calloc (max_len_cmd, sizeof (char));
-                if (arg == 
+                if (arg ==
 # 173 "Assembler.cpp" 3 4
                           __null
 # 173 "Assembler.cpp"
                               ) {
                     printf ("calloc return NULL");
-                    
+
 # 175 "Assembler.cpp" 3 4
                    (static_cast <bool> (
 # 175 "Assembler.cpp"
@@ -23016,7 +23016,7 @@ void Assembler (asm_t* ASM)
             default:
             {
                 printf ("unknown ID\n");
-                
+
 # 227 "Assembler.cpp" 3 4
                (static_cast <bool> (
 # 227 "Assembler.cpp"
@@ -23063,21 +23063,21 @@ void AsmCtor(asm_t* ASM)
 void AsmDtor (asm_t* ASM)
 {
     free (ASM->code);
-    ASM->code = 
+    ASM->code =
 # 262 "Assembler.cpp" 3 4
                __null
 # 262 "Assembler.cpp"
                    ;
 
     free (ASM->LABELS);
-    ASM->LABELS = 
+    ASM->LABELS =
 # 265 "Assembler.cpp" 3 4
                  __null
 # 265 "Assembler.cpp"
                      ;
 
     free (ASM->FIXUP);
-    ASM->FIXUP = 
+    ASM->FIXUP =
 # 268 "Assembler.cpp" 3 4
                 __null
 # 268 "Assembler.cpp"
@@ -23109,7 +23109,7 @@ void MakeCodeFile (int* code)
 void CompileArg (FILE* file_asm, int* code, int* ip)
 {
     int argType = 0;
-    char* arg = (char*)calloc (size_command, sizeof (char));
+    char* arg = (char*)calloc (Size_command, sizeof (char));
     int numReg = 0;
     int numNum = 0;
 
@@ -23128,7 +23128,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf("\n<%s>\n", arg);
 
         char* addrReg = strchr (arg, 'X');
-        if (addrReg != 
+        if (addrReg !=
 # 315 "Assembler.cpp" 3 4
                       __null
 # 315 "Assembler.cpp"
@@ -23137,7 +23137,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf ("addrReg = <%p>\n", addrReg);
 
         char* addrAdd = strchr (arg, '+');
-        if (addrAdd != 
+        if (addrAdd !=
 # 320 "Assembler.cpp" 3 4
                       __null
 # 320 "Assembler.cpp"
@@ -23146,7 +23146,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         printf ("addrAdd = <%p>\n", addrAdd);
 
         char* addrRam = strchr (arg, '[');
-        if (addrRam != 
+        if (addrRam !=
 # 325 "Assembler.cpp" 3 4
                       __null
 # 325 "Assembler.cpp"
@@ -23227,7 +23227,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 break;
             default:
                 printf ("ERROR: Compile arguments!\n");
-                
+
 # 402 "Assembler.cpp" 3 4
                (static_cast <bool> (
 # 402 "Assembler.cpp"
@@ -23248,7 +23248,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
 
 bool ChangeType (char* elem, int num, int* argType)
 {
-    if (elem != 
+    if (elem !=
 # 411 "Assembler.cpp" 3 4
                __null
 # 411 "Assembler.cpp"
@@ -23374,7 +23374,7 @@ void RunFixup (size_t index_fix, size_t index_lab, int* code, label_t* LABELS, f
         else
         {
             printf ("label not exsist\n");
-            
+
 # 533 "Assembler.cpp" 3 4
            (static_cast <bool> (
 # 533 "Assembler.cpp"
@@ -23400,7 +23400,7 @@ int IdCommand (char* cmd)
 
 
 
-    char name_cmd[size_command] = {};
+    char name_cmd[Size_command] = {};
     if (IsLabel (cmd))
     {
         return LABEL_ID;
@@ -23440,7 +23440,7 @@ if (strcmp (cmd, ToName ("HLT", name_cmd)) == 0) { return HLT_ID; }
 
 }
 
-char* ToName (const char* name, char name_cmd[size_command])
+char* ToName (const char* name, char name_cmd[Size_command])
 {
     size_t index = 0;
     while (name[index] != '\0')
