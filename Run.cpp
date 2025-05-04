@@ -104,9 +104,21 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 break;
 
             }
+            case CMD_JB:
+            {
+                RunJb (PRC, STK);
+                break;
+
+            }
             case CMD_JE:
             {
                 RunJe (PRC, STK);
+                break;
+
+            }
+            case CMD_JNE:
+            {
+                RunJne (PRC, STK);
                 break;
 
             }
@@ -158,7 +170,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
             }
             case CMD_HLT:
             {
-                RunHlt (PRC);
+                RunHlt (PRC, &next);
                 break;
             }
             case CMD_EOF:
@@ -316,6 +328,31 @@ void RunJa (proc_t* PRC, stack_t* STK)
     //getchar ();
 }
 
+void RunJb (proc_t* PRC, stack_t* STK)
+{
+    DBG printf ("Pause...\n");
+    DBG printf ("Enter to continue\n");
+    //getchar ();
+    DBG printf ("ip = %d ", PRC->ip);
+    DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+    int a = 0;
+    int b = 0;
+    StackPop (STK, &b);
+    StackPop (STK, &a);
+    DBG printf ("b = %d\na = %d\n", b, a);
+
+    if (b < a) {
+        int arg = PRC->code[PRC->ip + 1];
+        PRC->ip = arg;
+    }
+    else
+        PRC->ip += 2;
+    DBG printf ("Pause...\n");
+    DBG printf ("Enter to continue\n");
+    //getchar ();
+}
+
 void RunJe (proc_t* PRC, stack_t* STK)
 {
     DBG printf ("Pause...\n");
@@ -331,6 +368,32 @@ void RunJe (proc_t* PRC, stack_t* STK)
     DBG printf ("b = %d\na = %d\n", b, a);
 
     if (b == a)
+    {
+        int arg = PRC->code[PRC->ip + 1];
+        PRC->ip = arg;
+    }
+    else
+        PRC->ip += 2;
+    DBG printf ("Pause...\n");
+    DBG printf ("Enter to continue\n");
+    //getchar ();
+}
+
+void RunJne (proc_t* PRC, stack_t* STK)
+{
+    DBG printf ("Pause...\n");
+    DBG printf ("Enter to continue\n");
+    //getchar ();
+    DBG printf ("ip = %d ", PRC->ip);
+    DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+    int a = 0;
+    int b = 0;
+    StackPop (STK, &b);
+    StackPop (STK, &a);
+    DBG printf ("b = %d\na = %d\n", b, a);
+
+    if (b != a)
     {
         int arg = PRC->code[PRC->ip + 1];
         PRC->ip = arg;
@@ -477,13 +540,12 @@ void RunMeow (proc_t* PRC, stack_t* STK)
     PRC->ip += 1;
 }
 
-void RunHlt (proc_t* PRC)
+void RunHlt (proc_t* PRC, int* next)
 {
     DBG printf ("ip = %d ", PRC->ip);
     DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
-    next = 0;
-    break;
+    *next = 0;
 }
 
 // Constructor of PRC structure................................................

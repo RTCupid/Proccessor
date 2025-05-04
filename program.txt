@@ -1,0 +1,9 @@
+push 5
+push 0
+ja end_if:
+
+push 30
+out
+
+end_if:
+hlt

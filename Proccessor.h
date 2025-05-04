@@ -71,7 +71,11 @@ void RunJmp     (proc_t* PRC);
 
 void RunJa      (proc_t* PRC, stack_t* STK);
 
+void RunJb      (proc_t* PRC, stack_t* STK);
+
 void RunJe      (proc_t* PRC, stack_t* STK);
+
+void RunJne      (proc_t* PRC, stack_t* STK);
 
 void RunJae     (proc_t* PRC, stack_t* STK);
 
@@ -91,6 +95,6 @@ void RunIn      (proc_t* PRC, stack_t* STK);
 
 void RunMeow    (proc_t* PRC, stack_t* STK);
 
-void RunHlt     (proc_t* PRC);
+void RunHlt     (proc_t* PRC, int* next);
 
 #endif

@@ -38,4 +38,8 @@ DEF_CMD_(JE,   18,  true)
 
 DEF_CMD_(MEOW, 19,  true)
 
+DEF_CMD_(JNE,  20,  true)
+
+DEF_CMD_(JB,   21,  true)
+
 DEF_CMD_(HLT,  -1,  false)
