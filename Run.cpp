@@ -17,7 +17,7 @@ int main (int argc, char** argv)
 {
     printf ("# My proccessor\n");
     printf ("# (c) RTCupid, 2024\n\n");
-    printf ("Start run()\n");
+    DBG printf ("Start run()\n");
 
     stack_t STK = {};
     StackCtor (&STK, 8);
@@ -287,7 +287,7 @@ void RunOut (proc_t* PRC, stack_t* STK)
     int value = 0;
     StackPop (STK, &value);
 
-    printf (GRN "return value = <%d>\n" RESET, value);
+    printf ("%d\n", value);
 
     PRC->ip += 1;
 }
@@ -295,9 +295,7 @@ void RunOut (proc_t* PRC, stack_t* STK)
 void RunJmp (proc_t* PRC)
 {
     DBG printf ("ip = %d ", PRC->ip);
-/*100*/         DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
-//14.80*1.20 -> 1480 * 120 ->
-//1 -> 100 ->
+    DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
 
     int arg = PRC->code[PRC->ip + 1];
     PRC->ip = arg;
@@ -552,14 +550,13 @@ void RunHlt (proc_t* PRC, int* next)
 
 void PrcCtor (proc_t* PRC)
 {
-    printf ("\nCtor Processor:\n");
+    DBG printf ("\nCtor Processor:\n");
 
-    printf ("PRC->AddrRet = %p\n", &PRC->AddrRet);
+    DBG printf ("PRC->AddrRet = %p\n", &PRC->AddrRet);
+
     err_t error = StackCtor (&PRC->AddrRet, 10);
-    PrintErrorStack (error, "StackCtor");
 
-    //assert (0);
-    //StackDump (&PRC->AddrRet);
+    PrintErrorStack (error, "StackCtor");
 
     PRC->REG = (int*)calloc (nregisters, sizeof (int));
     if (PRC->REG == NULL)
@@ -671,7 +668,6 @@ void PrDump (stack_t STK, proc_t PRC)
         printf ("%d ", STK.buffer[i]);
     }
     printf ("\n");
-    printf ("Viktoria\n");
     printf ("Registers: AX = %d | BX = %d | CX = %d | DX = %d | EX = %d\n", (PRC.REG)[AX], (PRC.REG)[BX], (PRC.REG)[CX], (PRC.REG)[DX], (PRC.REG)[EX]);
 
     printf ("--------------------------------------------------------------------------------\n\n\n");

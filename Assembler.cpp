@@ -12,21 +12,14 @@
 #include "Stack/Stack.cpp"
 #include "Stack/Stack_Error_Checking.cpp"
 
-
-//TD: many .cpp and many .h in future
-// Don't forget about architecture of project
 #define DBG if(0)
 
-int main (int argc, char* argv[]) //TODO: K & R - аргументы командной строки и typedef
+int main (int argc, char* argv[])
 {
-    printf ("# My processor\n");
+    printf ("# My assembler\n");
     printf ("# (c) RTCupid, 2024\n\n");
 
     asm_t ASM = {};
-    for (int i = 0; i < argc; i++)
-    {
-        printf ("argv[%d] = <%s>\n", i, argv[i]);
-    }
 
     if (argc > 1)
     {
@@ -69,10 +62,6 @@ void Assembler (asm_t* ASM)
         int id = IdCommand (ASM->cmd);
         DBG printf ("\n\n>>>>>> <%d>\n\n", id);
 
-        //if (!IsLabel (cmd)) {
-        //    printf ("                                                        <%s> is not label\n", cmd);
-        //}
-
         switch (id)
         {
             case CMD_LABEL:
@@ -89,27 +78,27 @@ void Assembler (asm_t* ASM)
                 AddLabel (in_labels, nelem, ASM->cmd, ASM->ip, ASM->LABELS, &(ASM->index_lab));
                 break;
             }
-            case CMD_PUSH:                                    //TD: choose one register CAPITAL or small
+            case CMD_PUSH:
             {
                 (ASM->code)[ASM->ip] = CMD_PUSH;
                 ASM->ip++;
-                printf ("code[%d] = <%d>\n", ASM->ip - 1, (ASM->code)[ASM->ip - 1]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip - 1, (ASM->code)[ASM->ip - 1]);
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
             case CMD_POP:
             {
                 (ASM->code)[ASM->ip] = CMD_POP;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
                 ASM->ip++;
 
                 CompileArg (ASM->file_asm, ASM->code, &(ASM->ip));
                 break;
             }
-            case CMD_ADD:                                        //TD: make function that compares strings and returns number - command id
-            {                                                   //TD: switch case
+            case CMD_ADD:
+            {
                 (ASM->code)[ASM->ip] = CMD_ADD;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -117,7 +106,7 @@ void Assembler (asm_t* ASM)
             case CMD_SUB:
             {
                 (ASM->code)[ASM->ip] = CMD_SUB;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -125,7 +114,7 @@ void Assembler (asm_t* ASM)
             case CMD_DIV:
             {
                 (ASM->code)[ASM->ip] = CMD_DIV;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -133,7 +122,7 @@ void Assembler (asm_t* ASM)
             case CMD_MUL:
             {
                 (ASM->code)[ASM->ip] = CMD_MUL;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -141,7 +130,7 @@ void Assembler (asm_t* ASM)
             case CMD_OUT:
             {
                 (ASM->code)[ASM->ip] = CMD_OUT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -149,7 +138,7 @@ void Assembler (asm_t* ASM)
             case CMD_JMP:
             {
                 (ASM->code)[ASM->ip] = CMD_JMP;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -163,7 +152,7 @@ void Assembler (asm_t* ASM)
             case CMD_JA:
             {
                 (ASM->code)[ASM->ip] = CMD_JA;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -177,7 +166,7 @@ void Assembler (asm_t* ASM)
             case CMD_JB:
             {
                 (ASM->code)[ASM->ip] = CMD_JB;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -191,7 +180,7 @@ void Assembler (asm_t* ASM)
             case CMD_JAE:
             {
                 (ASM->code)[ASM->ip] = CMD_JAE;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -205,7 +194,7 @@ void Assembler (asm_t* ASM)
             case CMD_JE:
             {
                 (ASM->code)[ASM->ip] = CMD_JE;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -219,7 +208,7 @@ void Assembler (asm_t* ASM)
             case CMD_JNE:
             {
                 (ASM->code)[ASM->ip] = CMD_JNE;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
 
@@ -233,7 +222,7 @@ void Assembler (asm_t* ASM)
             case CMD_SQRT:
             {
                 (ASM->code)[ASM->ip] = CMD_SQRT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip+=1;
                 break;
@@ -241,7 +230,7 @@ void Assembler (asm_t* ASM)
             case CMD_CALL:
             {
                 (ASM->code)[ASM->ip] = CMD_CALL;
-                printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 bool err_t = JmpFunc (ASM);
                 if (err_t)
@@ -254,7 +243,7 @@ void Assembler (asm_t* ASM)
             case CMD_RET:
             {
                 (ASM->code)[ASM->ip] = CMD_RET;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -262,7 +251,7 @@ void Assembler (asm_t* ASM)
             case CMD_DRAW:
             {
                 (ASM->code)[ASM->ip] = CMD_DRAW;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -270,7 +259,7 @@ void Assembler (asm_t* ASM)
             case CMD_IN:
             {
                 (ASM->code)[ASM->ip] = CMD_IN;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -278,7 +267,7 @@ void Assembler (asm_t* ASM)
             case CMD_HLT:
             {
                 (ASM->code)[ASM->ip] = CMD_HLT;
-                printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
 
                 ASM->ip += 1;
                 break;
@@ -298,7 +287,7 @@ void Assembler (asm_t* ASM)
         //DumpLabels (LABELS, index_lab);
     }
 
-    printf ("Start FIXUP\n");
+    DBG printf ("Start FIXUP\n");
 
     DBG DumpFixup (ASM->FIXUP, ASM->index_fix);
 
@@ -309,7 +298,7 @@ void Assembler (asm_t* ASM)
 
 void SkipComment (asm_t* ASM)
 {
-    printf (MAG "Skip Comment\n" RESET);
+    DBG printf (MAG "Skip Comment\n" RESET);
     while (1)
     {
         int symbol = fgetc (ASM->file_asm);
@@ -425,7 +414,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
         DBG printf ("argType = <%d>\n", argType);
         switch (argType)
         {
-            case ARG_NUM:                                                      //TD: Make enum or smth but not MAGIC numbers
+            case ARG_NUM:
                 code[*ip] = argType;
                 DBG printf ("code[%d] = %d\n", *ip, code[*ip]);
                 (*ip)++;
@@ -494,7 +483,7 @@ void CompileArg (FILE* file_asm, int* code, int* ip)
                 printf ("ERROR: Compile arguments!\n");
                 assert (0);
         }
-        printf ("\n");
+        DBG printf ("\n");
     }
     free (arg);
 }
@@ -556,7 +545,7 @@ char* ToName (const char* name, char name_cmd[Size_command])
 
 bool JmpFunc (asm_t* ASM)
 {
-    DumpLabels (ASM->LABELS, ASM->index_lab);
+    DBG DumpLabels (ASM->LABELS, ASM->index_lab);
 
     ASM->ip++;
 

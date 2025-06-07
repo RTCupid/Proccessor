@@ -97,7 +97,7 @@ void AddLabel (bool in_labels, size_t nelem, char* cmd, int ip, label_t* LABELS,
         (*index_lab)++;
 
         DBG printf ("\nLABEL ADDED:\n");
-        DumpLabels (LABELS, *index_lab);
+        DBG DumpLabels (LABELS, *index_lab);
     }
 }
 
