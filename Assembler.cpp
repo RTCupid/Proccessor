@@ -44,7 +44,7 @@ int main (int argc, char* argv[])
 void Assembler (asm_t* ASM)
 {
     while (1)
-    {                                          //TD: remove magic number
+    {
         int endCompile = fscanf (ASM->file_asm, "%s", ASM->cmd);
         DBG printf (">>> cmd = <%s>\n", ASM->cmd);
 
@@ -144,7 +144,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg jmp is not label");
+                    printf ("arg jmp is not label\n");
                     assert(0);
                 }
                 break;
@@ -158,7 +158,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    printf ("arg ja is not label\n");
                     assert(0);
                 }
                 break;
@@ -172,7 +172,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    printf ("arg jb is not label\n");
                     assert(0);
                 }
                 break;
@@ -186,7 +186,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    printf ("arg jae is not label\n");
                     assert(0);
                 }
                 break;
@@ -200,7 +200,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    printf ("arg je is not label\n");
                     assert(0);
                 }
                 break;
@@ -214,7 +214,7 @@ void Assembler (asm_t* ASM)
 
                 if (err_t)
                 {
-                    printf ("arg ja is not label");
+                    printf ("arg jne is not label\n");
                     assert(0);
                 }
                 break;
@@ -256,6 +256,14 @@ void Assembler (asm_t* ASM)
                 ASM->ip += 1;
                 break;
             }
+            case CMD_DRAW_FRAME:
+            {
+                (ASM->code)[ASM->ip] = CMD_DRAW_FRAME;
+                DBG printf ("code[%d] = <%d>\n\n", ASM->ip, (ASM->code)[ASM->ip]);
+
+                ASM->ip += 1;
+                break;
+            }
             case CMD_IN:
             {
                 (ASM->code)[ASM->ip] = CMD_IN;
@@ -275,6 +283,12 @@ void Assembler (asm_t* ASM)
             case CMD_MEOW:
             {
                 (ASM->code)[ASM->ip] = CMD_MEOW;
+                ASM->ip++;
+                break;
+            }
+            case CMD_SLEEP:
+            {
+                (ASM->code)[ASM->ip] = CMD_SLEEP;
                 ASM->ip++;
                 break;
             }
@@ -522,7 +536,7 @@ int IdCommand (char* cmd)
     #include "Commands.h"
     /*else*/
     printf ("unknown command\n");
-    return -1;
+    return 0;
     #undef DEF_CMD_
 }
 
@@ -594,44 +608,3 @@ bool JmpFunc (asm_t* ASM)
     }
     return 0;
 }
-
-/*if (strcmp (cmd, "push") == 0)                                    //TD: choose one register CAPITAL or small
-    {
-        return PUSH_ID;
-    }
-    if (strcmp (cmd, "pop") == 0) //TODO: remove strings from code and make some array of structures with info about every command
-    {
-        return POP_ID;
-    }
-    if (strcmp (cmd, "add") == 0) //TD: make function that compares strings and returns number - command id
-    {                             // switch case
-        return ADD_ID;
-    }
-    if (strcmp (cmd, "sub") == 0)
-    {
-        return SUB_ID;
-    }
-    if (strcmp (cmd, "div") == 0)
-    {
-        return DIV_ID;
-    }
-    if (strcmp (cmd, "mul") == 0)
-    {
-        return MUL_ID;
-    }
-    if (strcmp (cmd, "out") == 0)
-    {
-        return OUT_ID;
-    }
-    if (strcmp (cmd, "jmp") == 0)
-    {
-        return JMP_ID;
-    }
-    if (strcmp (cmd, "ja") == 0)
-    {
-        return JA_ID;
-    }
-    if (strcmp (cmd, "hlt") == 0)
-    {
-        return HLT_ID;
-    }*/

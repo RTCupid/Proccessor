@@ -16,9 +16,7 @@ FLAGS = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ \
 
 LINUXFLAGSRELEASE = -D NDEBUG -std=c++17 -Wno-unused-result -Wall -mavx2 -O3
 
-run: Asm.exe Run.exe
-	./Asm.exe program.txt
-	./Run.exe Programm_code.txt
+all: Asm.exe Run.exe
 
 Asm.exe: Assembler.cpp Assembler.h Asm_labels.cpp Asm_labels.h
 	$(CC) Assembler.cpp Asm_labels.cpp -o Asm.exe $(LINUXFLAGSRELEASE)

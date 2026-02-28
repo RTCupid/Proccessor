@@ -38,8 +38,12 @@ DEF_CMD_(JE,   18,  true)
 
 DEF_CMD_(MEOW, 19,  true)
 
-DEF_CMD_(JNE,  20,  true)
+DEF_CMD_(SLEEP,  20,  true)
 
-DEF_CMD_(JB,   21,  true)
+DEF_CMD_(JNE,  21,  true)
+
+DEF_CMD_(JB,   22,  true)
+
+DEF_CMD_(DRAW_FRAME,   23,  true)
 
 DEF_CMD_(HLT,  -1,  false)

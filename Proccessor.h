@@ -34,8 +34,13 @@ typedef struct
 } proc_t;
 
 const size_t nregisters = 5;
-const size_t nRAM = 10000;
+const size_t nRAM = 16384; // 128*128
 const size_t Capacity_code = 1000;
+
+const size_t VIDEO_START = 0;
+const size_t VIDEO_SIZE = 16384;
+const size_t FRAME_DATA = 16384;
+const size_t NUM_FRAMES = 6563;
 
 void PrcCtor (proc_t* PRC);
 
@@ -51,7 +56,7 @@ void DumpRAM    (int* RAM);
 
 int  GetArgPush (proc_t* PRC, int* REG, int* RAM);
 
-int* GetArgPop  (proc_t* PRC, int* REG, int* RAM);
+void GetArgPop  (proc_t* PRC, int* REG, int* RAM, int** argValue, int* SumArg);
 
 void RunPush    (proc_t* PRC, stack_t* STK);
 
@@ -91,9 +96,13 @@ void RunRet     (proc_t* PRC);
 
 void RunDraw    (proc_t* PRC);
 
+void RunDrawFrame (proc_t* PRC);
+
 void RunIn      (proc_t* PRC, stack_t* STK);
 
 void RunMeow    (proc_t* PRC, stack_t* STK);
+
+void RunSleep    (proc_t* PRC, stack_t* STK);
 
 void RunHlt     (proc_t* PRC, int* next);
 

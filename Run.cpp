@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 #include "Proccessor.h"
 #include "Enum.h"
 
@@ -11,7 +12,6 @@
 #include "colors.h"
 
 #define DBG if(0)
-                                                                               //TD: Cpu_t, CpuCtor, CpuDtor Run -> SPU
 
 int main (int argc, char** argv)
 {
@@ -52,11 +52,9 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
 
     int next = 1;
 
-    //PrDump (*STK, *PRC);
     while (next)
     {
-        //TD: sqrt cos sin
-        switch (PRC->code[PRC->ip]) //TODO: Codogen
+        switch (PRC->code[PRC->ip])
         {
             case CMD_PUSH:
             {
@@ -64,7 +62,7 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 break;
             }
             case CMD_POP:
-            {                                      // from stack to Reg DX
+            {
                 RunPop (PRC, STK);
                 break;
             }
@@ -158,6 +156,11 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
                 RunDraw (PRC);
                 break;
             }
+            case CMD_DRAW_FRAME:
+            {
+                RunDrawFrame (PRC);
+                break;
+            }
             case CMD_IN:
             {
                 RunIn (PRC, STK);
@@ -166,6 +169,11 @@ void SPU (stack_t* STK, proc_t* PRC, char* code_file)
             case CMD_MEOW:
             {
                 RunMeow (PRC, STK);
+                break;
+            }
+            case CMD_SLEEP:
+            {
+                RunSleep (PRC, STK);
                 break;
             }
             case CMD_HLT:
@@ -212,7 +220,10 @@ void RunPop (proc_t* PRC, stack_t* STK)
     int value = 0;
     StackPop (STK, &value);
 
-    int* addr = GetArgPop (PRC, PRC->REG, PRC->RAM);
+    int* addr = NULL;
+    int SumArg = 0;
+
+    GetArgPop (PRC, PRC->REG, PRC->RAM, &addr, &SumArg);
     *addr = value;
 }
 
@@ -504,6 +515,34 @@ void RunDraw (proc_t* PRC)
     PRC->ip += 1;
 }
 
+void RunDrawFrame (proc_t* PRC)
+{
+    DBG printf ("ip = %d ", PRC->ip);
+    DBG printf ("cmd = %d\n", PRC->code[PRC->ip]);
+
+    static FILE* frames_file = NULL;
+    static size_t video_size = VIDEO_SIZE;
+
+    if (frames_file == NULL) {
+        frames_file = fopen("tests/bad_apple/frames.bin", "rb");
+        if (!frames_file) {
+            printf("Cannot open frames.bin\n");
+            PRC->ip += 1;
+            return;
+        }
+    }
+
+    size_t read = fread(PRC->RAM, sizeof(int), video_size, frames_file);
+    if (read != video_size) {
+        fclose(frames_file);
+        frames_file = NULL;
+        printf("End of video\n");
+    }
+
+    DumpRAM(PRC->RAM);
+    PRC->ip += 1;
+}
+
 void RunIn (proc_t* PRC, stack_t* STK)
 {
     DBG printf ("ip = %d ", PRC->ip);
@@ -534,6 +573,20 @@ void RunMeow (proc_t* PRC, stack_t* STK)
         printf (BLU "meow " RESET);
     }
     printf ("\n");
+
+    PRC->ip += 1;
+}
+
+void RunSleep (proc_t* PRC, stack_t* STK)
+{
+    DBG printf ("ip = %d ", PRC->ip);
+    DBG printf ("cmd = %d ", PRC->code[PRC->ip]);
+
+    int arg = 0;
+
+    StackPop (STK, &arg);
+
+    usleep(arg * 1000);
 
     PRC->ip += 1;
 }
@@ -675,26 +728,21 @@ void PrDump (stack_t STK, proc_t PRC)
 
 //.............................................................................
 
-void DumpRAM (int* RAM)                                                        //TD: [100] -> magic number
+void DumpRAM (int* RAM)
 {
-    printf ("Dump RAM!\n");
-    //for (int i = 0; i < nRAM; i++)
-    //    printf ("%d", RAM[
     for (int i = 1; i < sqrt (nRAM); i++)
     {
-        printf ("i = %d:", i);
         assert (i < sqrt (nRAM));
         for (int j = 1; j < sqrt (nRAM); j++)
         {
             assert (j < sqrt (nRAM));
             if (RAM[i * (int)sqrt (nRAM) + j] == 0)
-                printf (".  ");
+                printf ("  ");
             else
-                printf ("#  ");
+                printf ("$ ");
         }
         printf ("\n");
     }
-    printf ("\n");
 }
 
 //function to getting argument and return in...................................
@@ -728,16 +776,14 @@ int GetArgPush (proc_t* PRC, int* REG, int* RAM)
     return argValue;
 }
 
-int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
+void GetArgPop (proc_t* PRC, int* REG, int* RAM, int **argValue, int* SumArg)
 {
     PRC->ip++;
     int argType = PRC->code[PRC->ip]; PRC->ip++;
-    int* argValue = NULL;
-    int SumArg = 0;
 
-    if (argType & MASK_NUM)                                                    //TD: too
+    if (argType & MASK_NUM)
     {
-        argValue = &PRC->code[PRC->ip];
+        *argValue = &PRC->code[PRC->ip];
 
         PRC->ip++;
     }
@@ -745,61 +791,21 @@ int* GetArgPop (proc_t* PRC, int* REG, int* RAM)
     if (argType & MASK_REG)
     {
         int regNum = PRC->code[PRC->ip];
-        if (argValue != NULL)
+        if (*argValue != NULL)
         {
-            SumArg = *argValue;
-            SumArg += REG[regNum];
+            *SumArg = **argValue;
+            *SumArg += REG[regNum];
 
-            argValue = &SumArg;
+            *argValue = SumArg;
         }
         else
         {
-            argValue = &(REG[regNum]);
+            *argValue = &(REG[regNum]);
         }
         PRC->ip++;
     }
     if (argType & MASK_RAM)
     {
-        argValue = &(RAM[*argValue]);
+        *argValue = &(RAM[**argValue]);
     }
-    //printf (">>>> addr argValuePop = <%p>\n", argValue);
-    return argValue;
 }
-
-/*
-N_DIGIT = 2 -> 10^2
-100
-148
-PUSH 13.2819
-1328
-1.48 * 1.00
-PUSH 1 -> 1 100 -> 1 1.00 -> pop 1 + 2.48
-                -> 1 100  -> pop 1*148/100
-PUSH 14.8 -> 1 1480 -> 1 14.8 ->
-(double)1480
-(int)14//.8
-ja
-
-MYLABEL:
-
-push
-pop
-out
-
-ret
-
-
-
-main:
-    in
-    in
-    in
-    pop rax
-    pop rbx
-    pop rcx
-    ...
-hlt
-*/
-/*
-CALL MYLABEL -> 18, 4
-*/

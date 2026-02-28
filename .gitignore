@@ -2,3 +2,8 @@
 *.o
 *.exe
 Stack/
+.gitattributes
+Asm.exe
+Run.exe
+bad_apple/badapple.webm
+bad_apple/frames.bin
